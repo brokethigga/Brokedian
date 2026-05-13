@@ -672,6 +672,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         </div>
       </div>
       <input type="file" id="logo-file-elem" style="display:none" accept="image/*" onchange="handleLogoUpload(event)">
+      <button id="remove-logo-btn" class="control-btn" style="display:none;padding:6px 12px;font-size:12px;" onclick="removeBizLogo()">Remove logo</button>
       <div class="profile-avatar-label">Click area to attach company logo</div>
     </div>
 
@@ -896,6 +897,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="invoice-preview" id="print-area">
       <div class="inv-header">
         <div class="inv-brand-box">
+          <img id="pdf-my-logo" style="max-height:80px;width:auto;object-fit:contain;display:none;margin-bottom:8px;">
           <div class="inv-brand" id="pdf-my-bizname">BROKEDIAN CO.</div>
           <div id="pdf-my-taxid" style="font-size:12px; color:#475569;">Tax ID: --</div>
           <div class="inv-status-badge badge-preview-pending" id="pdf-status-badge">PENDING</div>
@@ -1716,6 +1718,13 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
   if(!docObj) return;
 
   // Header setups
+  const pdfLogo = document.getElementById('pdf-my-logo');
+  if(biz.logo) {
+    pdfLogo.src = biz.logo;
+    pdfLogo.style.display = "block";
+  } else {
+    pdfLogo.style.display = "none";
+  }
   document.getElementById('pdf-my-bizname').textContent = biz.name || "YOUR BUSINESS NAME";
   document.getElementById('pdf-my-taxid').textContent = biz.taxid ? `Tax ID: ${biz.taxid}` : "Tax ID: --";
   document.getElementById('pdf-doc-type').textContent = type.toUpperCase();
@@ -1808,6 +1817,12 @@ function loadProfileInputs() {
     document.getElementById('biz-logo-img').src = biz.logo;
     document.getElementById('biz-logo-img').style.display = "block";
     document.getElementById('biz-logo-placeholder').style.display = "none";
+    document.getElementById('remove-logo-btn').style.display = "inline-flex";
+  } else {
+    document.getElementById('biz-logo-img').src = "";
+    document.getElementById('biz-logo-img').style.display = "none";
+    document.getElementById('biz-logo-placeholder').style.display = "flex";
+    document.getElementById('remove-logo-btn').style.display = "none";
   }
   updateMiniPreviewStyleProperties();
 }
@@ -1869,10 +1884,21 @@ function handleLogoUpload(e) {
     document.getElementById('biz-logo-img').src = biz.logo;
     document.getElementById('biz-logo-img').style.display = "block";
     document.getElementById('biz-logo-placeholder').style.display = "none";
+    document.getElementById('remove-logo-btn').style.display = "inline-flex";
     saveProfileInfo();
     showToast("Business logo synced");
   };
   reader.readAsDataURL(file);
+}
+
+function removeBizLogo() {
+  biz.logo = "";
+  document.getElementById('biz-logo-img').src = "";
+  document.getElementById('biz-logo-img').style.display = "none";
+  document.getElementById('biz-logo-placeholder').style.display = "flex";
+  document.getElementById('remove-logo-btn').style.display = "none";
+  saveProfileInfo();
+  showToast("Logo removed");
 }
 
 // BACK OFFICE INTEROP: EXPORT SYSTEM FLAT LOG FILES
