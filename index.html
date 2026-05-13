@@ -167,7 +167,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   border:1px solid var(--border2);}
 .client-info{flex:1;min-width:0;}
 .client-name{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.client-project覆{font-size:13px;color:var(--muted2);margin-top:3px;}
 .client-project{font-size:13px;color:var(--muted2);margin-top:3px;}
 .client-right{text-align:right;flex-shrink:0;}
 .client-amount{font-weight:700;font-size:15px;}
@@ -240,7 +239,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px;
 }
 .chart-bars-wrap {
-  display: flex; align-items: flex-end; justify-content: space-between; height: 120px; pt: 10px; gap: 8px;
+  display: flex; align-items: flex-end; justify-content: space-between; height: 120px; padding-top: 10px; gap: 8px;
 }
 .chart-column {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -993,7 +992,8 @@ let biz = JSON.parse(localStorage.getItem('brokedian_biz')) || {
   logo: ""
 };
 
-// INITIALIZE SCREEN MOUNTING
+const DEFAULT_QUOTE_EXPIRY_DAYS = 30;
+
 document.addEventListener("DOMContentLoaded", () => {
   setGreetingTime();
   loadProfileInputs();
@@ -1002,9 +1002,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  t.textContent = String(msg).replace(/</g,'&lt;').replace(/>/g,'&gt;');
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function switchScreen(screenId, element) {
@@ -1019,15 +1023,19 @@ function switchScreen(screenId, element) {
 
 function setGreetingTime() {
   const hours = new Date().getHours();
-  let greet = "Good evening 🌙";
-  if(hours < 12) greet = "Good morning 👋";
-  else if(hours < 18) greet = "Good afternoon ☀️";
+  let greet = "Good evening";
+  if(hours < 12) greet = "Good morning";
+  else if(hours < 18) greet = "Good afternoon";
   document.getElementById('dash-greeting').textContent = greet;
   document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 function saveState(key, data) {
-  localStorage.setItem('brokedian_' + key, JSON.stringify(data));
+  try {
+    localStorage.setItem('brokedian_' + key, JSON.stringify(data));
+  } catch(e) {
+    showToast("Storage error: data may not be saved");
+  }
 }
 
 // MAIN RENDER DISTRIBUTOR LOOP
@@ -1122,11 +1130,11 @@ function renderDashboardAndClientLists(currency) {
       let statusClass = { paid: "pill-paid", pending: "pill-pending", late: "pill-late" };
       
       htmlContent += `
-        <div class="client-card" onclick="openClientModal('${c.id}')">
-          <div class="client-avatar">${c.name.substring(0,2).toUpperCase()}</div>
+        <div class="client-card" onclick="openClientModal('${escHtml(c.id)}')">
+          <div class="client-avatar">${escHtml(c.name.substring(0,2).toUpperCase())}</div>
           <div class="client-info">
-            <div class="client-name">${c.name}</div>
-            <div class="client-project">${c.project}</div>
+            <div class="client-name">${escHtml(c.name)}</div>
+            <div class="client-project">${escHtml(c.project || '')}</div>
           </div>
           <div class="client-right">
             <div class="client-amount">${currency}${totalAmount.toLocaleString()}</div>
@@ -1175,15 +1183,15 @@ function renderQuotesTabIntelligence(currency) {
       let badgeClass = { sent: "pill-pending", accepted: "pill-paid", expired: "pill-late" };
       
       let convertButtonMarkup = (q.status !== 'accepted' && q.status !== 'expired') ? 
-        `<button class="convert-btn" onclick="event.stopPropagation(); convertQuoteToInvoice('${q.id}')">Convert to Active Invoice</button>` : '';
+        `<button class="convert-btn" onclick="event.stopPropagation(); convertQuoteToInvoice('${escHtml(q.id)}')">Convert to Active Invoice</button>` : '';
         
       htmlContent += `
-        <div class="quote-card" onclick="openQuoteModal('${q.id}')">
+        <div class="quote-card" onclick="openQuoteModal('${escHtml(q.id)}')">
           <div class="quote-header">
-            <div class="quote-name">${q.name}</div>
+            <div class="quote-name">${escHtml(q.name)}</div>
             <div class="quote-amount">${currency}${totalAmount.toLocaleString()}</div>
           </div>
-          <div class="quote-meta">Project: ${q.project}</div>
+          <div class="quote-meta">Project: ${escHtml(q.project || '')}</div>
           <div class="quote-meta">Deadline Expiry: ${q.expiry ? new Date(q.expiry).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : 'None'}</div>
           <span class="status-pill ${badgeClass[q.status]}">${badgeLabels[q.status]}</span>
           ${convertButtonMarkup}
@@ -1243,9 +1251,9 @@ function updateForecast() {
     expectedPipelineInflow += weightedAmount;
     
     pipelineHtml += `
-      <div class="pipeline-card" onclick="openPipelineModal('${p.id}')">
+      <div class="pipeline-card" onclick="openPipelineModal('${escHtml(p.id)}')">
         <div class="pipeline-header">
-          <strong style="font-size:15px;">${p.name}</strong>
+          <strong style="font-size:15px;">${escHtml(p.name)}</strong>
           <span style="font-weight:800; font-size:16px;">${currency}${p.amount.toLocaleString()}</span>
         </div>
         <div style="font-size:12px; color:var(--muted2); margin-top:2px; display:flex; justify-content:space-between;">
@@ -1363,7 +1371,8 @@ function gatherInvoiceLineItemsFromDOM() {
     let d = r.querySelector('.li-desc').value.trim();
     let q = parseInt(r.querySelector('.li-qty').value) || 1;
     let c = parseFloat(r.querySelector('.li-cost').value) || 0;
-    if(d) dataArr.push({ desc: d, qty: q, cost: c });
+    if(q > 0 && c > 0) dataArr.push({ desc: d || "Untitled item", qty: q, cost: c });
+    else if(d && q > 0) dataArr.push({ desc: d, qty: q, cost: c });
   });
   return dataArr;
 }
@@ -1375,7 +1384,8 @@ function gatherQuoteLineItemsFromDOM() {
     let d = r.querySelector('.liq-desc').value.trim();
     let q = parseInt(r.querySelector('.liq-qty').value) || 1;
     let c = parseFloat(r.querySelector('.liq-cost').value) || 0;
-    if(d) dataArr.push({ desc: d, qty: q, cost: c });
+    if(q > 0 && c > 0) dataArr.push({ desc: d || "Untitled item", qty: q, cost: c });
+    else if(d && q > 0) dataArr.push({ desc: d, qty: q, cost: c });
   });
   return dataArr;
 }
@@ -1430,7 +1440,7 @@ function saveClientInvoice() {
   const lineItems = gatherInvoiceLineItemsFromDOM();
 
   if(!name || lineItems.length === 0) {
-    alert("Please provide at least a Client Name and 1 line item configuration.");
+    showToast("Add a client name and at least one line item");
     return;
   }
 
@@ -1449,7 +1459,7 @@ function saveClientInvoice() {
   }
   saveState('clients', clients);
   closeClientModal();
-  showToast("Deal added"); 
+  showToast(id ? "Invoice updated" : "Invoice created");
   renderAppContent();
 }
 
@@ -1473,7 +1483,7 @@ function openQuoteModal(id = null) {
     document.getElementById('q-name').value = "";
     document.getElementById('q-project').value = "";
     document.getElementById('q-status').value = "sent";
-    document.getElementById('q-expiry').value = new Date(Date.now() + 14*24*60*60*1000).toISOString().split('T')[0]; 
+    document.getElementById('q-expiry').value = new Date(Date.now() + DEFAULT_QUOTE_EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; 
     document.getElementById('delete-quote-btn').style.display = "none";
     document.getElementById('preview-quote-btn').style.display = "none";
     addNewQuoteLineItemRow('', 1, 0);
@@ -1510,7 +1520,10 @@ function saveQuoteEstimate() {
   const expiry = document.getElementById('q-expiry').value;
   const items = gatherQuoteLineItemsFromDOM();
 
-  if(!name || items.length === 0) return alert("Verify client names and item rows exist.");
+  if(!name || items.length === 0) {
+    showToast("Add a prospect name and at least one item row");
+    return;
+  }
 
   if(!id) {
     quotes.push({ id: "q_" + Date.now(), name, project, status, expiry, items });
@@ -1526,7 +1539,7 @@ function saveQuoteEstimate() {
   }
   saveState('quotes', quotes);
   closeQuoteModal();
-  showToast("Forecast updated");
+  showToast(id ? "Quote updated" : "Quote created");
   renderAppContent();
 }
 
@@ -1630,9 +1643,9 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
   document.getElementById('pdf-payment-terms').textContent = "Net 30 / On Receipt";
 
   // Address structures
-  document.getElementById('pdf-from-name').textContent = biz.name;
-  document.getElementById('pdf-from-details').innerHTML = `${biz.address || ''}<br>Email: ${biz.email || ''}<br>Phone: ${biz.phone || ''}`;
-  document.getElementById('pdf-to-name').textContent = docObj.name;
+  document.getElementById('pdf-from-name').textContent = biz.name || "";
+  document.getElementById('pdf-from-details').innerHTML = `${escHtml(biz.address || '')}<br>Email: ${escHtml(biz.email || '')}<br>Phone: ${escHtml(biz.phone || '')}`;
+  document.getElementById('pdf-to-name').textContent = docObj.name || "";
   document.getElementById('pdf-to-details').textContent = docObj.address || "Client Corporation Corporate Office Account";
 
   // Status Badge handling updates
@@ -1656,7 +1669,7 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
     
     let tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><strong>${line.desc}</strong></td>
+      <td><strong>${escHtml(line.desc || '')}</strong></td>
       <td class="right-align">${line.qty}</td>
       <td class="right-align">${currency}${line.cost.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
       <td class="right-align">${currency}${amt.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
@@ -1678,13 +1691,12 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
   document.getElementById('pdf-bank-instructions').textContent = biz.bank || "No wire specifications outlined.";
   document.getElementById('pdf-signature-block').textContent = biz.signature || "";
 
-  // Dynamic PromptPay Engine simulation configurations
   const ppWrapper = document.getElementById('pdf-promptpay-wrapper');
-  if(biz.promptpay && finalGrandTotalVal > 0) {
+  const safePromptPay = escHtml(biz.promptpay || '');
+  if(safePromptPay && finalGrandTotalVal > 0) {
     ppWrapper.style.display = "flex";
-    document.getElementById('pdf-promptpay-token').textContent = `ID Token: ${biz.promptpay}`;
-    // Construct dynamic standard open QR parameters payload reference links
-    document.getElementById('pdf-promptpay-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PromptPay_${biz.promptpay}_AMT_${finalGrandTotalVal.toFixed(2)}`;
+    document.getElementById('pdf-promptpay-token').textContent = `ID Token: ${safePromptPay}`;
+    document.getElementById('pdf-promptpay-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PromptPay_${encodeURIComponent(safePromptPay)}_AMT_${finalGrandTotalVal.toFixed(2)}`;
   } else {
     ppWrapper.style.display = "none";
   }
@@ -1784,7 +1796,7 @@ function handleLogoUpload(e) {
 
 // BACK OFFICE INTEROP: EXPORT SYSTEM FLAT LOG FILES
 function exportDataCSV() {
-  let csvRows = ["Type,ClientName,ScopeProject,StatusDate,AmountValue"];
+  let csvRows = ["Type,ClientName,ScopeProject,Status,Date,Amount"];
   
   clients.forEach(c => {
     let amt = c.items ? c.items.reduce((s,i) => s+(i.qty*i.cost), 0) : 0;
@@ -1818,12 +1830,12 @@ function importDataJSON(e) {
       let data = JSON.parse(evt.target.result);
       if(data.clients) { clients = data.clients; saveState('clients', clients); }
       if(data.quotes) { quotes = data.quotes; saveState('quotes', quotes); }
-      if(data.biz) { biz = data.biz; localStorage.setItem('brokedian_biz', JSON.stringify(biz)); }
+      if(data.biz) { biz = data.biz; try { localStorage.setItem('brokedian_biz', JSON.stringify(biz)); } catch(e){} }
       showToast("Data schemas imported");
       renderAppContent();
       loadProfileInputs();
     } catch(err) {
-      alert("Invalid backup configuration file pattern detected.");
+      showToast("Invalid backup file detected");
     }
   };
   reader.readAsText(file);
