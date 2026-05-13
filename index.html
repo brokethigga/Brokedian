@@ -28,14 +28,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* ── LAYOUT ── */
 .layout{display:flex;flex-direction:column;min-height:100vh;}
-
-/* Mobile: bottom nav + scrollable content */
 .main-content{flex:1;padding:0 16px calc(var(--nav-h) + 32px);}
-
-/* Desktop: sidebar nav + content side by side */
 @media(min-width:1024px){
   .layout{flex-direction:row;}
-  .main-content{flex:1;padding:32px 40px 40px;max-width:900px;}
+  .main-content{flex:1;padding:32px 40px 40px;max-width:1000px;}
 }
 
 /* ── NAV ── */
@@ -84,28 +80,47 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .page-header h1{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;line-height:1.1;}
 .page-header p{color:var(--muted2);font-size:15px;margin-top:6px;}
 
+/* ── DASHBOARD HERO METRIC ── */
+.hero-dashboard-panel {
+  background: linear-gradient(135deg, #1E1B4B 0%, #111827 100%);
+  border: 1px solid rgba(124,110,245,0.25);
+  border-radius: 28px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+.hero-dashboard-panel::before {
+  content: ''; position: absolute; top: -50px; right: -50px; width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(124,110,245,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-label {
+  font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent2); margin-bottom: 8px;
+}
+.hero-value {
+  font-family: 'Syne', sans-serif; font-size: 44px; font-weight: 800; color: #FFFFFF; line-height: 1; letter-spacing: -0.02em;
+}
+.hero-subtext {
+  font-size: 14px; color: var(--muted2); margin-top: 10px; display: flex; align-items: center; gap: 6px;
+}
+
 /* ── STATUS BANNER ── */
 .status-banner{
   margin:0 0 24px;padding:24px 28px;border-radius:24px;
   position:relative;overflow:hidden;
   border:1px solid rgba(255,255,255,0.05);
   background:var(--bg2);
-  box-shadow:0 16px 40px rgba(0,0,0,0.3);
-  min-height:160px;display:flex;flex-direction:column;justify-content:space-between;
+  min-height:140px;display:flex;flex-direction:column;justify-content:space-between;
 }
-.status-banner::after{content:'';position:absolute;inset:0;border-radius:24px;pointer-events:none;
-  border-top:1px solid rgba(255,255,255,0.08);}
-.status-banner.safe{background:linear-gradient(135deg,rgba(34,197,94,0.08) 0%,var(--bg2) 60%);}
-.status-banner.warn{background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,var(--bg2) 60%);}
-.status-banner.danger{background:linear-gradient(135deg,rgba(239,68,68,0.10) 0%,var(--bg2) 60%);}
-.status-hud-badge{position:absolute;right:-8px;bottom:-8px;width:120px;height:120px;opacity:.1;z-index:1;}
-.status-banner.safe .status-hud-badge{color:var(--green);opacity:.15;}
-.status-banner.warn .status-hud-badge{color:var(--yellow);opacity:.15;}
-.status-banner.danger .status-hud-badge{color:var(--red);opacity:.15;}
+.status-banner.safe{background:linear-gradient(135deg,rgba(34,197,94,0.06) 0%,var(--bg2) 70%);}
+.status-banner.warn{background:linear-gradient(135deg,rgba(245,158,11,0.06) 0%,var(--bg2) 70%);}
+.status-banner.danger{background:linear-gradient(135deg,rgba(239,68,68,0.08) 0%,var(--bg2) 70%);}
 .status-content{position:relative;z-index:2;}
 .status-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px;}
 .status-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;line-height:1.2;}
-.status-sub{font-size:14px;color:var(--muted2);margin-top:6px;margin-bottom:18px;}
+.status-sub{font-size:14px;color:var(--muted2);margin-top:6px;margin-bottom:14px;}
 .burn-progress-container{width:100%;height:5px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
 .burn-progress-bar{height:100%;width:0%;transition:width .6s ease;border-radius:99px;}
 .status-banner.safe .burn-progress-bar{background:var(--green);}
@@ -128,7 +143,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   letter-spacing:.08em;text-transform:uppercase;padding:16px 0 10px;
   display:flex;justify-content:space-between;align-items:center;}
 
-/* ── CLIENT CARDS ── */
+/* ── CLIENT / INVOICE CARDS ── */
 .client-list{display:flex;flex-direction:column;gap:10px;}
 .client-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .2s;}
@@ -137,6 +152,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--accent2);flex-shrink:0;}
 .client-info{flex:1;min-width:0;}
 .client-name{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.client-project覆{font-size:13px;color:var(--muted2);margin-top:3px;}
 .client-project{font-size:13px;color:var(--muted2);margin-top:3px;}
 .client-right{text-align:right;flex-shrink:0;}
 .client-amount{font-weight:700;font-size:15px;}
@@ -146,6 +162,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .pill-pending{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-glow);}
 .pill-late{background:var(--red-bg);color:var(--red);border:1px solid var(--red-glow);}
 .pill-quote{background:rgba(163,148,255,0.1);color:var(--accent2);border:1px solid rgba(163,148,255,0.25);}
+
+/* ── LINE ITEMS LIST MANAGER (WITH HIGHLIGHTED COLUMN LABELS) ── */
+.items-list-container {
+  background: var(--bg3); padding: 14px; border-radius: 12px; border: 1px solid var(--border2); margin-bottom: 12px;
+}
+.line-item-input-row {
+  display: grid; grid-template-columns: 2fr 1fr 1.2fr auto; gap: 8px; margin-bottom: 16px; align-items: flex-end;
+}
+.line-item-column {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.line-item-column label {
+  font-size: 10px !important; font-weight: 700 !important; color: var(--muted) !important; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0 !important;
+}
+.line-item-input-row input {
+  padding: 10px!important; font-size: 14px!important; width: 100%;
+}
+.remove-item-btn {
+  background: var(--red-bg); border: 1px solid var(--red-glow); color: var(--red); padding: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; height: 38px; margin-bottom: 0px;
+}
 
 /* ── EMPTY STATE ── */
 .empty-state{text-align:center;padding:48px 20px;}
@@ -160,7 +196,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .add-btn:hover{border-color:var(--accent);color:var(--accent2);background:rgba(124,110,245,.05);}
 .add-btn svg{width:18px;height:18px;}
 
-/* ── FORECAST ── */
+/* ── CHARTS & SIMULATOR FORECAST ── */
 .settings-panel{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
 @media(min-width:600px){.settings-panel{grid-template-columns:repeat(4,1fr);}}
 .config-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
@@ -169,39 +205,48 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .config-card input,.config-card select{background:var(--bg3);border:1px solid var(--border2);
   color:var(--text);font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;
   padding:10px 12px;border-radius:10px;width:100%;text-align:right;outline:none;transition:border-color .2s;}
-.config-card input:focus,.config-card select:focus{border-color:var(--accent);}
 
 .forecast-total{background:linear-gradient(135deg,rgba(124,110,245,.15),rgba(163,148,255,.06));
   border:1px solid rgba(124,110,245,.25);border-radius:var(--radius);padding:22px;
   display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
 .ft-label{font-size:12px;font-weight:700;color:var(--muted2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
 .ft-value{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;color:var(--accent2);letter-spacing:-.02em;}
-.ft-status{font-size:13px;color:var(--muted2);margin-top:4px;}
 
 .forecast-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .fr-label{font-size:14px;color:var(--muted2);font-weight:500;}
-.fr-sub{font-size:12px;color:var(--muted);margin-top:3px;}
 .fr-value{font-weight:800;font-size:20px;letter-spacing:-.02em;}
+
+/* ── MINI VISUAL CHART BAR ── */
+.visual-chart-container {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px;
+}
+.chart-bars-wrap {
+  display: flex; align-items: flex-end; justify-content: space-between; height: 120px; pt: 10px; gap: 8px;
+}
+.chart-column {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.chart-bar-fill {
+  width: 100%; background: linear-gradient(to top, var(--accent), var(--accent2)); border-radius: 6px 6px 0 0; min-height: 4px; transition: height 0.4s ease; position: relative;
+}
+.chart-bar-fill.paid-bar { background: linear-gradient(to top, #16a34a, #22c55e); }
+.chart-label { font-size: 11px; color: var(--muted); font-weight: 700; }
 
 .pipeline-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;}
-.pipeline-card:hover{border-color:var(--accent);}
 .pipeline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
 .prob-bar{height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-top:10px;}
 .prob-fill{height:100%;background:var(--accent);border-radius:99px;}
 
-/* ── SUMMARY ── */
+/* ── HISTORY SUMMARY ── */
 .summary-list{display:flex;flex-direction:column;gap:10px;}
 .summary-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px 18px;display:flex;align-items:center;justify-content:space-between;}
 .sr-month{font-weight:700;font-size:15px;}
 .sr-earned{font-weight:700;font-size:17px;color:var(--green);}
-.sr-trend{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;margin-left:8px;}
-.trend-up{background:var(--green-bg);color:var(--green);}
-.trend-down{background:var(--red-bg);color:var(--red);}
 
-/* ── CONTROL BLOCK ── */
+/* ── CONTROLS ── */
 .control-block{margin-top:24px;padding:20px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--card);}
 .control-block-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
 .control-row-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
@@ -213,31 +258,28 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   padding:13px;font-weight:700;font-size:13px;border-radius:10px;cursor:pointer;transition:all .2s;}
 .reset-btn:hover{background:var(--red);color:#fff;}
 
-/* ── CSV EXPORT BTN ── */
 .csv-btn{background:var(--accent);border:none;color:#fff;padding:8px 14px;border-radius:8px;
-  font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:opacity .2s;}
-.csv-btn:hover{opacity:.85;}
-.csv-btn svg{width:14px;height:14px;}
+  font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;}
 
-/* ── QUOTE TAB ── */
+/* ── QUOTE CARD ── */
 .quote-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;}
 .quote-card:hover{border-color:var(--accent);}
 .quote-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
 .quote-name{font-weight:700;font-size:15px;}
 .quote-amount{font-weight:800;font-size:15px;color:var(--accent2);}
-.quote-meta{font-size:13px;color:var(--muted2);}
+.quote-meta{font-size:13px;color:var(--muted2); margin-bottom:6px;}
 .convert-btn{background:var(--green-bg);border:1px solid var(--green-glow);color:var(--green);
   padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px;}
 .convert-btn:hover{background:var(--green);color:#fff;}
 
-/* ── MODAL ── */
+/* ── MODALS ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);
   backdrop-filter:blur(8px);z-index:200;align-items:flex-end;justify-content:center;}
 @media(min-width:600px){.modal-overlay{align-items:center;padding:20px;}}
 .modal-overlay.open{display:flex;}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:24px 24px 0 0;
-  width:100%;max-width:520px;padding:24px 20px 40px;max-height:90vh;overflow-y:auto;}
+  width:100%;max-width:560px;padding:24px 20px 40px;max-height:90vh;overflow-y:auto;}
 @media(min-width:600px){.modal{border-radius:24px;padding:32px 28px;}}
 .modal-handle{width:40px;height:4px;background:var(--border2);border-radius:99px;margin:0 auto 20px;}
 .modal h2{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;margin-bottom:20px;}
@@ -246,67 +288,80 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px;}
 .form-group input,.form-group select,.form-group textarea{width:100%;background:var(--bg3);
   border:1px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;
-  font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .2s;}
-.form-group textarea{resize:vertical;min-height:80px;}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent);}
+  font-size:15px;padding:12px 14px;border-radius:10px;outline:none;}
+.form-group textarea{resize:vertical;min-height:70px;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .submit-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);
-  color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;cursor:pointer;
-  transition:opacity .2s;margin-top:4px;}
-.submit-btn:hover{opacity:.88;}
+  color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;cursor:pointer;margin-top:4px;}
+.secondary-action-btn{width:100%;padding:13px;background:var(--bg3);border:1px solid var(--accent);
+  border-radius:var(--radius);color:var(--accent2);font-weight:700;font-size:15px;cursor:pointer;margin-top:12px; margin-bottom: 4px; text-align: center;}
 .cancel-btn{width:100%;padding:13px;background:transparent;border:1px solid var(--border2);
   border-radius:var(--radius);color:var(--muted2);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;}
 .delete-btn{width:100%;padding:13px;background:var(--red-bg);border:1px solid var(--red);
   border-radius:var(--radius);color:var(--red);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;}
 
-/* ── INVOICE PREVIEW MODAL ── */
-.invoice-preview{background:#fff;color:#1a1a2e;border-radius:14px;padding:32px;margin-bottom:16px;font-family:'DM Sans',sans-serif;}
-.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;border-bottom:2px solid #f0f0f5;padding-bottom:20px;}
-.inv-brand{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#7C6EF5;}
-.inv-meta{text-align:right;font-size:13px;color:#6b6b80;}
-.inv-meta strong{color:#1a1a2e;font-size:15px;}
-.inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
-.inv-party-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:6px;}
-.inv-party-name{font-size:16px;font-weight:700;color:#1a1a2e;}
-.inv-party-detail{font-size:13px;color:#6b6b80;margin-top:2px;}
+/* ── ENHANCED INVOICE CLIENT PREVIEW (PRINT FRIENDLY) ── */
+.invoice-preview{background:#fff;color:#0f172a;border-radius:14px;padding:36px;margin-bottom:16px;font-family:'DM Sans',sans-serif;box-shadow:0 10px 30px rgba(0,0,0,0.25);}
+.inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;border-bottom:2px solid #e2e8f0;padding-bottom:20px;}
+.inv-brand-box { display: flex; flex-direction: column; gap: 6px; }
+.inv-brand{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:#7C6EF5;}
+.inv-status-badge { display: inline-block; font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; width: max-content; margin-top: 4px; }
+.badge-preview-paid { background: #dcfce7; color: #16a34a; }
+.badge-preview-pending { background: #fef9c3; color: #ca8a04; }
+.badge-preview-late { background: #fee2e2; color: #dc2626; }
+.badge-preview-quote { background: #e0e7ff; color: #4f46e5; }
+
+.inv-meta{text-align:right;font-size:13px;color:#475569; line-height: 1.5;}
+.inv-meta strong{color:#0f172a;font-size:16px;}
+.inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px; background: #f8fafc; padding: 16px; border-radius: 10px;}
+.inv-party-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:6px;}
+.inv-party-name{font-size:15px;font-weight:700;color:#0f172a;}
+.inv-party-detail{font-size:13px;color:#475569;margin-top:2px; line-height:1.4; white-space: pre-line;}
+
 .inv-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-.inv-table th{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;
-  padding:8px 0;border-bottom:1px solid #f0f0f5;text-align:left;}
-.inv-table th:last-child,.inv-table td:last-child{text-align:right;}
-.inv-table td{padding:12px 0;font-size:14px;color:#1a1a2e;border-bottom:1px solid #f9f9f9;}
-.inv-total-row{display:flex;justify-content:flex-end;gap:40px;padding-top:16px;border-top:2px solid #f0f0f5;}
-.inv-total-label{font-size:14px;color:#6b6b80;}
-.inv-total-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#7C6EF5;}
-.inv-footer{margin-top:24px;font-size:12px;color:#9ca3af;text-align:center;border-top:1px solid #f0f0f5;padding-top:16px;}
+.inv-table th{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#64748b;
+  padding:10px 6px;border-bottom:2px solid #cbd5e1;text-align:left;}
+.inv-table th.right-align, .inv-table td.right-align { text-align: right; }
+.inv-table td{padding:12px 6px;font-size:14px;color:#334155;border-bottom:1px solid #f1f5f9;}
+
+.inv-summary-block { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding: 16px 0; border-top: 1px solid #e2e8f0; margin-bottom: 16px;}
+.inv-sum-row { display: flex; justify-content: flex-end; width: 260px; font-size: 14px; color: #475569; }
+.inv-sum-row span:first-child { flex: 1; text-align: left; }
+.inv-sum-row span:last-child { text-align: right; font-weight: 600; color: #0f172a; }
+.inv-sum-row.grand-total { border-top: 2px solid #7C6EF5; margin-top: 6px; padding-top: 8px; font-size: 18px; color: #7C6EF5; }
+.inv-sum-row.grand-total span:last-child { font-family: 'Syne', sans-serif; font-weight: 800; color: #7C6EF5; }
+
+.inv-payment-instructions {
+  background: #f1f5f9; padding: 14px; border-radius: 10px; margin-top: 16px; font-size: 13px; color: #334155;
+}
+.promptpay-qr-box {
+  margin-top: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; background: #fff; padding: 12px; border-radius: 8px; width: max-content; border: 1px solid #e2e8f0;
+}
+.promptpay-qr-box img { width: 140px; height: 140px; object-fit: contain; }
+
+.inv-footer{margin-top:24px;font-size:12px;color:#94a3b8;text-align:center;border-top:1px solid #e2e8f0;padding-top:16px; line-height: 1.4;}
 .inv-actions{display:flex;gap:10px;}
 .inv-action-btn{flex:1;padding:13px;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;transition:opacity .2s;}
-.inv-action-btn:hover{opacity:.85;}
 .inv-print{background:var(--accent);color:#fff;}
 .inv-share{background:var(--bg3);color:var(--text);border:1px solid var(--border2);}
 
 /* ── PROFILE SCREEN ── */
 .profile-avatar-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 0 28px;border-bottom:1px solid var(--border);margin-bottom:24px;}
-.profile-avatar{width:88px;height:88px;border-radius:24px;background:var(--bg3);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color .2s;}
-.profile-avatar:hover{border-color:var(--accent);}
+.profile-avatar{width:88px;height:88px;border-radius:24px;background:var(--bg3);border:2px dashed var(--border2);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;}
 .profile-avatar img{width:100%;height:100%;object-fit:cover;border-radius:22px;}
 .profile-avatar-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px;}
 .profile-avatar-placeholder svg{width:28px;height:28px;stroke:var(--muted);}
 .profile-avatar-placeholder span{font-size:11px;color:var(--muted);font-weight:600;}
-.profile-avatar-label{font-size:13px;color:var(--muted2);}
 .profile-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;}
 .profile-section-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
 .profile-field{margin-bottom:14px;}
-.profile-field:last-child{margin-bottom:0;}
 .profile-field label{display:block;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px;}
-.profile-field input,.profile-field textarea,.profile-field select{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .2s;}
-.profile-field input:focus,.profile-field textarea:focus,.profile-field select:focus{border-color:var(--accent);}
-.profile-field textarea{resize:vertical;min-height:72px;}
+.profile-field input,.profile-field textarea,.profile-field select{width:100%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;padding:12px 14px;border-radius:10px;outline:none;}
 .profile-save-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;cursor:pointer;transition:opacity .2s;margin-bottom:8px;}
-.profile-save-btn:hover{opacity:.88;}
 .invoice-color-row{display:flex;gap:10px;flex-wrap:wrap;}
-.color-swatch{width:36px;height:36px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:border-color .15s;flex-shrink:0;}
+.color-swatch{width:36px;height:36px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:border-color .15s;}
 .color-swatch.selected{border-color:#fff;}
-.inv-preview-mini{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:13px;color:var(--muted2);}
+.inv-preview-mini{background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-top:12px;font-size:13px;color:var(--muted2); line-height: 1.4;}
 .inv-preview-mini strong{color:var(--text);}
 
 /* ── TOAST ── */
@@ -315,18 +370,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   padding:12px 20px;font-size:15px;font-weight:500;transition:transform .4s cubic-bezier(.16,1,.3,1);z-index:999;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-/* ── PRINT STYLES ── */
 @media print{
-  .nav,.modal-overlay,.toast,.inv-actions,.add-btn,.control-block{display:none!important;}
+  .nav,.modal-overlay,.toast,.inv-actions,.add-btn,.control-block,.page-header,.hero-dashboard-panel,.metrics-grid,.section-title,.visual-chart-container{display:none!important;}
   body{background:#fff!important;color:#000!important;}
-  .invoice-preview{box-shadow:none;padding:0;}
+  .invoice-preview{box-shadow:none;padding:0;color:#000;}
+  .main-content {padding: 0!important; margin: 0!important;}
 }
 </style>
 </head>
 <body>
 <div class="layout">
 
-<!-- SIDEBAR / BOTTOM NAV -->
 <nav class="nav">
   <div class="nav-logo">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.37 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
@@ -338,7 +392,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="nav-item" id="nav-clients" onclick="switchScreen('clients',this)">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-    <span>Clients</span>
+    <span>Invoices</span>
   </div>
   <div class="nav-item" id="nav-quotes" onclick="switchScreen('quotes',this)">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -354,1152 +408,1348 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="nav-item" id="nav-profile" onclick="switchScreen('profile',this)">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-    <span>Profile</span>
+    <span>Settings</span>
   </div>
 </nav>
 
-<!-- MAIN CONTENT -->
 <div class="main-content">
 
-<!-- ═══ DASHBOARD ═══ -->
-<div id="screen-dashboard" class="screen active">
-  <div class="page-header">
-    <h1 id="dash-greeting">Good morning 👋</h1>
-    <p id="dash-date">Loading...</p>
-  </div>
-  <div id="status-banner" class="status-banner safe">
-    <div id="hud-badge-container"></div>
-    <div class="status-content">
-      <div class="status-label" id="status-label">Income Status</div>
-      <div class="status-title" id="status-title">Calculating...</div>
-      <div class="status-sub" id="status-sub"></div>
+  <div id="screen-dashboard" class="screen active">
+    <div class="page-header">
+      <h1 id="dash-greeting">Good morning 👋</h1>
+      <p id="dash-date">Loading...</p>
     </div>
-    <div class="burn-progress-container"><div id="burn-bar" class="burn-progress-bar"></div></div>
-  </div>
-  <div class="metrics-grid">
-    <div class="metric-card mc-green">
-      <div class="m-label">Earned this month</div>
-      <div class="m-value" id="d-paid">—</div>
-      <div class="m-sub">after tax estimate</div>
-    </div>
-    <div class="metric-card mc-yellow">
-      <div class="m-label">Pending</div>
-      <div class="m-value" id="d-pending">—</div>
-      <div class="m-sub" id="d-pending-count">0 invoices</div>
-    </div>
-    <div class="metric-card mc-red">
-      <div class="m-label">Overdue</div>
-      <div class="m-value" id="d-late">—</div>
-      <div class="m-sub" id="d-late-count">0 invoices</div>
-    </div>
-    <div class="metric-card mc-accent">
-      <div class="m-label">Emergency runway</div>
-      <div class="m-value" id="d-runway">— mo</div>
-      <div class="m-sub">savings ÷ monthly bills</div>
-    </div>
-  </div>
-  <div class="section-title"><span>Recent invoices</span></div>
-  <div id="dash-clients" class="client-list"></div>
-</div>
 
-<!-- ═══ CLIENTS ═══ -->
-<div id="screen-clients" class="screen">
-  <div class="page-header">
-    <h1>Clients</h1>
-    <p>Track your invoices and payments</p>
-  </div>
-  <div id="client-list" class="client-list"></div>
-  <div class="add-btn" onclick="openClientModal()">
-    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
-    Add invoice
-  </div>
-  <div style="height:16px"></div>
-</div>
-
-<!-- ═══ QUOTES ═══ -->
-<div id="screen-quotes" class="screen">
-  <div class="page-header">
-    <h1>Quotes</h1>
-    <p>Send quotes, convert to invoices when accepted</p>
-  </div>
-  <div id="quote-list"></div>
-  <div class="add-btn" onclick="openQuoteModal()">
-    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
-    New quote
-  </div>
-  <div style="height:16px"></div>
-</div>
-
-<!-- ═══ FORECAST ═══ -->
-<div id="screen-forecast" class="screen">
-  <div class="page-header">
-    <h1>Forecast</h1>
-    <p>Will you be broke next month?</p>
-  </div>
-  <div class="settings-panel">
-    <div class="config-card">
-      <span class="config-label">Monthly bills / rent</span>
-      <input type="number" id="expense-input" placeholder="0" oninput="updateConfig('expenses',this.value)">
-    </div>
-    <div class="config-card">
-      <span class="config-label">Tax rate to set aside (%)</span>
-      <input type="number" id="tax-input" min="0" max="100" placeholder="0" oninput="updateConfig('taxRate',this.value)">
-    </div>
-    <div class="config-card">
-      <span class="config-label">Emergency savings</span>
-      <input type="number" id="savings-input" placeholder="0" oninput="updateConfig('savings',this.value)">
-    </div>
-    <div class="config-card">
-      <span class="config-label">Currency</span>
-      <select id="currency-selector" onchange="updateConfig('currency',this.value)">
-        <option value="USD">USD ($)</option>
-        <option value="EUR">EUR (€)</option>
-        <option value="GBP">GBP (£)</option>
-        <option value="THB">THB (฿)</option>
-        <option value="SGD">SGD (S$)</option>
-        <option value="JPY">JPY (¥)</option>
-        <option value="AUD">AUD (A$)</option>
-        <option value="CAD">CAD (C$)</option>
-        <option value="MYR">MYR (RM)</option>
-        <option value="IDR">IDR (Rp)</option>
-        <option value="PHP">PHP (₱)</option>
-        <option value="VND">VND (₫)</option>
-      </select>
-    </div>
-  </div>
-  <div class="forecast-total">
-    <div>
-      <div class="ft-label">Next month forecast</div>
-      <div class="ft-value" id="f-total">—</div>
-      <div class="ft-status" id="f-vs">vs — monthly bills</div>
-    </div>
-    <div id="f-verdict" style="font-size:30px">🤔</div>
-  </div>
-  <div class="forecast-row">
-    <div><div class="fr-label">Confirmed income</div><div class="fr-sub">Active recurring retainers</div></div>
-    <div class="fr-value" id="f-confirmed" style="color:var(--green)">—</div>
-  </div>
-  <div class="forecast-row">
-    <div><div class="fr-label">Expected from pipeline</div><div class="fr-sub">Deals you're likely to close</div></div>
-    <div class="fr-value" id="f-possible" style="color:var(--yellow)">—</div>
-  </div>
-  <div class="section-title"><span>Pipeline deals</span></div>
-  <div id="pipeline-list"></div>
-  <div class="add-btn" onclick="openPipelineModal()">
-    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
-    Add potential deal
-  </div>
-  <div class="control-block">
-    <div class="control-block-label">Data & backup</div>
-    <div class="control-row-grid">
-      <button class="control-btn" onclick="exportBackup()">
-        <svg style="width:16px;height:16px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        Save backup
-      </button>
-      <button class="control-btn" onclick="document.getElementById('import-file').click()">
-        <svg style="width:16px;height:16px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-        Restore backup
-      </button>
-    </div>
-    <input type="file" id="import-file" style="display:none" accept=".json" onchange="importBackup(event)">
-    <button class="reset-btn" onclick="resetAll()">Wipe all data and start fresh</button>
-  </div>
-  <div style="height:16px"></div>
-</div>
-
-<!-- ═══ HISTORY ═══ -->
-<div id="screen-summary" class="screen">
-  <div class="page-header">
-    <h1>History</h1>
-    <p>Your income month by month</p>
-  </div>
-  <div class="metrics-grid">
-    <div class="metric-card mc-green">
-      <div class="m-label">Total earned this year</div>
-      <div class="m-value" id="s-year">—</div>
-      <div class="m-sub">net after tax</div>
-    </div>
-    <div class="metric-card mc-accent">
-      <div class="m-label">Monthly average</div>
-      <div class="m-value" id="s-avg">—</div>
-      <div class="m-sub">active months only</div>
-    </div>
-  </div>
-  <div class="section-title">
-    <span>Month by month</span>
-    <button class="csv-btn" onclick="exportCSV()">
-      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      Export CSV
-    </button>
-  </div>
-  <div id="summary-list" class="summary-list"></div>
-  <div style="height:16px"></div>
-</div>
-
-<!-- ═══ PROFILE ═══ -->
-<div id="screen-profile" class="screen">
-  <div class="page-header">
-    <h1>Business Profile</h1>
-    <p>This info appears on every invoice &amp; quote you send</p>
-  </div>
-
-  <div class="profile-avatar-wrap">
-    <div class="profile-avatar" id="logo-avatar" onclick="document.getElementById('logo-file').click()">
-      <div class="profile-avatar-placeholder" id="logo-placeholder">
-        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        <span>Upload logo</span>
-      </div>
-      <img id="logo-img" src="" alt="Logo" style="display:none">
-    </div>
-    <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
-    <span class="profile-avatar-label">Tap to upload your logo · PNG or JPG · shown on invoices</span>
-    <button onclick="removeLogo()" id="remove-logo-btn" style="display:none;background:none;border:1px solid var(--red);color:var(--red);padding:6px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">Remove logo</button>
-  </div>
-
-  <div class="profile-section">
-    <div class="profile-section-title">Your business details</div>
-    <div class="profile-field"><label>Business / Your name</label><input type="text" id="p-bizname" placeholder="e.g. Jane Smith Design"></div>
-    <div class="profile-field"><label>Your email</label><input type="email" id="p-email" placeholder="e.g. hello@yourname.com"></div>
-    <div class="profile-field"><label>Phone (optional)</label><input type="tel" id="p-phone" placeholder="e.g. +66 81 234 5678"></div>
-    <div class="profile-field"><label>Website (optional)</label><input type="text" id="p-website" placeholder="e.g. yourname.com"></div>
-    <div class="profile-field"><label>Address (optional)</label><textarea id="p-address" placeholder="e.g. 123 Main St, Bangkok, Thailand"></textarea></div>
-    <div class="profile-field"><label>Tax / VAT ID (optional)</label><input type="text" id="p-taxid" placeholder="e.g. VAT-0123456789"></div>
-  </div>
-
-  <div class="profile-section">
-    <div class="profile-section-title">Invoice appearance</div>
-    <div class="profile-field">
-      <label>Accent colour</label>
-      <div class="invoice-color-row" id="color-swatches">
-        <div class="color-swatch selected" data-color="#7C6EF5" style="background:#7C6EF5" onclick="selectColor('#7C6EF5',this)"></div>
-        <div class="color-swatch" data-color="#22C55E" style="background:#22C55E" onclick="selectColor('#22C55E',this)"></div>
-        <div class="color-swatch" data-color="#F59E0B" style="background:#F59E0B" onclick="selectColor('#F59E0B',this)"></div>
-        <div class="color-swatch" data-color="#EF4444" style="background:#EF4444" onclick="selectColor('#EF4444',this)"></div>
-        <div class="color-swatch" data-color="#0EA5E9" style="background:#0EA5E9" onclick="selectColor('#0EA5E9',this)"></div>
-        <div class="color-swatch" data-color="#EC4899" style="background:#EC4899" onclick="selectColor('#EC4899',this)"></div>
-        <div class="color-swatch" data-color="#14B8A6" style="background:#14B8A6" onclick="selectColor('#14B8A6',this)"></div>
-        <div class="color-swatch" data-color="#1a1a2e" style="background:#1a1a2e;border:1px solid rgba(255,255,255,.2)" onclick="selectColor('#1a1a2e',this)"></div>
+    <div class="hero-dashboard-panel">
+      <div class="hero-label">Total Monthly Backlog Pipeline</div>
+      <div class="hero-value" id="hero-total-pipeline">฿0.00</div>
+      <div class="hero-subtext">
+        <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        <span>Combines paid revenue, active pending invoices, and likely forecasts.</span>
       </div>
     </div>
-    <div class="profile-field"><label>Footer note on invoices</label><textarea id="p-footer" placeholder="e.g. Payment due within 30 days. Bank transfer preferred."></textarea></div>
-    <div class="inv-preview-mini" id="inv-mini-preview">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #e5e7eb">
-        <div>
-          <div id="prev-logo-wrap" style="display:none;margin-bottom:4px"><img id="prev-logo" src="" style="height:32px;object-fit:contain"></div>
-          <strong id="prev-bizname" style="font-size:15px;color:#1a1a2e">Your Business Name</strong>
+
+    <div id="status-banner" class="status-banner safe">
+      <div class="status-content">
+        <div class="status-label" id="status-label">Monthly Runway Progress</div>
+        <div class="status-title" id="status-title">Calculating baseline...</div>
+        <div class="status-sub" id="status-sub"></div>
+      </div>
+      <div class="burn-progress-container"><div id="burn-bar" class="burn-progress-bar"></div></div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card mc-green">
+        <div class="m-label">Earned this month</div>
+        <div class="m-value" id="d-paid">—</div>
+        <div class="m-sub">net clear take-home</div>
+      </div>
+      <div class="metric-card mc-yellow">
+        <div class="m-label">Pending invoices</div>
+        <div class="m-value" id="d-pending">—</div>
+        <div class="m-sub" id="d-pending-count">0 invoices issued</div>
+      </div>
+      <div class="metric-card mc-red">
+        <div class="m-label">Overdue collections</div>
+        <div class="m-value" id="d-late">—</div>
+        <div class="m-sub" id="d-late-count">0 outstanding past terms</div>
+      </div>
+      <div class="metric-card mc-accent">
+        <div class="m-label">Survival Runway</div>
+        <div class="m-value" id="d-runway">— mo</div>
+        <div class="m-sub">total savings ÷ fixed costs</div>
+      </div>
+    </div>
+
+    <div class="section-title"><span>Income Analytics Breakdown</span></div>
+    <div class="visual-chart-container">
+      <div class="chart-bars-wrap" id="analytics-chart-bars">
         </div>
-        <div style="text-align:right;font-size:12px;color:#9ca3af">INV-0001<br><span id="prev-date">Today</span></div>
-      </div>
-      <div style="font-size:12px;color:#9ca3af">From: <strong id="prev-email" style="color:#374151">your@email.com</strong></div>
-      <div style="font-size:12px;color:#9ca3af;margin-top:2px" id="prev-phone-wrap">Phone: <strong id="prev-phone" style="color:#374151"></strong></div>
-      <div style="font-size:11px;color:#9ca3af;margin-top:10px;border-top:1px solid #f0f0f5;padding-top:8px" id="prev-footer-wrap"></div>
     </div>
+
+    <div class="section-title"><span>Recent Invoices Activity</span></div>
+    <div id="dash-clients" class="client-list"></div>
   </div>
 
-  <button class="profile-save-btn" onclick="saveProfile()">Save profile</button>
-  <div style="height:24px"></div>
+  <div id="screen-clients" class="screen">
+    <div class="page-header">
+      <h1>Invoices</h1>
+      <p>Issue line-item customer invoices and track client intelligence</p>
+    </div>
+    <div id="client-list" class="client-list"></div>
+    <div class="add-btn" onclick="openClientModal()">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Add invoice
+    </div>
+    <div style="height:16px"></div>
+  </div>
+
+  <div id="screen-quotes" class="screen">
+    <div class="page-header">
+      <h1>Quotes & Estimates</h1>
+      <p>Manage prospects, follow up on expiry guidelines, and monitor pipeline health</p>
+    </div>
+    
+    <div class="metrics-grid" style="margin-bottom:16px;">
+      <div class="metric-card mc-accent" style="padding:14px;">
+        <div class="m-label" style="font-size:10px;">Quote Conversion Rate</div>
+        <div class="m-value" id="quote-conversion-rate" style="font-size:18px;">0%</div>
+      </div>
+      <div class="metric-card mc-yellow" style="padding:14px;">
+        <div class="m-label" style="font-size:10px;">Active Pipeline Quotes</div>
+        <div class="m-value" id="quote-active-value" style="font-size:18px;">฿0</div>
+      </div>
+    </div>
+
+    <div id="quote-list" class="client-list"></div>
+    <div class="add-btn" onclick="openQuoteModal()">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Create estimate offer
+    </div>
+    <div style="height:16px"></div>
+  </div>
+
+  <div id="screen-forecast" class="screen">
+    <div class="page-header">
+      <h1>Income Forecast Simulator</h1>
+      <p>Configure client pipeline weights to project your forward baseline runway</p>
+    </div>
+
+    <div class="settings-panel">
+      <div class="config-card">
+        <div class="config-label">Liquid Savings</div>
+        <input type="number" id="cfg-savings" value="150000" oninput="updateForecast()">
+      </div>
+      <div class="config-card">
+        <div class="config-label">Monthly Expenses</div>
+        <input type="number" id="cfg-burn" value="45000" oninput="updateForecast()">
+      </div>
+      <div class="config-card">
+        <div class="config-label">VAT / Tax Rate (%)</div>
+        <input type="number" id="cfg-tax" value="7" oninput="updateForecast()">
+      </div>
+      <div class="config-card">
+        <div class="config-label">Base Currency</div>
+        <select id="cfg-currency" onchange="updateForecast()">
+          <option value="฿">THB (฿)</option>
+          <option value="$">USD ($)</option>
+          <option value="€">EUR (€)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="forecast-total">
+      <div>
+        <div class="ft-label">Projected Runway Evaluation</div>
+        <div class="ft-value" id="f-total-runway">0.0 months</div>
+      </div>
+    </div>
+
+    <div class="section-title"><span>Simulated Client Funnel Adjustments</span></div>
+    <div id="forecast-pipeline-list"></div>
+    <div class="add-btn" onclick="openPipelineModal()">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Add placeholder deal target
+    </div>
+    <div style="height:16px"></div>
+  </div>
+
+  <div id="screen-summary" class="screen">
+    <div class="page-header">
+      <h1>Historical Activity Logs</h1>
+      <p>Overview tracking sheets for past closed periods</p>
+    </div>
+    <div id="summary-list" class="summary-list"></div>
+
+    <div class="control-block">
+      <div class="control-block-label">System File Tools</div>
+      <div class="control-row-grid">
+        <button class="control-btn" onclick="exportDataCSV()">
+          <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          CSV Exported
+        </button>
+        <button class="control-btn" onclick="triggerImportSelection()">Import Settings</button>
+      </div>
+      <input type="file" id="import-file-elem" style="display:none" onchange="importDataJSON(event)">
+      <button class="reset-btn" onclick="factoryResetAllData()">Reset all database stores</button>
+    </div>
+    <div style="height:16px"></div>
+  </div>
+
+  <div id="screen-profile" class="screen">
+    <div class="page-header">
+      <h1>Business Configuration Settings</h1>
+      <p>Set up corporate entities, regional fields, signature specs, and PromptPay tokens</p>
+    </div>
+
+    <div class="profile-avatar-wrap">
+      <div class="profile-avatar" onclick="triggerLogoUpload()">
+        <img id="biz-logo-img" style="display:none;">
+        <div id="biz-logo-placeholder" class="profile-avatar-placeholder">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <span>Logo</span>
+        </div>
+      </div>
+      <input type="file" id="logo-file-elem" style="display:none" accept="image/*" onchange="handleLogoUpload(event)">
+      <div class="profile-avatar-label">Click area to attach company logo</div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">Primary Profile Data</div>
+      <div class="profile-field">
+        <label>Registered Business Name</label>
+        <input type="text" id="p-bizname" placeholder="Your Business / Full Name" oninput="saveProfileInfo()">
+      </div>
+      <div class="profile-field">
+        <label>Corporate / Business Address</label>
+        <textarea id="p-address" placeholder="123 Sukhumvit Road, Khlong Toei, Bangkok 10110" oninput="saveProfileInfo()"></textarea>
+      </div>
+      <div class="profile-field">
+        <label>Tax Identification Number (Tax ID)</label>
+        <input type="text" id="p-taxid" placeholder="01055XXXXXXXX" oninput="saveProfileInfo()">
+      </div>
+      <div class="profile-field">
+        <label>Email Address</label>
+        <input type="email" id="p-email" placeholder="accounting@company.com" oninput="saveProfileInfo()">
+      </div>
+      <div class="profile-field">
+        <label>Contact Phone Number</label>
+        <input type="text" id="p-phone" placeholder="+66 2 123 4567" oninput="saveProfileInfo()">
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">Fintech & Localization (Thailand Standard)</div>
+      <div class="profile-field">
+        <label>Bank Account Wire Instructions</label>
+        <textarea id="p-bank" placeholder="Kasikornbank (KBank)&#10;Account No: 012-3-45678-9&#10;Account Name: John Doe" oninput="saveProfileInfo()"></textarea>
+      </div>
+      <div class="profile-field">
+        <label>PromptPay QR ID / Phone / Tax ID (Thailand Payment)</label>
+        <input type="text" id="p-promptpay" placeholder="0812345678 or Tax ID" oninput="saveProfileInfo()">
+        <small style="color:var(--muted); font-size:11px; margin-top:4px; display:block;">Used dynamically during invoice construction to generate custom scan parameters.</small>
+      </div>
+      <div class="profile-field">
+        <label>Digital Signature Token Text</label>
+        <input type="text" id="p-signature" placeholder="Authorized Signatory: John Doe" oninput="saveProfileInfo()">
+      </div>
+      <div class="profile-field">
+        <label>Payment Terms / Standard Disclaimer Notes</label>
+        <textarea id="p-footer" placeholder="Payment due within 30 days. Transfer via bank wire or scan the PromptPay QR below." oninput="saveProfileInfo()"></textarea>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-section-title">Brand Styling Scheme</div>
+      <div class="invoice-color-row">
+        <div class="color-swatch selected" style="background:#7C6EF5;" onclick="pickBrandColor('#7C6EF5',this)"></div>
+        <div class="color-swatch" style="background:#22C55E;" onclick="pickBrandColor('#22C55E',this)"></div>
+        <div class="color-swatch" style="background:#F59E0B;" onclick="pickBrandColor('#F59E0B',this)"></div>
+        <div class="color-swatch" style="background:#EF4444;" onclick="pickBrandColor('#EF4444',this)"></div>
+        <div class="color-swatch" style="background:#0284c7;" onclick="pickBrandColor('#0284c7',this)"></div>
+        <div class="color-swatch" style="background:#0f172a;" onclick="pickBrandColor('#0f172a',this)"></div>
+      </div>
+      <div class="inv-preview-mini">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Live Preview Signature String:</div>
+        <span id="prev-bizname" style="font-weight:700;">Your Business Name</span> &bull; <span id="prev-email">your@email.com</span>
+        <div id="prev-phone-wrap" style="display:none; font-size:12px; margin-top:2px;">Phone: <span id="prev-phone"></span></div>
+        <div id="prev-footer-wrap" style="display:none; font-size:12px; color:var(--muted); margin-top:4px; border-top:1px dashed var(--border2); padding-top:4px;"></div>
+      </div>
+    </div>
+    
+    <button class="profile-save-btn" onclick="switchScreen('dashboard', document.getElementById('nav-dashboard'))">Apply and Sync Settings</button>
+    <div style="height:24px"></div>
+  </div>
+
+</div>
 </div>
 
-</div><!-- main-content -->
-</div><!-- layout -->
-
-<!-- ═══ MODALS ═══ -->
-
-<!-- CLIENT / INVOICE MODAL -->
-<div id="client-modal" class="modal-overlay" onclick="closeClientModal()">
-  <div class="modal" onclick="event.stopPropagation()">
+<div id="modal-client" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-client')">
+  <div class="modal">
     <div class="modal-handle"></div>
-    <h2 id="client-modal-title">Add invoice</h2>
-    <div class="form-group"><label>Client name</label><input type="text" id="f-client" placeholder="e.g. Acme Co."></div>
-    <div class="form-group"><label>Project / description</label><input type="text" id="f-project" placeholder="e.g. Website redesign"></div>
+    <h2 id="modal-client-title">Add Invoice</h2>
+    <input type="hidden" id="c-id">
+    
+    <div class="form-group">
+      <label>Client / Corporation Name</label>
+      <input type="text" id="c-name" placeholder="Acme International Corp">
+    </div>
+    <div class="form-group">
+      <label>Client Billing Address Detail</label>
+      <textarea id="c-address" placeholder="Building 4B, 12th Floor, Silom, Bangkok"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Project Scope Context / Description</label>
+      <input type="text" id="c-project" placeholder="Q2 Product Strategy Consulting">
+    </div>
+
+    <div class="form-group">
+      <label>Invoice Itemized Table Breakdown</label>
+      <div id="invoice-line-items-wrapper" class="items-list-container">
+        </div>
+      <button type="button" class="control-btn" style="padding:8px 12px; font-size:13px; width:max-content;" onclick="addNewInvoiceLineItemRow('', 1, 0)">
+        + Add Item Row
+      </button>
+    </div>
+
     <div class="form-row">
-      <div class="form-group"><label>Amount</label><input type="number" id="f-amount" placeholder="0"></div>
-      <div class="form-group"><label>Type</label>
-        <select id="f-type"><option value="one-time">One-time</option><option value="recurring">Recurring</option></select>
+      <div class="form-group">
+        <label>Invoice Payment Status</label>
+        <select id="c-status">
+          <option value="pending">Pending</option>
+          <option value="paid">Paid</option>
+          <option value="late">Overdue</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Issue / Accounting Date</label>
+        <input type="date" id="c-date">
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label>Status</label>
-        <select id="f-status"><option value="Pending">Pending</option><option value="Paid">Paid</option><option value="Late">Late</option></select>
-      </div>
-      <div class="form-group"><label>Due date</label><input type="date" id="f-due"></div>
-    </div>
-    <button class="submit-btn" onclick="saveClient()">Save invoice</button>
-    <button id="send-invoice-btn" class="submit-btn" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);margin-top:8px;display:none" onclick="openInvoicePreview()">View &amp; send invoice as PDF</button>
-    <button id="client-delete-btn" class="delete-btn" style="display:none" onclick="deleteClient()">Delete invoice</button>
+    
+    <button class="submit-btn" onclick="saveClientInvoice()">Save Invoice Entry</button>
+    <button id="preview-client-btn" class="secondary-action-btn" onclick="launchPrintViewInvoicePDF(document.getElementById('c-id').value, 'invoice')">Preview & Print PDF</button>
     <button class="cancel-btn" onclick="closeClientModal()">Cancel</button>
+    <button id="delete-client-btn" class="delete-btn" style="display:none;" onclick="deleteClientInvoice()">Delete Entry</button>
   </div>
 </div>
 
-<!-- INVOICE PREVIEW MODAL -->
-<div id="invoice-modal" class="modal-overlay" onclick="closeInvoiceModal()">
-  <div class="modal" style="max-width:620px" onclick="event.stopPropagation()">
+<div id="modal-quote" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-quote')">
+  <div class="modal">
     <div class="modal-handle"></div>
-    <h2>Invoice preview</h2>
-    <div id="invoice-preview-content" class="invoice-preview"></div>
-    <div class="inv-actions">
-      <button class="inv-action-btn inv-print" onclick="printInvoice()">Print / Save as PDF</button>
-      <button class="inv-action-btn inv-share" onclick="shareInvoice()">Share</button>
+    <h2 id="modal-quote-title">Create Quote Estimate</h2>
+    <input type="hidden" id="q-id">
+    
+    <div class="form-group">
+      <label>Prospect Client Name</label>
+      <input type="text" id="q-name" placeholder="Potential Partner Ltd">
     </div>
-    <button class="cancel-btn" onclick="closeInvoiceModal()">Close</button>
-  </div>
-</div>
+    <div class="form-group">
+      <label>Project Scope Target</label>
+      <input type="text" id="q-project" placeholder="Website Overhaul Proposal">
+    </div>
 
-<!-- QUOTE MODAL -->
-<div id="quote-modal" class="modal-overlay" onclick="closeQuoteModal()">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <h2 id="quote-modal-title">New quote</h2>
-    <div class="form-group"><label>Client name</label><input type="text" id="q-client" placeholder="e.g. HealthX Co."></div>
-    <div class="form-group"><label>Project / description</label><input type="text" id="q-project" placeholder="e.g. Brand identity package"></div>
+    <div class="form-group">
+      <label>Quote Itemized Table Breakdown</label>
+      <div id="quote-line-items-wrapper" class="items-list-container">
+        </div>
+      <button type="button" class="control-btn" style="padding:8px 12px; font-size:13px; width:max-content;" onclick="addNewQuoteLineItemRow('', 1, 0)">
+        + Add Quote Item
+      </button>
+    </div>
+
     <div class="form-row">
-      <div class="form-group"><label>Quote amount</label><input type="number" id="q-amount" placeholder="0"></div>
-      <div class="form-group"><label>Valid until</label><input type="date" id="q-expiry"></div>
+      <div class="form-group">
+        <label>Offer Acceptance Tracking</label>
+        <select id="q-status">
+          <option value="sent">Sent / Under Review</option>
+          <option value="accepted">Accepted</option>
+          <option value="expired">Expired / Declined</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Expiry / Deadline Date</label>
+        <input type="date" id="q-expiry">
+      </div>
     </div>
-    <div class="form-group"><label>Notes (optional)</label><textarea id="q-notes" placeholder="Payment terms, deliverables, etc."></textarea></div>
-    <button class="submit-btn" onclick="saveQuote()">Save quote</button>
-    <button id="quote-send-btn" class="submit-btn" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text);margin-top:8px;display:none" onclick="openQuotePreview()">Preview &amp; send quote</button>
-    <button id="quote-delete-btn" class="delete-btn" style="display:none" onclick="deleteQuote()">Delete quote</button>
+    
+    <button class="submit-btn" onclick="saveQuoteEstimate()">Save Quote Offer</button>
+    <button id="preview-quote-btn" class="secondary-action-btn" onclick="launchPrintViewInvoicePDF(document.getElementById('q-id').value, 'quote')">Preview & Print PDF</button>
     <button class="cancel-btn" onclick="closeQuoteModal()">Cancel</button>
+    <button id="delete-quote-btn" class="delete-btn" style="display:none;" onclick="deleteQuoteEstimate()">Delete Offer</button>
   </div>
 </div>
 
-<!-- QUOTE PREVIEW MODAL -->
-<div id="quote-preview-modal" class="modal-overlay" onclick="closeQuotePreview()">
-  <div class="modal" style="max-width:620px" onclick="event.stopPropagation()">
+<div id="modal-pipeline" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-pipeline')">
+  <div class="modal">
     <div class="modal-handle"></div>
-    <h2>Quote preview</h2>
-    <div id="quote-preview-content" class="invoice-preview"></div>
-    <div class="inv-actions">
-      <button class="inv-action-btn inv-print" onclick="printQuote()">Print / Save as PDF</button>
-      <button class="inv-action-btn inv-share" onclick="shareQuote()">Share</button>
+    <h2 id="modal-pipe-title">Add Target Deal Forecast</h2>
+    <input type="hidden" id="p-id">
+    
+    <div class="form-group">
+      <label>Target Account Name</label>
+      <input type="text" id="pipe-name" placeholder="Global Synergy Opportunity">
     </div>
-    <button class="cancel-btn" onclick="closeQuotePreview()">Close</button>
-  </div>
-</div>
-
-<!-- PIPELINE MODAL -->
-<div id="pipeline-modal" class="modal-overlay" onclick="closePipelineModal()">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <h2 id="pipeline-modal-title">Add potential deal</h2>
-    <div class="form-group"><label>Deal / project name</label><input type="text" id="p-name" placeholder="e.g. Redesign for HealthX"></div>
+    <div class="form-group">
+      <label>Expected Target Deal Valuation</label>
+      <input type="number" id="pipe-amount" placeholder="120000">
+    </div>
     <div class="form-row">
-      <div class="form-group"><label>Deal value</label><input type="number" id="p-amount" placeholder="0"></div>
-      <div class="form-group"><label>Chance of winning (%)</label><input type="number" id="p-prob" placeholder="50" min="0" max="100"></div>
+      <div class="form-group">
+        <label>Confidence Probability (%)</label>
+        <input type="number" id="pipe-prob" value="50" min="0" max="100">
+      </div>
+      <div class="form-group">
+        <label>Projected Target Month</label>
+        <select id="pipe-month">
+          <option value="current">Current Month</option>
+          <option value="next">Next Month</option>
+        </select>
+      </div>
     </div>
-    <button class="submit-btn" id="pipeline-submit-btn" onclick="savePipeline()">Save deal</button>
-    <button class="delete-btn" id="pipeline-delete-btn" style="display:none" onclick="deletePipeline()">Delete deal</button>
+    
+    <button class="submit-btn" onclick="savePipelineDeal()">Save Target Forecast</button>
     <button class="cancel-btn" onclick="closePipelineModal()">Cancel</button>
+    <button id="delete-pipe-btn" class="delete-btn" style="display:none;" onclick="deletePipelineDeal()">Remove Entry</button>
   </div>
 </div>
 
-<div id="toast" class="toast"></div>
+<div id="modal-preview" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-preview')">
+  <div class="modal" style="max-width:760px; background:#1e293b;">
+    <div class="modal-handle"></div>
+    <h2 style="color:#fff;">Printable Layout Documents Preview</h2>
+    
+    <div class="invoice-preview" id="print-area">
+      <div class="inv-header">
+        <div class="inv-brand-box">
+          <div class="inv-brand" id="pdf-my-bizname">BROKEDIAN CO.</div>
+          <div id="pdf-my-taxid" style="font-size:12px; color:#475569;">Tax ID: --</div>
+          <div class="inv-status-badge badge-preview-pending" id="pdf-status-badge">PENDING</div>
+        </div>
+        <div class="inv-meta">
+          <strong id="pdf-doc-type">INVOICE</strong><br>
+          <span id="pdf-doc-number">ID: INV-2026-001</span><br>
+          Date: <span id="pdf-doc-date">May 15, 2026</span><br>
+          Payment Terms: <span id="pdf-payment-terms">Net 30</span>
+        </div>
+      </div>
+      
+      <div class="inv-parties">
+        <div>
+          <div class="inv-party-label">From / Remitter</div>
+          <div class="inv-party-name" id="pdf-from-name">My Company</div>
+          <div class="inv-party-detail" id="pdf-from-details">my@email.com</div>
+        </div>
+        <div>
+          <div class="inv-party-label">To / Client Invoice Target</div>
+          <div class="inv-party-name" id="pdf-to-name">Client Corporation</div>
+          <div class="inv-party-detail" id="pdf-to-details">Client Address Spec</div>
+        </div>
+      </div>
+      
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>Description of Goods / Scope Work</th>
+            <th class="right-align" style="width:70px;">Qty</th>
+            <th class="right-align" style="width:110px;">Unit Rate</th>
+            <th class="right-align" style="width:130px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody id="pdf-table-items-body">
+          </tbody>
+      </table>
+      
+      <div class="inv-summary-block">
+        <div class="inv-sum-row">
+          <span>Subtotal:</span>
+          <span id="pdf-subtotal">฿0.00</span>
+        </div>
+        <div class="inv-sum-row">
+          <span id="pdf-tax-label">VAT / Taxes (7%):</span>
+          <span id="pdf-tax-amount">฿0.00</span>
+        </div>
+        <div class="inv-sum-row grand-total">
+          <span>Total Balance Due:</span>
+          <span id="pdf-grand-total">฿0.00</span>
+        </div>
+      </div>
+
+      <div class="inv-payment-instructions">
+        <div style="font-weight:700; margin-bottom:4px; text-transform:uppercase; font-size:11px; letter-spacing:0.05em; color:#475569;">Remittance Transfer Settlement Instructions:</div>
+        <div id="pdf-bank-instructions" style="white-space:pre-line; line-height:1.4;">Bank details go here...</div>
+        
+        <div class="promptpay-qr-box" id="pdf-promptpay-wrapper" style="display:none;">
+          <div style="font-size:11px; font-weight:700; color:#0f172a;">PromptPay Instant Scan Checkouts</div>
+          <img id="pdf-promptpay-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PromptPay" alt="PromptPay QR Code">
+          <div id="pdf-promptpay-token" style="font-size:10px; font-weight:bold; color:#475569;">Token: --</div>
+        </div>
+      </div>
+      
+      <div class="inv-footer">
+        <div id="pdf-signature-block" style="font-style:italic; margin-bottom:10px; font-weight:600; color:#334155;"></div>
+        <div id="pdf-custom-notes">Thank you for your continuous business partnership.</div>
+      </div>
+    </div>
+    
+    <div class="inv-actions">
+      <button class="inv-action-btn inv-print" onclick="window.print()">Print or Trigger Save to PDF</button>
+      <button class="inv-action-btn inv-share" onclick="closePreviewModal()">Close Preview</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast">Action updated successfully</div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────
-const isWiped = localStorage.getItem('fiq_wiped') === 'true';
-if (isWiped) localStorage.removeItem('fiq_wiped');
+// LOCAL STORAGE MODEL STATE DEFAULTS
+let clients = JSON.parse(localStorage.getItem('brokedian_clients')) || [
+  { id: "c1", name: "Agoda Bangkok HQ", project: "Localization Platform Architecture", status: "paid", date: "2026-05-01", items: [{desc: "Principal Cloud Architecture Development", qty: 1, cost: 120000}] },
+  { id: "c2", name: "SCB 10X Venture Studio", project: "Smart Contract Safety Audits", status: "pending", date: "2026-05-12", items: [{desc: "EVM Ledger Audit Review Checks", qty: 1, cost: 85000}] }
+];
 
-let clients  = JSON.parse(localStorage.getItem('fiq_clients')  || '[]');
-let quotes   = JSON.parse(localStorage.getItem('fiq_quotes')   || '[]');
-let pipeline = JSON.parse(localStorage.getItem('fiq_pipeline') || '[]');
-let expenses = localStorage.getItem('fiq_expenses') !== null ? parseFloat(localStorage.getItem('fiq_expenses')) : (isWiped ? 0 : 3000);
-let taxRate  = localStorage.getItem('fiq_taxRate')  !== null ? parseFloat(localStorage.getItem('fiq_taxRate'))  : (isWiped ? 0 : 25);
-let savings  = localStorage.getItem('fiq_savings')  !== null ? parseFloat(localStorage.getItem('fiq_savings'))  : (isWiped ? 0 : 5000);
-let currency = localStorage.getItem('fiq_currency') || 'USD';
+let quotes = JSON.parse(localStorage.getItem('brokedian_quotes')) || [
+  { id: "q1", name: "True Digital Group", project: "E-Commerce Pipeline Audit", status: "sent", expiry: "2026-05-30", items: [{desc: "Discovery Scoping & Architecture Mapping", qty: 1, cost: 45000}] }
+];
 
-let editingClientId   = null;
-let editingQuoteId    = null;
-let editingPipelineId = null;
-let previewClientId   = null;
-let previewQuoteId    = null;
-// ── PROFILE DATA ─────────────────────────────────────────────────────────
-let biz = JSON.parse(localStorage.getItem('fiq_biz') || JSON.stringify({
-  name: '', email: '', phone: '', website: '', address: '', taxid: '',
-  footer: 'Thank you for your business.', color: '#7C6EF5', logo: ''
-}));
-let myBizName = biz.name || 'Your Business';
+let pipelineDeals = JSON.parse(localStorage.getItem('brokedian_pipeline')) || [
+  { id: "p1", name: "Lazada Regional Marketing Hub", amount: 160000, prob: 75, month: "current" },
+  { id: "p2", name: "Bangkok Bank Innovation Lab", amount: 220000, prob: 40, month: "next" }
+];
 
-const SYMBOLS = {USD:'$',EUR:'€',GBP:'£',THB:'฿',SGD:'S$',JPY:'¥',AUD:'A$',CAD:'C$',MYR:'RM',IDR:'Rp',PHP:'₱',VND:'₫'};
-const BADGES = {
-  safe:`<svg class="status-hud-badge" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>`,
-  warn:`<svg class="status-hud-badge" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`,
-  danger:`<svg class="status-hud-badge" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m0-8v3M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`,
-  empty:`<svg class="status-hud-badge" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>`
+let biz = JSON.parse(localStorage.getItem('brokedian_biz')) || {
+  name: "Brokedian Technology Consultancies",
+  address: "88 T-One Building, 24th Floor, Sukhumvit Road, Khlong Toei, Bangkok 10110",
+  taxid: "0105565123456",
+  email: "billing@brokedian.co.th",
+  phone: "+66 81 555 9876",
+  bank: "Siam Commercial Bank (SCB)\nAccount No: 111-2-33344-5\nAccount Name: Brokedian Co., Ltd.",
+  promptpay: "0105565123456",
+  signature: "Authorized Signatory: Managing Director",
+  footer: "Please wire or scan payments within 30 days of standard invoicing milestones.",
+  color: "#7C6EF5",
+  logo: ""
 };
 
-// ── SEED DEMO DATA ────────────────────────────────────────────────────────
-if (!isWiped && clients.length === 0 && quotes.length === 0) {
-  clients = [
-    {id:1001,client:'Stark Industries',project:'UI Automation System',amount:6500,type:'recurring',status:'Pending',due:'2026-05-20'},
-    {id:1002,client:'Wayne Enterprises',project:'Infrastructure Audit',amount:4200,type:'one-time',status:'Paid',due:'2026-05-02'},
-    {id:1003,client:'Acme Corp',project:'Brand Strategy',amount:3500,type:'one-time',status:'Late',due:'2026-04-15'},
-  ];
-  quotes = [
-    {id:2001,client:'HealthX Co.',project:'Brand Identity Package',amount:5500,expiry:'2026-05-30',notes:'Includes logo, style guide, and 3 revisions.',status:'Sent',created:Date.now()},
-  ];
-  pipeline = [
-    {id:3001,name:'Web redesign — TechBlog',amount:8000,prob:60},
-  ];
-  save();
+// INITIALIZE SCREEN MOUNTING
+document.addEventListener("DOMContentLoaded", () => {
+  setGreetingTime();
+  loadProfileInputs();
+  renderAppContent();
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────
-function save() {
-  localStorage.setItem('fiq_clients',  JSON.stringify(clients));
-  localStorage.setItem('fiq_quotes',   JSON.stringify(quotes));
-  localStorage.setItem('fiq_pipeline', JSON.stringify(pipeline));
-  localStorage.setItem('fiq_expenses', expenses);
-  localStorage.setItem('fiq_taxRate',  taxRate);
-  localStorage.setItem('fiq_savings',  savings);
-  localStorage.setItem('fiq_currency', currency);
-  localStorage.setItem('fiq_biz',      JSON.stringify(biz));
+function switchScreen(screenId, element) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  document.getElementById('screen-' + screenId).classList.add('active');
+  if(element) element.classList.add('active');
+  
+  renderAppContent();
 }
 
-function esc(s){ if(!s)return''; return s.toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function fmt(n){ const s=SYMBOLS[currency]||'$'; return s+Math.round(n).toLocaleString(); }
-function today(){ return new Date().toISOString().slice(0,10); }
-function monthKey(dateStr){
-  if(!dateStr)return null;
-  const d=new Date(dateStr+'T00:00:00');
-  if(isNaN(d.getTime()))return null;
-  return d.toLocaleDateString('en-US',{month:'short',year:'numeric'});
-}
-function pillClass(s){ return s==='Paid'?'pill-paid':s==='Pending'||s==='Sent'?'pill-pending':'pill-late'; }
-function taxFactor(){ return (100-taxRate)/100; }
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
-function invoiceNum(id){ return 'INV-'+String(id).slice(-4).padStart(4,'0'); }
-function quoteNum(id){ return 'QTE-'+String(id).slice(-4).padStart(4,'0'); }
-
-// ── NAV / SCREEN SWITCH ───────────────────────────────────────────────────
-function switchScreen(id, el) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('screen-'+id).classList.add('active');
-  el.classList.add('active');
-  if(id==='profile') loadProfileScreen();
-  else renderAll();
+function setGreetingTime() {
+  const hours = new Date().getHours();
+  let greet = "Good evening 🌙";
+  if(hours < 12) greet = "Good morning 👋";
+  else if(hours < 18) greet = "Good afternoon ☀️";
+  document.getElementById('dash-greeting').textContent = greet;
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-function renderAll(){
-  autoMarkOverdue();
-  renderDashboard();
-  renderClients();
-  renderQuotes();
-  renderForecast();
-  renderSummary();
+function saveState(key, data) {
+  localStorage.setItem('brokedian_' + key, JSON.stringify(data));
 }
 
-// ── OVERDUE AUTO-MARK ─────────────────────────────────────────────────────
-function autoMarkOverdue(){
-  const td=today(); let changed=false;
-  clients.forEach(c=>{ if(c.status==='Pending'&&c.due&&c.due<td){ c.status='Late'; changed=true; }});
-  if(changed)save();
-}
+// MAIN RENDER DISTRIBUTOR LOOP
+function renderAppContent() {
+  const currency = document.getElementById('cfg-currency') ? document.getElementById('cfg-currency').value : "฿";
+  
+  // 1. CALCULATE CORE METRICS WITH LINE-ITEM RECOGNITION
+  let paidSum = 0;
+  let pendingSum = 0;
+  let lateSum = 0;
+  let activePendingCount = 0;
+  let outstandingLateCount = 0;
 
-// ── METRICS ───────────────────────────────────────────────────────────────
-function getMetrics(){
-  const tf=taxFactor();
-  const rawPaid    = clients.filter(c=>c.status==='Paid').reduce((a,c)=>a+c.amount,0);
-  const rawPending = clients.filter(c=>c.status==='Pending').reduce((a,c)=>a+c.amount,0);
-  const rawLate    = clients.filter(c=>c.status==='Late').reduce((a,c)=>a+c.amount,0);
-  const rawRecurring = clients.filter(c=>c.type==='recurring'&&c.status!=='Paid').reduce((a,c)=>a+c.amount,0);
-  const pipelineWeighted = pipeline.reduce((a,p)=>a+(p.amount*(p.prob/100)),0);
-  const runway = expenses>0?(savings/expenses).toFixed(1):'∞';
-  const histMap={};
-  clients.forEach(c=>{
-    if(c.status==='Paid'){
-      const k=monthKey(c.due)||monthKey(new Date().toISOString().slice(0,10));
-      histMap[k]=(histMap[k]||0)+(c.amount*tf);
-    }
+  clients.forEach(c => {
+    let totalLineCost = (c.items && c.items.length) ? c.items.reduce((acc, curr) => acc + (curr.qty * curr.cost), 0) : 0;
+    if(c.status === 'paid') paidSum += totalLineCost;
+    else if(c.status === 'pending') { pendingSum += totalLineCost; activePendingCount++; }
+    else if(c.status === 'late') { lateSum += totalLineCost; outstandingLateCount++; }
   });
-  return {
-    netPaid:rawPaid*tf, rawPending, rawLate,
-    netPending:rawPending*tf, netLate:rawLate*tf,
-    netRecurring:rawRecurring*tf,
-    netPipeline:pipelineWeighted*tf,
-    runway, histMap
-  };
-}
 
-// ── DASHBOARD ─────────────────────────────────────────────────────────────
-function renderDashboard(){
-  const hr=new Date().getHours();
-  document.getElementById('dash-greeting').textContent = hr<12?'Good morning 👋':hr<17?'Good afternoon 👋':'Good evening 👋';
-  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  // Calculate Hero Backlog Metric
+  let totalQuotePipelineValue = quotes.filter(q => q.status === 'sent' || q.status === 'accepted').reduce((sum, q) => {
+    return sum + ((q.items && q.items.length) ? q.items.reduce((acc, curr) => acc + (curr.qty * curr.cost), 0) : 0);
+  }, 0);
+  
+  let totalForecastValueCurrent = pipelineDeals.filter(p => p.month === 'current').reduce((sum, p) => sum + (p.amount * (p.prob / 100)), 0);
+  
+  let heroPipelineCalculation = paidSum + pendingSum + lateSum + totalQuotePipelineValue + totalForecastValueCurrent;
 
-  const m=getMetrics();
-  document.getElementById('d-paid').textContent    = fmt(m.netPaid);
-  document.getElementById('d-pending').textContent = fmt(m.rawPending);
-  document.getElementById('d-pending-count').textContent = clients.filter(c=>c.status==='Pending').length+' invoices';
-  document.getElementById('d-late').textContent    = fmt(m.rawLate);
-  document.getElementById('d-late-count').textContent   = clients.filter(c=>c.status==='Late').length+' invoices';
-  document.getElementById('d-runway').textContent  = m.runway+' mo';
+  // DOM bindings
+  if(document.getElementById('hero-total-pipeline')) {
+    document.getElementById('hero-total-pipeline').textContent = currency + heroPipelineCalculation.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  if(document.getElementById('d-paid')) document.getElementById('d-paid').textContent = currency + paidSum.toLocaleString();
+  if(document.getElementById('d-pending')) document.getElementById('d-pending').textContent = currency + pendingSum.toLocaleString();
+  if(document.getElementById('d-pending-count')) document.getElementById('d-pending-count').textContent = `${activePendingCount} invoices issued`;
+  if(document.getElementById('d-late')) document.getElementById('d-late').textContent = currency + lateSum.toLocaleString();
+  if(document.getElementById('d-late-count')) document.getElementById('d-late-count').textContent = `${outstandingLateCount} outstanding past terms`;
 
-  const banner=document.getElementById('status-banner');
-  const bc=document.getElementById('hud-badge-container');
-  const title=document.getElementById('status-title');
-  const sub=document.getElementById('status-sub');
-  const bar=document.getElementById('burn-bar');
+  // Runway mechanics
+  const fixedBurn = parseFloat(document.getElementById('cfg-burn')?.value || 45000);
+  const coreSavings = parseFloat(document.getElementById('cfg-savings')?.value || 150000);
+  let computedMonthsRunway = fixedBurn > 0 ? (coreSavings / fixedBurn) : 0;
+  
+  if(document.getElementById('d-runway')) document.getElementById('d-runway').textContent = computedMonthsRunway.toFixed(1) + " mo";
 
-  const isEmpty = expenses===0 && m.netPaid===0 && m.rawPending===0 && clients.length===0;
-  if(isEmpty){
-    banner.className='status-banner safe';
-    bc.innerHTML=BADGES.empty;
-    document.getElementById('status-label').textContent='Welcome to Brokedian';
-    title.textContent='Add your first invoice to get started';
-    sub.textContent='Tap "Clients" → "Add invoice" and fill in your first client.';
-    bar.style.width='0%';
-  } else if(m.netPaid>=expenses){
-    banner.className='status-banner safe';
-    bc.innerHTML=BADGES.safe;
-    document.getElementById('status-label').textContent='You\'re safe this month ✅';
-    title.textContent=`${fmt(m.netPaid-expenses)} cushion above your monthly bills`;
-    sub.textContent='Paid income alone covers all your expenses.';
-    bar.style.width='100%';
-  } else if((m.netPaid+m.netPending)>=expenses){
-    banner.className='status-banner warn';
-    bc.innerHTML=BADGES.warn;
-    document.getElementById('status-label').textContent='Waiting on invoices ⚠️';
-    title.textContent=`Need ${fmt(expenses-m.netPaid)} more to cover expenses`;
-    sub.textContent='You\'ll be fine once pending invoices are paid — follow up now.';
-    bar.style.width=Math.min(100,(m.netPaid/expenses)*100)+'%';
-  } else {
-    banner.className='status-banner danger';
-    bc.innerHTML=BADGES.danger;
-    document.getElementById('status-label').textContent='Action needed 🚨';
-    if(m.netLate>0){
-      title.textContent=`${fmt(m.rawLate)} stuck in overdue invoices`;
-      sub.textContent='Chase those overdue clients — you need that cash to cover bills.';
+  // Update Status Banner Styling thresholds
+  const sBanner = document.getElementById('status-banner');
+  const sTitle = document.getElementById('status-title');
+  const sSub = document.getElementById('status-sub');
+  const bBar = document.getElementById('burn-bar');
+  
+  if(sBanner && sTitle) {
+    if(computedMonthsRunway >= 6) {
+      sBanner.className = "status-banner safe";
+      sTitle.textContent = "Financial Runway Secure";
+      sSub.textContent = `Your emergency savings fund covers over ${computedMonthsRunway.toFixed(1)} months of fixed operational costs. Great defense.`;
+      bBar.style.width = "100%";
+    } else if(computedMonthsRunway >= 3) {
+      sBanner.className = "status-banner warn";
+      sTitle.textContent = "Moderate Financial Runway Buffer";
+      sSub.textContent = `Savings track ${computedMonthsRunway.toFixed(1)} months. Secure additional upcoming deal targets or convert pending client invoices.`;
+      bBar.style.width = "60%";
     } else {
-      title.textContent=`Short by ${fmt(expenses-(m.netPaid+m.netPending))}`;
-      sub.textContent='You don\'t have enough income to cover your monthly expenses.';
+      sBanner.className = "status-banner danger";
+      sTitle.textContent = "Urgent Cash Expansion Required";
+      sSub.textContent = `Runway critically low at ${computedMonthsRunway.toFixed(1)} months. Accelerate invoice collection terms and prioritize outstanding payments.`;
+      bBar.style.width = "25%";
     }
-    bar.style.width=Math.min(100,((m.netPaid+m.netPending)/expenses)*100)+'%';
   }
 
-  // recent invoices
-  const el=document.getElementById('dash-clients');
-  if(clients.length===0){
-    el.innerHTML=`<div class="empty-state">
-      <svg fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      <h3>No invoices yet</h3>
-      <p>Go to Clients and add your first invoice to start tracking your income.</p>
-    </div>`;
+  // 2. RENDERING RECENT ACTIVITY LISTS & ANALYTICS CHARTS
+  renderDashboardAndClientLists(currency);
+  renderQuotesTabIntelligence(currency);
+  renderVisualAnalyticsCharts(paidSum, pendingSum, lateSum, totalQuotePipelineValue);
+  updateForecast();
+}
+
+function renderDashboardAndClientLists(currency) {
+  const dashContainer = document.getElementById('dash-clients');
+  const fullContainer = document.getElementById('client-list');
+  
+  let htmlContent = "";
+  if(clients.length === 0) {
+    htmlContent = `<div class="empty-state"><h3>No active invoices found</h3><p>Click below to construct your first itemized receipt document.</p></div>`;
   } else {
-    el.innerHTML=[...clients].reverse().slice(0,4).map(c=>clientCardHTML(c)).join('');
+    // Sort descending order by date
+    let sorted = [...clients].sort((a,b) => new Date(b.date) - new Date(a.date));
+    sorted.forEach(c => {
+      let totalAmount = c.items ? c.items.reduce((sum, item) => sum + (item.qty * item.cost), 0) : 0;
+      let statusLabels = { paid: "Paid", pending: "Issued Pending", late: "Overdue" };
+      let statusClass = { paid: "pill-paid", pending: "pill-pending", late: "pill-late" };
+      
+      htmlContent += `
+        <div class="client-card" onclick="openClientModal('${c.id}')">
+          <div class="client-avatar">${c.name.substring(0,2).toUpperCase()}</div>
+          <div class="client-info">
+            <div class="client-name">${c.name}</div>
+            <div class="client-project">${c.project}</div>
+          </div>
+          <div class="client-right">
+            <div class="client-amount">${currency}${totalAmount.toLocaleString()}</div>
+            <span class="status-pill ${statusClass[c.status]}">${statusLabels[c.status]}</span>
+          </div>
+        </div>
+      `;
+    });
   }
+  
+  if(dashContainer) dashContainer.innerHTML = htmlContent;
+  if(fullContainer) fullContainer.innerHTML = htmlContent;
 }
 
-// ── CLIENTS ───────────────────────────────────────────────────────────────
-function clientCardHTML(c){
-  return `<div class="client-card" onclick="openClientModal(${c.id})">
-    <div class="client-avatar">${esc(c.client).slice(0,2).toUpperCase()}</div>
-    <div class="client-info">
-      <div class="client-name">${esc(c.client)}</div>
-      <div class="client-project">${esc(c.project)}${c.due?` <span style="color:var(--muted)">· Due ${c.due}</span>`:''}</div>
-    </div>
-    <div class="client-right">
-      <div class="client-amount">${fmt(c.amount)}</div>
-      <span class="status-pill ${pillClass(c.status)}">${esc(c.status)}</span>
-    </div>
-  </div>`;
-}
+function renderQuotesTabIntelligence(currency) {
+  const listContainer = document.getElementById('quote-list');
+  let htmlContent = "";
+  
+  let sentCount = 0;
+  let acceptedCount = 0;
+  
+  quotes.forEach(q => {
+    if(q.status === 'accepted') acceptedCount++;
+    sentCount++;
+  });
+  
+  let rate = sentCount > 0 ? Math.round((acceptedCount / sentCount) * 100) : 0;
+  if(document.getElementById('quote-conversion-rate')) {
+    document.getElementById('quote-conversion-rate').textContent = rate + "%";
+  }
 
-function renderClients(){
-  const el=document.getElementById('client-list');
-  if(clients.length===0){
-    el.innerHTML=`<div class="empty-state">
-      <svg fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      <h3>No clients yet</h3>
-      <p>Add your first invoice below to start tracking who owes you money.</p>
-    </div>`;
+  let activeQuotesValue = quotes.filter(q => q.status === 'sent').reduce((sum, q) => {
+    return sum + (q.items ? q.items.reduce((acc, curr) => acc + (curr.qty * curr.cost), 0) : 0);
+  }, 0);
+  
+  if(document.getElementById('quote-active-value')) {
+    document.getElementById('quote-active-value').textContent = currency + activeQuotesValue.toLocaleString();
+  }
+
+  if(quotes.length === 0) {
+    htmlContent = `<div class="empty-state"><h3>No customer quotes filed</h3><p>Launch customized client estimations to monitor ongoing business conversions.</p></div>`;
   } else {
-    el.innerHTML=clients.map(c=>clientCardHTML(c)).join('');
+    quotes.forEach(q => {
+      let totalAmount = q.items ? q.items.reduce((sum, item) => sum + (item.qty * item.cost), 0) : 0;
+      let badgeLabels = { sent: "Sent / Review", accepted: "Accepted Offer", expired: "Expired Guideline" };
+      let badgeClass = { sent: "pill-pending", accepted: "pill-paid", expired: "pill-late" };
+      
+      let convertButtonMarkup = (q.status !== 'accepted' && q.status !== 'expired') ? 
+        `<button class="convert-btn" onclick="event.stopPropagation(); convertQuoteToInvoice('${q.id}')">Convert to Active Invoice</button>` : '';
+        
+      htmlContent += `
+        <div class="quote-card" onclick="openQuoteModal('${q.id}')">
+          <div class="quote-header">
+            <div class="quote-name">${q.name}</div>
+            <div class="quote-amount">${currency}${totalAmount.toLocaleString()}</div>
+          </div>
+          <div class="quote-meta">Project: ${q.project}</div>
+          <div class="quote-meta">Deadline Expiry: ${q.expiry ? new Date(q.expiry).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : 'None'}</div>
+          <span class="status-pill ${badgeClass[q.status]}">${badgeLabels[q.status]}</span>
+          ${convertButtonMarkup}
+        </div>
+      `;
+    });
   }
+  if(listContainer) listContainer.innerHTML = htmlContent;
 }
 
-// ── CLIENT MODAL ──────────────────────────────────────────────────────────
-function openClientModal(id){
-  editingClientId=id||null;
-  document.getElementById('client-modal-title').textContent=id?'Edit invoice':'Add invoice';
-  const delBtn=document.getElementById('client-delete-btn');
-  const sendBtn=document.getElementById('send-invoice-btn');
-  if(id){
-    const c=clients.find(x=>x.id===id);
-    if(c){
-      document.getElementById('f-client').value=c.client;
-      document.getElementById('f-project').value=c.project;
-      document.getElementById('f-amount').value=c.amount;
-      document.getElementById('f-type').value=c.type;
-      document.getElementById('f-status').value=c.status;
-      document.getElementById('f-due').value=c.due||'';
-    }
-    delBtn.style.display='block';
-    sendBtn.style.display='block';
-  } else {
-    document.getElementById('f-client').value='';
-    document.getElementById('f-project').value='';
-    document.getElementById('f-amount').value='';
-    document.getElementById('f-type').value='one-time';
-    document.getElementById('f-status').value='Pending';
-    document.getElementById('f-due').value='';
-    delBtn.style.display='none';
-    sendBtn.style.display='none';
+function renderVisualAnalyticsCharts(paid, pending, late, quoteVal) {
+  const wrap = document.getElementById('analytics-chart-bars');
+  if(!wrap) return;
+  
+  let maxVal = Math.max(paid, pending, late, quoteVal, 1000);
+  
+  function getPercent(val) {
+    return ((val / maxVal) * 100).toFixed(0) + "%";
   }
-  document.getElementById('client-modal').classList.add('open');
-}
-function closeClientModal(){ document.getElementById('client-modal').classList.remove('open'); editingClientId=null; }
-
-function saveClient(){
-  const client=document.getElementById('f-client').value.trim();
-  const project=document.getElementById('f-project').value.trim();
-  const amount=parseFloat(document.getElementById('f-amount').value)||0;
-  const type=document.getElementById('f-type').value;
-  let status=document.getElementById('f-status').value;
-  const due=document.getElementById('f-due').value;
-  if(!client){ showToast('Please enter a client name'); return; }
-  if(status==='Pending'&&due&&due<today()) status='Late';
-  if(editingClientId){
-    const i=clients.findIndex(c=>c.id===editingClientId);
-    if(i!==-1) clients[i]={id:editingClientId,client,project,amount,type,status,due};
-    showToast('Invoice updated ✓');
-  } else {
-    clients.push({id:Date.now(),client,project,amount,type,status,due});
-    showToast('Invoice added ✓');
-  }
-  save(); closeClientModal(); renderAll();
-}
-
-function deleteClient(){
-  if(!editingClientId)return;
-  if(!confirm('Delete this invoice? This cannot be undone.'))return;
-  clients=clients.filter(c=>c.id!==editingClientId);
-  save(); closeClientModal(); showToast('Invoice deleted'); renderAll();
-}
-
-// ── INVOICE PDF PREVIEW ───────────────────────────────────────────────────
-function openInvoicePreview(){
-  const c=clients.find(x=>x.id===editingClientId);
-  if(!c)return;
-  previewClientId=editingClientId;
-  const html=buildInvoiceHTML(c, false);
-  document.getElementById('invoice-preview-content').innerHTML=html;
-  document.getElementById('invoice-modal').classList.add('open');
-}
-function closeInvoiceModal(){ document.getElementById('invoice-modal').classList.remove('open'); }
-
-function buildInvoiceHTML(c, isQuote){
-  const num=isQuote?quoteNum(c.id):invoiceNum(c.id);
-  const dateLabel=isQuote?'Quote date':'Invoice date';
-  const dueLabel=isQuote?'Valid until':'Due date';
-  const docDate=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-  const dueDate=c.due?new Date(c.due+'T00:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}):'—';
-  const tax=Math.round(c.amount*(taxRate/100));
-  const col=biz.color||'#7C6EF5';
-  const logoHTML=biz.logo?`<img src="${biz.logo}" style="height:40px;object-fit:contain;margin-bottom:6px;display:block" alt="logo">`:'';
-  const bizName=biz.name||'Your Business';
-  const contactLines=[
-    biz.email?`<div>${esc(biz.email)}</div>`:'',
-    biz.phone?`<div>${esc(biz.phone)}</div>`:'',
-    biz.website?`<div>${esc(biz.website)}</div>`:'',
-    biz.address?`<div style="white-space:pre-line">${esc(biz.address)}</div>`:'',
-    biz.taxid?`<div>Tax ID: ${esc(biz.taxid)}</div>`:''
-  ].filter(Boolean).join('');
-  const clientLines=[
-    `<div class="inv-party-name">${esc(c.client)}</div>`,
-    c.clientEmail?`<div class="inv-party-detail">${esc(c.clientEmail)}</div>`:'',
-    c.clientAddress?`<div class="inv-party-detail" style="white-space:pre-line">${esc(c.clientAddress)}</div>`:''
-  ].filter(Boolean).join('');
-  const footer=biz.footer||'Thank you for your business.';
-  return `
-    <div class="inv-header">
-      <div>
-        ${logoHTML}
-        <div class="inv-brand" style="color:${col}">${isQuote?'Quote':'Invoice'}</div>
-      </div>
-      <div class="inv-meta">
-        <strong>${num}</strong><br>
-        ${dateLabel}: ${docDate}<br>
-        ${dueLabel}: ${dueDate}
-      </div>
+  
+  wrap.innerHTML = `
+    <div class="chart-column">
+      <div style="font-size:10px; font-weight:bold; color:var(--green);">฿${Math.round(paid/1000)}k</div>
+      <div class="chart-bar-fill paid-bar" style="height: ${getPercent(paid)}"></div>
+      <div class="chart-label">Paid</div>
     </div>
-    <div class="inv-parties">
-      <div>
-        <div class="inv-party-label">From</div>
-        <div class="inv-party-name">${esc(bizName)}</div>
-        <div class="inv-party-detail">${contactLines||'—'}</div>
-      </div>
-      <div>
-        <div class="inv-party-label">To</div>
-        ${clientLines||`<div class="inv-party-name">${esc(c.client)}</div>`}
-      </div>
+    <div class="chart-column">
+      <div style="font-size:10px; font-weight:bold; color:var(--yellow);">฿${Math.round(pending/1000)}k</div>
+      <div class="chart-bar-fill" style="background:var(--yellow); height: ${getPercent(pending)}"></div>
+      <div class="chart-label">Pending</div>
     </div>
-    <table class="inv-table">
-      <thead><tr><th>Description</th><th>Type</th><th>Amount</th></tr></thead>
-      <tbody>
-        <tr><td>${esc(c.project)}</td><td style="text-transform:capitalize">${esc(c.type)}</td><td>${fmt(c.amount)}</td></tr>
-      </tbody>
-    </table>
-    <div class="inv-total-row">
-      <div>
-        ${taxRate>0?`<div style="font-size:13px;color:#9ca3af;margin-bottom:4px">Tax (${taxRate}%): ${fmt(tax)}</div>`:''}
-        <div class="inv-total-label">Total due</div>
-      </div>
-      <div class="inv-total-val" style="color:${col}">${fmt(c.amount)}</div>
+    <div class="chart-column">
+      <div style="font-size:10px; font-weight:bold; color:var(--red);">฿${Math.round(late/1000)}k</div>
+      <div class="chart-bar-fill" style="background:var(--red); height: ${getPercent(late)}"></div>
+      <div class="chart-label">Overdue</div>
     </div>
-    ${c.notes?`<div style="margin-top:16px;font-size:13px;color:#6b6b80;border-top:1px solid #f0f0f5;padding-top:12px">${esc(c.notes)}</div>`:''}
-    <div class="inv-footer">${esc(footer)} · Generated by Brokedian</div>
+    <div class="chart-column">
+      <div style="font-size:10px; font-weight:bold; color:var(--accent2);">฿${Math.round(quoteVal/1000)}k</div>
+      <div class="chart-bar-fill" style="background:var(--accent); height: ${getPercent(quoteVal)}"></div>
+      <div class="chart-label">Quotes</div>
+    </div>
   `;
 }
 
-function printInvoice(){
-  const content=document.getElementById('invoice-preview-content').innerHTML;
-  const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
-  <style>body{font-family:'DM Sans',sans-serif;padding:40px;max-width:640px;margin:0 auto;}
-  .inv-brand{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#7C6EF5;}
-  .inv-header{display:flex;justify-content:space-between;border-bottom:2px solid #f0f0f5;padding-bottom:20px;margin-bottom:28px;}
-  .inv-meta{text-align:right;font-size:13px;color:#6b6b80;} .inv-meta strong{color:#1a1a2e;font-size:15px;}
-  .inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
-  .inv-party-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:6px;}
-  .inv-party-name{font-size:16px;font-weight:700;} .inv-party-detail{font-size:13px;color:#6b6b80;}
-  .inv-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-  .inv-table th{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;padding:8px 0;border-bottom:1px solid #f0f0f5;text-align:left;}
-  .inv-table th:last-child,.inv-table td:last-child{text-align:right;}
-  .inv-table td{padding:12px 0;font-size:14px;border-bottom:1px solid #f9f9f9;}
-  .inv-total-row{display:flex;justify-content:flex-end;gap:40px;padding-top:16px;border-top:2px solid #f0f0f5;}
-  .inv-total-label{font-size:14px;color:#6b6b80;} .inv-total-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#7C6EF5;}
-  .inv-footer{margin-top:24px;font-size:12px;color:#9ca3af;text-align:center;border-top:1px solid #f0f0f5;padding-top:16px;}
-  </style></head><body>${content}</body></html>`);
-  w.document.close();
-  setTimeout(()=>w.print(),400);
-}
-
-function shareInvoice(){
-  const c=clients.find(x=>x.id===previewClientId);
-  if(!c)return;
-  const text=`Invoice ${invoiceNum(c.id)} — ${c.project}\nClient: ${c.client}\nAmount: ${fmt(c.amount)}\nDue: ${c.due||'—'}\n\nGenerated by Brokedian`;
-  if(navigator.share){ navigator.share({title:`Invoice — ${c.client}`,text}); }
-  else { navigator.clipboard.writeText(text).then(()=>showToast('Invoice details copied ✓')); }
-}
-
-// ── QUOTES ───────────────────────────────────────────────────────────────
-function renderQuotes(){
-  const el=document.getElementById('quote-list');
-  if(quotes.length===0){
-    el.innerHTML=`<div class="empty-state">
-      <svg fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-      <h3>No quotes yet</h3>
-      <p>Create a quote to send to a potential client. When they accept, convert it to an invoice with one tap.</p>
-    </div>`;
-    return;
-  }
-  el.innerHTML=quotes.map(q=>`
-    <div class="quote-card" onclick="openQuoteModal(${q.id})">
-      <div class="quote-header">
-        <div class="quote-name">${esc(q.client)}</div>
-        <div class="quote-amount">${fmt(q.amount)}</div>
-      </div>
-      <div class="quote-meta">${esc(q.project)}${q.expiry?` · Valid until ${q.expiry}`:''}</div>
-      <span class="status-pill pill-quote" style="margin-top:8px;display:inline-block">${esc(q.status||'Draft')}</span>
-      <button class="convert-btn" onclick="event.stopPropagation();convertQuoteToInvoice(${q.id})">Accept — convert to invoice →</button>
-    </div>
-  `).join('');
-}
-
-function openQuoteModal(id){
-  editingQuoteId=id||null;
-  document.getElementById('quote-modal-title').textContent=id?'Edit quote':'New quote';
-  const delBtn=document.getElementById('quote-delete-btn');
-  const sendBtn=document.getElementById('quote-send-btn');
-  if(id){
-    const q=quotes.find(x=>x.id===id);
-    if(q){
-      document.getElementById('q-client').value=q.client;
-      document.getElementById('q-project').value=q.project;
-      document.getElementById('q-amount').value=q.amount;
-      document.getElementById('q-expiry').value=q.expiry||'';
-      document.getElementById('q-notes').value=q.notes||'';
-    }
-    delBtn.style.display='block';
-    sendBtn.style.display='block';
-  } else {
-    document.getElementById('q-client').value='';
-    document.getElementById('q-project').value='';
-    document.getElementById('q-amount').value='';
-    document.getElementById('q-expiry').value='';
-    document.getElementById('q-notes').value='';
-    delBtn.style.display='none';
-    sendBtn.style.display='none';
-  }
-  document.getElementById('quote-modal').classList.add('open');
-}
-function closeQuoteModal(){ document.getElementById('quote-modal').classList.remove('open'); editingQuoteId=null; }
-
-function saveQuote(){
-  const client=document.getElementById('q-client').value.trim();
-  const project=document.getElementById('q-project').value.trim();
-  const amount=parseFloat(document.getElementById('q-amount').value)||0;
-  const expiry=document.getElementById('q-expiry').value;
-  const notes=document.getElementById('q-notes').value.trim();
-  if(!client){ showToast('Please enter a client name'); return; }
-  if(editingQuoteId){
-    const i=quotes.findIndex(q=>q.id===editingQuoteId);
-    if(i!==-1) quotes[i]={...quotes[i],client,project,amount,expiry,notes};
-    showToast('Quote updated ✓');
-  } else {
-    quotes.push({id:Date.now(),client,project,amount,expiry,notes,status:'Draft',created:Date.now()});
-    showToast('Quote saved ✓');
-  }
-  save(); closeQuoteModal(); renderAll();
-}
-
-function deleteQuote(){
-  if(!editingQuoteId)return;
-  if(!confirm('Delete this quote?'))return;
-  quotes=quotes.filter(q=>q.id!==editingQuoteId);
-  save(); closeQuoteModal(); showToast('Quote deleted'); renderAll();
-}
-
-function convertQuoteToInvoice(id){
-  const q=quotes.find(x=>x.id===id);
-  if(!q)return;
-  clients.push({id:Date.now(),client:q.client,project:q.project,amount:q.amount,type:'one-time',status:'Pending',due:q.expiry||''});
-  quotes=quotes.filter(x=>x.id!==id);
-  save(); renderAll();
-  showToast(`Quote converted to invoice for ${q.client} ✓`);
-  switchScreen('clients',document.getElementById('nav-clients'));
-}
-
-function openQuotePreview(){
-  const q=quotes.find(x=>x.id===editingQuoteId);
-  if(!q)return;
-  previewQuoteId=editingQuoteId;
-  document.getElementById('quote-preview-content').innerHTML=buildInvoiceHTML({...q,due:q.expiry}, true);
-  document.getElementById('quote-preview-modal').classList.add('open');
-}
-function closeQuotePreview(){ document.getElementById('quote-preview-modal').classList.remove('open'); }
-
-function printQuote(){
-  const content=document.getElementById('quote-preview-content').innerHTML;
-  const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Quote</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
-  <style>body{font-family:'DM Sans',sans-serif;padding:40px;max-width:640px;margin:0 auto;}
-  .inv-brand{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#7C6EF5;}
-  .inv-header{display:flex;justify-content:space-between;border-bottom:2px solid #f0f0f5;padding-bottom:20px;margin-bottom:28px;}
-  .inv-meta{text-align:right;font-size:13px;color:#6b6b80;} .inv-meta strong{color:#1a1a2e;font-size:15px;}
-  .inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
-  .inv-party-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;margin-bottom:6px;}
-  .inv-party-name{font-size:16px;font-weight:700;} .inv-party-detail{font-size:13px;color:#6b6b80;}
-  .inv-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-  .inv-table th{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;padding:8px 0;border-bottom:1px solid #f0f0f5;text-align:left;}
-  .inv-table th:last-child,.inv-table td:last-child{text-align:right;}
-  .inv-table td{padding:12px 0;font-size:14px;border-bottom:1px solid #f9f9f9;}
-  .inv-total-row{display:flex;justify-content:flex-end;gap:40px;padding-top:16px;border-top:2px solid #f0f0f5;}
-  .inv-total-label{font-size:14px;color:#6b6b80;} .inv-total-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#7C6EF5;}
-  .inv-footer{margin-top:24px;font-size:12px;color:#9ca3af;text-align:center;border-top:1px solid #f0f0f5;padding-top:16px;}
-  </style></head><body>${content}</body></html>`);
-  w.document.close();
-  setTimeout(()=>w.print(),400);
-}
-
-function shareQuote(){
-  const q=quotes.find(x=>x.id===previewQuoteId);
-  if(!q)return;
-  const text=`Quote ${quoteNum(q.id)} — ${q.project}\nClient: ${q.client}\nAmount: ${fmt(q.amount)}\nValid until: ${q.expiry||'—'}\n${q.notes||''}\n\nGenerated by Brokedian`;
-  if(navigator.share){ navigator.share({title:`Quote — ${q.client}`,text}); }
-  else { navigator.clipboard.writeText(text).then(()=>showToast('Quote details copied ✓')); }
-}
-
-// ── FORECAST ──────────────────────────────────────────────────────────────
-function renderForecast(){
-  document.getElementById('expense-input').value   = expenses||'';
-  document.getElementById('tax-input').value       = taxRate||'';
-  document.getElementById('savings-input').value   = savings||'';
-  document.getElementById('currency-selector').value = currency;
-
-  const m=getMetrics();
-  const total=m.netRecurring+m.netPipeline;
-  document.getElementById('f-confirmed').textContent = fmt(m.netRecurring);
-  document.getElementById('f-possible').textContent  = fmt(m.netPipeline);
-  document.getElementById('f-total').textContent     = fmt(total);
-  document.getElementById('f-vs').textContent        = `vs ${fmt(expenses)} monthly bills`;
-
-  const v=document.getElementById('f-verdict');
-  if(expenses===0&&total===0)       v.textContent='💤';
-  else if(total>=expenses)          v.textContent='✅';
-  else if(total>=expenses*0.75)     v.textContent='⚠️';
-  else                              v.textContent='🚨';
-
-  const tf=taxFactor();
-  const pl=document.getElementById('pipeline-list');
-  pl.innerHTML=pipeline.length===0
-    ?'<div style="text-align:center;padding:20px;color:var(--muted);font-size:14px">No pipeline deals yet.</div>'
-    :pipeline.map(p=>{
-      const wn=(p.amount*(p.prob/100))*tf;
-      return `<div class="pipeline-card" onclick="openPipelineModal(${p.id})">
+// SIMULATOR ENGINE LOGIC CALCULATIONS
+function updateForecast() {
+  const currency = document.getElementById('cfg-currency')?.value || "฿";
+  const coreSavings = parseFloat(document.getElementById('cfg-savings')?.value || 0);
+  const fixedBurn = parseFloat(document.getElementById('cfg-burn')?.value || 1);
+  const taxMultiplier = 1 - (parseFloat(document.getElementById('cfg-tax')?.value || 0) / 100);
+  
+  let expectedPipelineInflow = 0;
+  let pipelineHtml = "";
+  
+  pipelineDeals.forEach(p => {
+    let weightedAmount = p.amount * (p.prob / 100);
+    expectedPipelineInflow += weightedAmount;
+    
+    pipelineHtml += `
+      <div class="pipeline-card" onclick="openPipelineModal('${p.id}')">
         <div class="pipeline-header">
-          <strong style="font-size:14px">${esc(p.name)}</strong>
-          <span style="color:var(--accent2);font-weight:700;font-size:14px">${fmt(wn)} expected</span>
+          <strong style="font-size:15px;">${p.name}</strong>
+          <span style="font-weight:800; font-size:16px;">${currency}${p.amount.toLocaleString()}</span>
         </div>
-        <div style="font-size:13px;color:var(--muted2)">${p.prob}% chance × ${fmt(p.amount)}</div>
-        <div class="prob-bar"><div class="prob-fill" style="width:${p.prob}%"></div></div>
-      </div>`;
-    }).join('');
+        <div style="font-size:12px; color:var(--muted2); margin-top:2px; display:flex; justify-content:space-between;">
+          <span>Probability Weight: ${p.prob}% (${p.month === 'current' ? 'Current Month' : 'Next Month'})</span>
+          <span style="color:var(--accent2); font-weight:700;">Expected: ${currency}${Math.round(weightedAmount).toLocaleString()}</span>
+        </div>
+        <div class="prob-bar"><div class="prob-fill" style="width: ${p.prob}%"></div></div>
+      </div>
+    `;
+  });
+  
+  const pipelineListWrap = document.getElementById('forecast-pipeline-list');
+  if(pipelineListWrap) pipelineListWrap.innerHTML = pipelineHtml || `<div class="empty-state"><h3>No dynamic target pipeline added</h3><p>Include simulated prospects to stress test runtime projections.</p></div>`;
+
+  // Compute forecast total runtimes
+  let adjustedLiquidPool = coreSavings + (expectedPipelineInflow * taxMultiplier);
+  let computedSimMonths = fixedBurn > 0 ? (adjustedLiquidPool / fixedBurn) : 0;
+  
+  if(document.getElementById('f-total-runway')) {
+    document.getElementById('f-total-runway').textContent = computedSimMonths.toFixed(1) + " Months";
+  }
+  
+  // Render Summary History blocks dynamically for the visualization view
+  const summaryWrap = document.getElementById('summary-list');
+  if(summaryWrap) {
+    summaryWrap.innerHTML = `
+      <div class="summary-row">
+        <span class="sr-month">Active Month Earned Base (Settled)</span>
+        <span class="sr-earned" style="color:var(--green);">${currency}${clients.filter(c=>c.status==='paid').reduce((acc,c)=>acc+(c.items?c.items.reduce((s,i)=>s+(i.qty*i.cost),0):0),0).toLocaleString()}</span>
+      </div>
+      <div class="summary-row">
+        <span class="sr-month">Outstanding Booked Backlog (Unpaid)</span>
+        <span class="sr-earned" style="color:var(--yellow);">${currency}${clients.filter(c=>c.status!=='paid').reduce((acc,c)=>acc+(c.items?c.items.reduce((s,i)=>s+(i.qty*i.cost),0):0),0).toLocaleString()}</span>
+      </div>
+    `;
+  }
 }
 
-function updateConfig(key,val){
-  if(key==='expenses') expenses=parseFloat(val)||0;
-  if(key==='taxRate')  taxRate=parseFloat(val)||0;
-  if(key==='savings')  savings=parseFloat(val)||0;
-  if(key==='currency') currency=val;
-  save(); renderAll();
+// AUTOMATION ENGINE: QUOTES TO INVOICES
+function convertQuoteToInvoice(quoteId) {
+  const qIndex = quotes.findIndex(item => item.id === quoteId);
+  if(qIndex === -1) return;
+  
+  const targetQuote = quotes[qIndex];
+  
+  // Construct corresponding client invoice payload model structure
+  const newInvoice = {
+    id: "c_" + Date.now(),
+    name: targetQuote.name,
+    project: targetQuote.project,
+    status: "pending",
+    date: new Date().toISOString().split('T')[0],
+    items: targetQuote.items ? JSON.parse(JSON.stringify(targetQuote.items)) : []
+  };
+  
+  targetQuote.status = "accepted";
+  clients.push(newInvoice);
+  
+  saveState('clients', clients);
+  saveState('quotes', quotes);
+  
+  showToast("Quote converted to issued invoice!");
+  renderAppContent();
 }
 
-// ── PIPELINE MODAL ────────────────────────────────────────────────────────
-function openPipelineModal(id){
-  editingPipelineId=id||null;
-  const isEdit=!!id;
-  document.getElementById('pipeline-modal-title').textContent=isEdit?'Edit deal':'Add potential deal';
-  document.getElementById('pipeline-submit-btn').textContent=isEdit?'Save changes':'Save deal';
-  document.getElementById('pipeline-delete-btn').style.display=isEdit?'block':'none';
-  if(isEdit){
-    const p=pipeline.find(x=>x.id===id);
-    if(p){
-      document.getElementById('p-name').value=p.name;
-      document.getElementById('p-amount').value=p.amount;
-      document.getElementById('p-prob').value=p.prob;
+// ITEMIZED ROW BUILDER METHODS (WITH FIXED VISUAL LABEL HEADINGS)
+function addNewInvoiceLineItemRow(desc = '', qty = 1, cost = 0) {
+  const container = document.getElementById('invoice-line-items-wrapper');
+  const div = document.createElement('div');
+  div.className = "line-item-input-row";
+  div.innerHTML = `
+    <div class="line-item-column">
+      <label>Item Description</label>
+      <input type="text" class="li-desc" placeholder="e.g. Consulting Hours" value="${desc}">
+    </div>
+    <div class="line-item-column">
+      <label>Qty</label>
+      <input type="number" class="li-qty" placeholder="1" value="${qty}" min="1">
+    </div>
+    <div class="line-item-column">
+      <label>Unit Rate</label>
+      <input type="number" class="li-cost" placeholder="0" value="${cost}">
+    </div>
+    <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">✕</button>
+  `;
+  container.appendChild(div);
+}
+
+function addNewQuoteLineItemRow(desc = '', qty = 1, cost = 0) {
+  const container = document.getElementById('quote-line-items-wrapper');
+  const div = document.createElement('div');
+  div.className = "line-item-input-row";
+  div.innerHTML = `
+    <div class="line-item-column">
+      <label>Item Description</label>
+      <input type="text" class="liq-desc" placeholder="e.g. Asset Design" value="${desc}">
+    </div>
+    <div class="line-item-column">
+      <label>Qty</label>
+      <input type="number" class="liq-qty" placeholder="1" value="${qty}" min="1">
+    </div>
+    <div class="line-item-column">
+      <label>Unit Rate</label>
+      <input type="number" class="liq-cost" placeholder="0" value="${cost}">
+    </div>
+    <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">✕</button>
+  `;
+  container.appendChild(div);
+}
+
+function gatherInvoiceLineItemsFromDOM() {
+  const rows = document.querySelectorAll('#invoice-line-items-wrapper .line-item-input-row');
+  let dataArr = [];
+  rows.forEach(r => {
+    let d = r.querySelector('.li-desc').value.trim();
+    let q = parseInt(r.querySelector('.li-qty').value) || 1;
+    let c = parseFloat(r.querySelector('.li-cost').value) || 0;
+    if(d) dataArr.push({ desc: d, qty: q, cost: c });
+  });
+  return dataArr;
+}
+
+function gatherQuoteLineItemsFromDOM() {
+  const rows = document.querySelectorAll('#quote-line-items-wrapper .line-item-input-row');
+  let dataArr = [];
+  rows.forEach(r => {
+    let d = r.querySelector('.liq-desc').value.trim();
+    let q = parseInt(r.querySelector('.liq-qty').value) || 1;
+    let c = parseFloat(r.querySelector('.liq-cost').value) || 0;
+    if(d) dataArr.push({ desc: d, qty: q, cost: c });
+  });
+  return dataArr;
+}
+
+// INVOICE STORAGE ACTION HANDLERS
+function openClientModal(id = null) {
+  document.getElementById('invoice-line-items-wrapper').innerHTML = "";
+  if(!id) {
+    document.getElementById('modal-client-title').textContent = "Add Invoice";
+    document.getElementById('c-id').value = "";
+    document.getElementById('c-name').value = "";
+    document.getElementById('c-address').value = "";
+    document.getElementById('c-project').value = "";
+    document.getElementById('c-status').value = "pending";
+    document.getElementById('c-date').value = new Date().toISOString().split('T')[0];
+    document.getElementById('delete-client-btn').style.display = "none";
+    document.getElementById('preview-client-btn').style.display = "none";
+    addNewInvoiceLineItemRow('', 1, 0); 
+  } else {
+    const item = clients.find(c => c.id === id);
+    if(!item) return;
+    document.getElementById('modal-client-title').textContent = "Edit Invoice Details";
+    document.getElementById('c-id').value = item.id;
+    document.getElementById('c-name').value = item.name;
+    document.getElementById('c-address').value = item.address || "";
+    document.getElementById('c-project').value = item.project;
+    document.getElementById('c-status').value = item.status;
+    document.getElementById('c-date').value = item.date;
+    document.getElementById('delete-client-btn').style.display = "block";
+    document.getElementById('preview-client-btn').style.display = "block";
+    
+    if(item.items && item.items.length) {
+      item.items.forEach(line => addNewInvoiceLineItemRow(line.desc, line.qty, line.cost));
+    } else {
+      addNewInvoiceLineItemRow(item.project, 1, 0); 
     }
-  } else {
-    document.getElementById('p-name').value='';
-    document.getElementById('p-amount').value='';
-    document.getElementById('p-prob').value='50';
   }
-  document.getElementById('pipeline-modal').classList.add('open');
-}
-function closePipelineModal(){ document.getElementById('pipeline-modal').classList.remove('open'); editingPipelineId=null; }
-
-function savePipeline(){
-  const name=document.getElementById('p-name').value.trim();
-  const amount=parseFloat(document.getElementById('p-amount').value)||0;
-  const prob=Math.min(100,Math.max(0,parseFloat(document.getElementById('p-prob').value)||50));
-  if(!name){ showToast('Please enter a deal name'); return; }
-  if(editingPipelineId){
-    const i=pipeline.findIndex(p=>p.id===editingPipelineId);
-    if(i!==-1) pipeline[i]={id:editingPipelineId,name,amount,prob};
-    showToast('Deal updated ✓');
-  } else {
-    pipeline.push({id:Date.now(),name,amount,prob});
-    showToast('Deal added ✓');
-  }
-  save(); closePipelineModal(); renderForecast();
+  document.getElementById('modal-client').classList.add('open');
 }
 
-function deletePipeline(){
-  if(!editingPipelineId)return;
-  if(!confirm('Delete this deal?'))return;
-  pipeline=pipeline.filter(p=>p.id!==editingPipelineId);
-  save(); closePipelineModal(); showToast('Deal removed'); renderForecast();
+function closeClientModal() {
+  document.getElementById('modal-client').classList.remove('open');
 }
 
-// ── SUMMARY / HISTORY ─────────────────────────────────────────────────────
-function renderSummary(){
-  const m=getMetrics();
-  const keys=Object.keys(m.histMap);
-  const total=Object.values(m.histMap).reduce((a,b)=>a+b,0);
-  document.getElementById('s-year').textContent = fmt(total);
-  document.getElementById('s-avg').textContent  = keys.length>0?fmt(total/keys.length):fmt(0);
+function saveClientInvoice() {
+  const id = document.getElementById('c-id').value;
+  const name = document.getElementById('c-name').value.trim();
+  const address = document.getElementById('c-address').value.trim();
+  const project = document.getElementById('c-project').value.trim();
+  const status = document.getElementById('c-status').value;
+  const date = document.getElementById('c-date').value;
+  const lineItems = gatherInvoiceLineItemsFromDOM();
 
-  if(keys.length===0){
-    document.getElementById('summary-list').innerHTML=`<div class="empty-state">
-      <svg fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <h3>No history yet</h3>
-      <p>Mark invoices as Paid and they'll appear here grouped by month.</p>
-    </div>`;
+  if(!name || lineItems.length === 0) {
+    alert("Please provide at least a Client Name and 1 line item configuration.");
     return;
   }
 
-  // Sort months chronologically
-  const sorted=keys.sort((a,b)=>new Date(a)-new Date(b));
-  const rows=sorted.map((k,i)=>{
-    const prev=i>0?m.histMap[sorted[i-1]]:null;
-    let trend='';
-    if(prev&&prev>0){
-      const pct=Math.round(((m.histMap[k]-prev)/prev)*100);
-      trend=pct>=0
-        ?`<span class="sr-trend trend-up">▲ ${pct}%</span>`
-        :`<span class="sr-trend trend-down">▼ ${Math.abs(pct)}%</span>`;
-    }
-    return `<div class="summary-row">
-      <span class="sr-month">${esc(k)}</span>
-      <span style="display:flex;align-items:center;gap:6px"><span class="sr-earned">${fmt(m.histMap[k])}</span>${trend}</span>
-    </div>`;
-  });
-  document.getElementById('summary-list').innerHTML=rows.join('');
-}
-
-// ── EXPORT / BACKUP ───────────────────────────────────────────────────────
-function exportCSV(){
-  if(clients.length===0){ showToast('No invoices to export'); return; }
-  const headers=['Client','Project','Amount','Type','Status','Due Date'];
-  const rows=clients.map(c=>[
-    `"${c.client.replace(/"/g,'""')}"`,
-    `"${c.project.replace(/"/g,'""')}"`,
-    c.amount, c.type, c.status, c.due||'N/A'
-  ]);
-  const csv=[headers.join(','),...rows.map(r=>r.join(','))].join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const filename=`brokedian_invoices_${today()}.csv`;
-  if(navigator.share&&navigator.canShare&&navigator.canShare({files:[new File([blob],filename,{type:'text/csv'})]})){
-    navigator.share({files:[new File([blob],filename,{type:'text/csv'})],title:'Brokedian export'})
-      .catch(e=>{ if(e.name!=='AbortError') download(blob,filename); });
-  } else { download(blob,filename); }
-}
-
-function exportBackup(){
-  const data={clients,quotes,pipeline,expenses,taxRate,savings,currency,version:'2.0.0',timestamp:Date.now()};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  download(blob,`brokedian_backup_${today()}.json`);
-  showToast('Backup saved ✓');
-}
-
-function importBackup(e){
-  const f=e.target.files[0]; if(!f)return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    try{
-      const d=JSON.parse(ev.target.result);
-      if(!d.clients||!d.pipeline){ showToast('Invalid backup file'); return; }
-      clients=d.clients; quotes=d.quotes||[]; pipeline=d.pipeline;
-      expenses=parseFloat(d.expenses)||0; taxRate=parseFloat(d.taxRate)||0;
-      savings=parseFloat(d.savings)||0; currency=d.currency||'USD';
-      save(); renderAll(); showToast('Data restored ✓');
-    } catch(err){ showToast('Could not read backup file'); }
-  };
-  r.readAsText(f); e.target.value='';
-}
-
-function download(blob,filename){
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url; a.setAttribute('download',filename);
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
-  showToast('Downloaded ✓');
-}
-
-function resetAll(){
-  if(!confirm('This will delete all your data permanently. Are you sure?'))return;
-  localStorage.clear(); localStorage.setItem('fiq_wiped','true');
-  clients=[]; quotes=[]; pipeline=[]; expenses=0; taxRate=0; savings=0; currency='USD';
-  showToast('All data cleared');
-  setTimeout(()=>location.reload(),600);
-}
-
-// ── PROFILE ──────────────────────────────────────────────────────────────
-function loadProfileScreen(){
-  document.getElementById('p-bizname').value  = biz.name    || '';
-  document.getElementById('p-email').value    = biz.email   || '';
-  document.getElementById('p-phone').value    = biz.phone   || '';
-  document.getElementById('p-website').value  = biz.website || '';
-  document.getElementById('p-address').value  = biz.address || '';
-  document.getElementById('p-taxid').value    = biz.taxid   || '';
-  document.getElementById('p-footer').value   = biz.footer  || '';
-  // colour swatches
-  document.querySelectorAll('.color-swatch').forEach(sw=>{
-    sw.classList.toggle('selected', sw.dataset.color === (biz.color||'#7C6EF5'));
-  });
-  // logo
-  if(biz.logo){
-    document.getElementById('logo-img').src = biz.logo;
-    document.getElementById('logo-img').style.display = 'block';
-    document.getElementById('logo-placeholder').style.display = 'none';
-    document.getElementById('remove-logo-btn').style.display = 'block';
+  if(!id) {
+    clients.push({ id: "c_" + Date.now(), name, address, project, status, date, items: lineItems });
   } else {
-    document.getElementById('logo-img').style.display = 'none';
-    document.getElementById('logo-placeholder').style.display = 'flex';
-    document.getElementById('remove-logo-btn').style.display = 'none';
+    const matched = clients.find(c => c.id === id);
+    if(matched) {
+      matched.name = name;
+      matched.address = address;
+      matched.project = project;
+      matched.status = status;
+      matched.date = date;
+      matched.items = lineItems;
+    }
   }
-  updateMiniPreview();
+  saveState('clients', clients);
+  closeClientModal();
+  showToast("Deal added"); 
+  renderAppContent();
 }
 
-function saveProfile(){
-  biz.name    = document.getElementById('p-bizname').value.trim();
-  biz.email   = document.getElementById('p-email').value.trim();
-  biz.phone   = document.getElementById('p-phone').value.trim();
-  biz.website = document.getElementById('p-website').value.trim();
+function deleteClientInvoice() {
+  const id = document.getElementById('c-id').value;
+  if(id) {
+    clients = clients.filter(c => c.id !== id);
+    saveState('clients', clients);
+    closeClientModal();
+    showToast("Invoice entity deleted");
+    renderAppContent();
+  }
+}
+
+// ESTIMATES STORAGE ACTION HANDLERS
+function openQuoteModal(id = null) {
+  document.getElementById('quote-line-items-wrapper').innerHTML = "";
+  if(!id) {
+    document.getElementById('modal-quote-title').textContent = "Create Quote Estimate";
+    document.getElementById('q-id').value = "";
+    document.getElementById('q-name').value = "";
+    document.getElementById('q-project').value = "";
+    document.getElementById('q-status').value = "sent";
+    document.getElementById('q-expiry').value = new Date(Date.now() + 14*24*60*60*1000).toISOString().split('T')[0]; 
+    document.getElementById('delete-quote-btn').style.display = "none";
+    document.getElementById('preview-quote-btn').style.display = "none";
+    addNewQuoteLineItemRow('', 1, 0);
+  } else {
+    const item = quotes.find(q => q.id === id);
+    if(!item) return;
+    document.getElementById('modal-quote-title').textContent = "Modify Offer Estimate";
+    document.getElementById('q-id').value = item.id;
+    document.getElementById('q-name').value = item.name;
+    document.getElementById('q-project').value = item.project;
+    document.getElementById('q-status').value = item.status;
+    document.getElementById('q-expiry').value = item.expiry || "";
+    document.getElementById('delete-quote-btn').style.display = "block";
+    document.getElementById('preview-quote-btn').style.display = "block";
+    
+    if(item.items && item.items.length) {
+      item.items.forEach(line => addNewQuoteLineItemRow(line.desc, line.qty, line.cost));
+    } else {
+      addNewQuoteLineItemRow(item.project, 1, 0);
+    }
+  }
+  document.getElementById('modal-quote').classList.add('open');
+}
+
+function closeQuoteModal() {
+  document.getElementById('modal-quote').classList.remove('open');
+}
+
+function saveQuoteEstimate() {
+  const id = document.getElementById('q-id').value;
+  const name = document.getElementById('q-name').value.trim();
+  const project = document.getElementById('q-project').value.trim();
+  const status = document.getElementById('q-status').value;
+  const expiry = document.getElementById('q-expiry').value;
+  const items = gatherQuoteLineItemsFromDOM();
+
+  if(!name || items.length === 0) return alert("Verify client names and item rows exist.");
+
+  if(!id) {
+    quotes.push({ id: "q_" + Date.now(), name, project, status, expiry, items });
+  } else {
+    const matched = quotes.find(q => q.id === id);
+    if(matched) {
+      matched.name = name;
+      matched.project = project;
+      matched.status = status;
+      matched.expiry = expiry;
+      matched.items = items;
+    }
+  }
+  saveState('quotes', quotes);
+  closeQuoteModal();
+  showToast("Forecast updated");
+  renderAppContent();
+}
+
+function deleteQuoteEstimate() {
+  const id = document.getElementById('q-id').value;
+  quotes = quotes.filter(q => q.id !== id);
+  saveState('quotes', quotes);
+  closeQuoteModal();
+  showToast("Offer removed");
+  renderAppContent();
+}
+
+// TARGET DEAL PIPELINE HANDLERS
+function openPipelineModal(id = null) {
+  if(!id) {
+    document.getElementById('modal-pipe-title').textContent = "Add Target Deal Forecast";
+    document.getElementById('p-id').value = "";
+    document.getElementById('pipe-name').value = "";
+    document.getElementById('pipe-amount').value = "";
+    document.getElementById('pipe-prob').value = "50";
+    document.getElementById('pipe-month').value = "current";
+    document.getElementById('delete-pipe-btn').style.display = "none";
+  } else {
+    const matched = pipelineDeals.find(p => p.id === id);
+    if(!matched) return;
+    document.getElementById('modal-pipe-title').textContent = "Modify Forecast Weight";
+    document.getElementById('p-id').value = matched.id;
+    document.getElementById('pipe-name').value = matched.name;
+    document.getElementById('pipe-amount').value = matched.amount;
+    document.getElementById('pipe-prob').value = matched.prob;
+    document.getElementById('pipe-month').value = matched.month;
+    document.getElementById('delete-pipe-btn').style.display = "block";
+  }
+  document.getElementById('modal-pipeline').classList.add('open');
+}
+
+function closePipelineModal() {
+  document.getElementById('modal-pipeline').classList.remove('open');
+}
+
+function savePipelineDeal() {
+  const id = document.getElementById('p-id').value;
+  const name = document.getElementById('pipe-name').value.trim();
+  const amount = parseFloat(document.getElementById('pipe-amount').value) || 0;
+  const prob = parseInt(document.getElementById('pipe-prob').value) || 0;
+  const month = document.getElementById('pipe-month').value;
+
+  if(!name) return;
+
+  if(!id) {
+    pipelineDeals.push({ id: "p_" + Date.now(), name, amount, prob, month });
+  } else {
+    const target = pipelineDeals.find(p => p.id === id);
+    if(target) {
+      target.name = name;
+      target.amount = amount;
+      target.prob = prob;
+      target.month = month;
+    }
+  }
+  saveState('pipeline', pipelineDeals);
+  closePipelineModal();
+  showToast("Forecast updated");
+  renderAppContent();
+}
+
+function deletePipelineDeal() {
+  const id = document.getElementById('p-id').value;
+  pipelineDeals = pipelineDeals.filter(p => p.id !== id);
+  saveState('pipeline', pipelineDeals);
+  closePipelineModal();
+  showToast("Pipeline record wiped");
+  renderAppContent();
+}
+
+// MODERN SEAMLESS INTERACTION HELPERS
+function closeModalOnOverlay(e, modalId) {
+  if(e.target.id === modalId) {
+    document.getElementById(modalId).classList.remove('open');
+  }
+}
+
+// PRINT DRIVEN GENERATION LOGIC WITH DETAILED TABLE PREVIEWS
+function launchPrintViewInvoicePDF(id, type = 'invoice') {
+  let docObj = null;
+  const currency = document.getElementById('cfg-currency')?.value || "฿";
+  
+  if(type === 'invoice') {
+    docObj = clients.find(c => c.id === id);
+  } else {
+    docObj = quotes.find(q => q.id === id);
+  }
+  if(!docObj) return;
+
+  // Header setups
+  document.getElementById('pdf-my-bizname').textContent = biz.name || "YOUR BUSINESS NAME";
+  document.getElementById('pdf-my-taxid').textContent = biz.taxid ? `Tax ID: ${biz.taxid}` : "Tax ID: --";
+  document.getElementById('pdf-doc-type').textContent = type.toUpperCase();
+  document.getElementById('pdf-doc-number').textContent = `Document ID: ${docObj.id.toUpperCase()}`;
+  document.getElementById('pdf-doc-date').textContent = docObj.date || docObj.expiry || new Date().toLocaleDateString();
+  document.getElementById('pdf-payment-terms').textContent = "Net 30 / On Receipt";
+
+  // Address structures
+  document.getElementById('pdf-from-name').textContent = biz.name;
+  document.getElementById('pdf-from-details').innerHTML = `${biz.address || ''}<br>Email: ${biz.email || ''}<br>Phone: ${biz.phone || ''}`;
+  document.getElementById('pdf-to-name').textContent = docObj.name;
+  document.getElementById('pdf-to-details').textContent = docObj.address || "Client Corporation Corporate Office Account";
+
+  // Status Badge handling updates
+  const badge = document.getElementById('pdf-status-badge');
+  badge.textContent = docObj.status.toUpperCase();
+  if(docObj.status === 'paid') badge.className = "inv-status-badge badge-preview-paid";
+  else if(docObj.status === 'pending' || docObj.status === 'sent') badge.className = "inv-status-badge badge-preview-pending";
+  else if(docObj.status === 'late') badge.className = "inv-status-badge badge-preview-late";
+  else badge.className = "inv-status-badge badge-preview-quote";
+
+  // Line item rendering arrays
+  const tbody = document.getElementById('pdf-table-items-body');
+  tbody.innerHTML = "";
+  
+  let subtotal = 0;
+  let itemsList = docObj.items || [{desc: docObj.project, qty: 1, cost: 0}];
+
+  itemsList.forEach(line => {
+    let amt = line.qty * line.cost;
+    subtotal += amt;
+    
+    let tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${line.desc}</strong></td>
+      <td class="right-align">${line.qty}</td>
+      <td class="right-align">${currency}${line.cost.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+      <td class="right-align">${currency}${amt.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // Calculate dynamic regional taxes
+  const currentTaxRateConfig = parseFloat(document.getElementById('cfg-tax')?.value || 7);
+  let taxVal = subtotal * (currentTaxRateConfig / 100);
+  let finalGrandTotalVal = subtotal + taxVal;
+
+  document.getElementById('pdf-subtotal').textContent = currency + subtotal.toLocaleString(undefined, {minimumFractionDigits:2});
+  document.getElementById('pdf-tax-label').textContent = `VAT / Taxes (${currentTaxRateConfig}%):`;
+  document.getElementById('pdf-tax-amount').textContent = currency + taxVal.toLocaleString(undefined, {minimumFractionDigits:2});
+  document.getElementById('pdf-grand-total').textContent = currency + finalGrandTotalVal.toLocaleString(undefined, {minimumFractionDigits:2});
+
+  // Wiring Bank instructions
+  document.getElementById('pdf-bank-instructions').textContent = biz.bank || "No wire specifications outlined.";
+  document.getElementById('pdf-signature-block').textContent = biz.signature || "";
+
+  // Dynamic PromptPay Engine simulation configurations
+  const ppWrapper = document.getElementById('pdf-promptpay-wrapper');
+  if(biz.promptpay && finalGrandTotalVal > 0) {
+    ppWrapper.style.display = "flex";
+    document.getElementById('pdf-promptpay-token').textContent = `ID Token: ${biz.promptpay}`;
+    // Construct dynamic standard open QR parameters payload reference links
+    document.getElementById('pdf-promptpay-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PromptPay_${biz.promptpay}_AMT_${finalGrandTotalVal.toFixed(2)}`;
+  } else {
+    ppWrapper.style.display = "none";
+  }
+
+  // Inject brand accents into print document view container styling variables
+  document.getElementById('print-area').style.borderTop = `6px solid ${biz.color || '#7C6EF5'}`;
+
+  // Open Preview container view overlay
+  document.getElementById('modal-preview').classList.add('open');
+}
+
+function closePreviewModal() {
+  document.getElementById('modal-preview').classList.remove('open');
+}
+
+// CONFIGURATION DATA PROFILE HANDLERS
+function loadProfileInputs() {
+  document.getElementById('p-bizname').value = biz.name || "";
+  document.getElementById('p-address').value = biz.address || "";
+  document.getElementById('p-taxid').value = biz.taxid || "";
+  document.getElementById('p-email').value = biz.email || "";
+  document.getElementById('p-phone').value = biz.phone || "";
+  document.getElementById('p-bank').value = biz.bank || "";
+  document.getElementById('p-promptpay').value = biz.promptpay || "";
+  document.getElementById('p-signature').value = biz.signature || "";
+  document.getElementById('p-footer').value = biz.footer || "";
+  if(biz.logo) {
+    document.getElementById('biz-logo-img').src = biz.logo;
+    document.getElementById('biz-logo-img').style.display = "block";
+    document.getElementById('biz-logo-placeholder').style.display = "none";
+  }
+  updateMiniPreviewStyleProperties();
+}
+
+function saveProfileInfo() {
+  biz.name = document.getElementById('p-bizname').value.trim();
   biz.address = document.getElementById('p-address').value.trim();
-  biz.taxid   = document.getElementById('p-taxid').value.trim();
-  biz.footer  = document.getElementById('p-footer').value.trim();
-  myBizName   = biz.name || 'Your Business';
-  save();
-  showToast('Profile saved ✓');
-  updateMiniPreview();
+  biz.taxid = document.getElementById('p-taxid').value.trim();
+  biz.email = document.getElementById('p-email').value.trim();
+  biz.phone = document.getElementById('p-phone').value.trim();
+  biz.bank = document.getElementById('p-bank').value.trim();
+  biz.promptpay = document.getElementById('p-promptpay').value.trim();
+  biz.signature = document.getElementById('p-signature').value.trim();
+  biz.footer = document.getElementById('p-footer').value.trim();
+  
+  localStorage.setItem('brokedian_biz', JSON.stringify(biz));
+  updateMiniPreviewStyleProperties();
 }
 
-function selectColor(col, el){
-  biz.color = col;
-  document.querySelectorAll('.color-swatch').forEach(sw=>sw.classList.remove('selected'));
-  el.classList.add('selected');
-  updateMiniPreview();
+function pickBrandColor(hex, el) {
+  biz.color = hex;
+  document.querySelectorAll('.color-swatch').forEach(sw => sw.classList.remove('selected'));
+  if(el) el.classList.add('selected');
+  saveProfileInfo();
 }
 
-function handleLogoUpload(e){
+function updateMiniPreviewStyleProperties() {
+  const name = biz.name || "Your Business Name";
+  const email = biz.email || "accounting@company.com";
+  document.getElementById('prev-bizname').textContent = name;
+  document.getElementById('prev-bizname').style.color = biz.color || '#7C6EF5';
+  document.getElementById('prev-email').textContent = email;
+  
+  if(biz.phone) {
+    document.getElementById('prev-phone').textContent = biz.phone;
+    document.getElementById('prev-phone-wrap').style.display = "block";
+  } else {
+    document.getElementById('prev-phone-wrap').style.display = "none";
+  }
+  
+  if(biz.footer) {
+    document.getElementById('prev-footer-wrap').textContent = biz.footer;
+    document.getElementById('prev-footer-wrap').style.display = "block";
+  } else {
+    document.getElementById('prev-footer-wrap').style.display = "none";
+  }
+}
+
+function triggerLogoUpload() {
+  document.getElementById('logo-file-elem').click();
+}
+
+function handleLogoUpload(e) {
   const file = e.target.files[0];
   if(!file) return;
-  if(file.size > 500*1024){ showToast('Image too large — please use under 500KB'); return; }
   const reader = new FileReader();
-  reader.onload = ev => {
-    biz.logo = ev.target.result;
-    document.getElementById('logo-img').src = biz.logo;
-    document.getElementById('logo-img').style.display = 'block';
-    document.getElementById('logo-placeholder').style.display = 'none';
-    document.getElementById('remove-logo-btn').style.display = 'block';
-    updateMiniPreview();
+  reader.onload = function(evt) {
+    biz.logo = evt.target.result;
+    document.getElementById('biz-logo-img').src = biz.logo;
+    document.getElementById('biz-logo-img').style.display = "block";
+    document.getElementById('biz-logo-placeholder').style.display = "none";
+    saveProfileInfo();
+    showToast("Business logo synced");
   };
   reader.readAsDataURL(file);
-  e.target.value = '';
 }
 
-function removeLogo(){
-  biz.logo = '';
-  document.getElementById('logo-img').src = '';
-  document.getElementById('logo-img').style.display = 'none';
-  document.getElementById('logo-placeholder').style.display = 'flex';
-  document.getElementById('remove-logo-btn').style.display = 'none';
-  updateMiniPreview();
+// BACK OFFICE INTEROP: EXPORT SYSTEM FLAT LOG FILES
+function exportDataCSV() {
+  let csvRows = ["Type,ClientName,ScopeProject,StatusDate,AmountValue"];
+  
+  clients.forEach(c => {
+    let amt = c.items ? c.items.reduce((s,i) => s+(i.qty*i.cost), 0) : 0;
+    csvRows.push(`Invoice,"${c.name}","${c.project}",${c.status},${c.date},${amt}`);
+  });
+  quotes.forEach(q => {
+    let amt = q.items ? q.items.reduce((s,i) => s+(i.qty*i.cost), 0) : 0;
+    csvRows.push(`Quote,"${q.name}","${q.project}",${q.status},${q.expiry},${amt}`);
+  });
+  
+  let blob = new Blob([csvRows.join("\n")], {type: 'text/csv;charset=utf-8;'});
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", `brokedian_financial_export_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast("CSV exported");
 }
 
-function updateMiniPreview(){
-  const name   = document.getElementById('p-bizname').value || 'Your Business Name';
-  const email  = document.getElementById('p-email').value   || 'your@email.com';
-  const phone  = document.getElementById('p-phone').value;
-  const footer = document.getElementById('p-footer').value;
-  const col    = biz.color || '#7C6EF5';
-  document.getElementById('prev-bizname').textContent = name;
-  document.getElementById('prev-bizname').style.color = col;
-  document.getElementById('prev-email').textContent   = email;
-  const phoneWrap = document.getElementById('prev-phone-wrap');
-  if(phone){ document.getElementById('prev-phone').textContent=phone; phoneWrap.style.display='block'; }
-  else { phoneWrap.style.display='none'; }
-  const footWrap = document.getElementById('prev-footer-wrap');
-  if(footer){ footWrap.textContent=footer; footWrap.style.display='block'; }
-  else { footWrap.style.display='none'; }
-  if(biz.logo){
-    document.getElementById('prev-logo').src = biz.logo;
-    document.getElementById('prev-logo-wrap').style.display = 'block';
-  } else {
-    document.getElementById('prev-logo-wrap').style.display = 'none';
+function triggerImportSelection() {
+  document.getElementById('import-file-elem').click();
+}
+
+function importDataJSON(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      let data = JSON.parse(evt.target.result);
+      if(data.clients) { clients = data.clients; saveState('clients', clients); }
+      if(data.quotes) { quotes = data.quotes; saveState('quotes', quotes); }
+      if(data.biz) { biz = data.biz; localStorage.setItem('brokedian_biz', JSON.stringify(biz)); }
+      showToast("Data schemas imported");
+      renderAppContent();
+      loadProfileInputs();
+    } catch(err) {
+      alert("Invalid backup configuration file pattern detected.");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function factoryResetAllData() {
+  if(confirm("Confirm action? This wipes local secure application storage keys completely.")) {
+    localStorage.clear();
+    location.reload();
   }
-  document.getElementById('prev-date').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 }
-
-// ── INIT ──────────────────────────────────────────────────────────────────
-window.onload=()=>{ renderAll(); loadProfileScreen(); };
 </script>
 </body>
 </html>
