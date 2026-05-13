@@ -738,6 +738,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       </div>
     </div>
     
+    <div class="control-block" style="margin-top:0;">
+      <div class="control-block-label">Business Profile Tools</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+        <button class="control-btn" onclick="exportBizJSON()">
+          <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Backup
+        </button>
+        <button class="control-btn" onclick="document.getElementById('import-biz-file').click()">Import</button>
+        <input type="file" id="import-biz-file" style="display:none" accept=".json" onchange="importBizJSON(event)">
+        <button class="control-btn" onclick="resetBusinessSettings()">Reset</button>
+      </div>
+    </div>
+    
     <button class="profile-save-btn" onclick="switchScreen('dashboard', document.getElementById('nav-dashboard'))">Apply and Sync Settings</button>
     <div style="height:24px"></div>
   </div>
@@ -1909,8 +1922,56 @@ function importDataJSON(e) {
   reader.readAsText(file);
 }
 
+function exportBizJSON() {
+  const blob = new Blob([JSON.stringify(biz, null, 2)], {type: 'application/json;charset=utf-8;'});
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", `brokedian_business_profile_${new Date().toISOString().split('T')[0]}.json`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast("Business profile exported");
+}
+
+function importBizJSON(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const data = JSON.parse(evt.target.result);
+      biz = {
+        name: data.name || "",
+        address: data.address || "",
+        taxid: data.taxid || "",
+        email: data.email || "",
+        phone: data.phone || "",
+        bank: data.bank || "",
+        promptpay: data.promptpay || "",
+        signature: data.signature || "",
+        footer: data.footer || "",
+        color: data.color || "#7C6EF5",
+        logo: data.logo || ""
+      };
+      try { localStorage.setItem('brokedian_biz', JSON.stringify(biz)); } catch(e) {}
+      loadProfileInputs();
+      showToast("Business profile imported");
+    } catch(err) {
+      showToast("Invalid business profile file");
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetBusinessSettings() {
+  if(!confirm("Reset all business profile fields to defaults? This cannot be undone.")) return;
+  biz = { name: "", address: "", taxid: "", email: "", phone: "", bank: "", promptpay: "", signature: "", footer: "", color: "#7C6EF5", logo: "" };
+  try { localStorage.setItem('brokedian_biz', JSON.stringify(biz)); } catch(e) {}
+  loadProfileInputs();
+}
+
 function factoryResetAllData() {
-  document.getElementById('reset-confirm-text').textContent = "This will permanently erase all invoices, quotes, pipeline data, and business settings. This action cannot be undone.";
+  document.getElementById('reset-confirm-text').textContent = "This will permanently erase all invoices, quotes, pipeline deals, and forecast settings. Your Business Configuration will be preserved. This action cannot be undone.";
   document.getElementById('modal-reset-confirm').classList.add('open');
 }
 
