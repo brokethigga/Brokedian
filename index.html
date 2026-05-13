@@ -388,18 +388,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .toast.show{transform:translateX(-50%) translateY(0);}
 
 @media print{
-  @page{margin:0;}
+  @page{margin:5mm;}
   *{background:transparent!important;box-shadow:none!important;text-shadow:none!important;}
-  body{background:#fff!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
-  .nav,.toast,.inv-actions,.add-btn,.control-block,.page-header,.hero-dashboard-panel,.metrics-grid,.section-title,.visual-chart-container{display:none!important;}
+  html,body{background:#fff!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;height:auto!important;overflow:visible!important;}
+  .nav,.toast,.inv-actions,.add-btn,.control-block,.page-header,.hero-dashboard-panel,.metrics-grid,.section-title,.visual-chart-container,.screen,.screen.active{display:none!important;}
   .modal-overlay{display:none!important;}
-  .layout{background:#fff!important;}
-  .screen.active{display:block!important;}
-  #modal-preview{display:flex!important;position:fixed!important;inset:0!important;background:#fff!important;backdrop-filter:none!important;z-index:9999!important;align-items:flex-start!important;padding:20px!important;}
-  #modal-preview .modal{background:#fff!important;color:#000!important;max-width:100%!important;border:none!important;padding:20px!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;}
+  .layout{background:#fff!important;display:block!important;min-height:auto!important;height:auto!important;}
+  #modal-preview{display:block!important;position:static!important;background:#fff!important;backdrop-filter:none!important;z-index:auto!important;padding:0!important;height:auto!important;max-height:none!important;overflow:visible!important;}
+  #modal-preview .modal{background:#fff!important;color:#000!important;max-width:100%!important;max-height:none!important;border:none!important;padding:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important;height:auto!important;}
   #modal-preview h2,#modal-preview .modal-handle,#modal-preview .inv-actions{display:none!important;}
-  .invoice-preview{box-shadow:none!important;padding:0!important;color:#0f172a!important;border-top:none!important;background:#fff!important;}
-  .main-content{padding:0!important;margin:0!important;max-width:100%!important;}
+  .invoice-preview{box-shadow:none!important;padding:15mm!important;color:#0f172a!important;border-top:none!important;background:#fff!important;max-height:none!important;overflow:visible!important;height:auto!important;}
+  .main-content{padding:0!important;margin:0!important;max-width:100%!important;min-height:auto!important;height:auto!important;}
+  .inv-table{page-break-inside:auto;}
+  .inv-table tr{page-break-inside:avoid;}
+  .inv-table thead{display:table-header-group;}
+  .inv-footer{page-break-after:avoid;}
+  .inv-summary-block{page-break-inside:avoid;}
+  .inv-payment-instructions{page-break-inside:avoid;}
   .promptpay-qr-box img{max-width:120px!important;height:auto!important;}
   img{max-width:100%!important;}
   img[src=""],img:not([src]){display:none!important;}
@@ -980,7 +985,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
     
     <div class="inv-actions">
-      <button class="inv-action-btn inv-print" onclick="window.print()">Print or Trigger Save to PDF</button>
+      <button class="inv-action-btn inv-print" onclick="printInvoice()">Print or Trigger Save to PDF</button>
       <button class="inv-action-btn inv-share" onclick="closePreviewModal()">Close Preview</button>
     </div>
   </div>
@@ -1806,6 +1811,10 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
 
   // Open Preview container view overlay
   document.getElementById('modal-preview').classList.add('open');
+}
+
+function printInvoice() {
+  window.print();
 }
 
 function closePreviewModal() {
