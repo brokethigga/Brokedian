@@ -960,20 +960,43 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
+<div id="modal-delete-confirm" class="modal-overlay" onclick="if(event.target.id==='modal-delete-confirm') cancelDelete()">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-handle"></div>
+    <h2 style="color:var(--red);">Confirm Deletion</h2>
+    <p style="color:var(--muted2); margin-bottom:20px; font-size:15px; line-height:1.5;">Are you sure you want to delete <strong id="del-confirm-type" style="color:var(--text);">this item</strong>? This action cannot be undone.</p>
+    <button class="delete-btn" onclick="confirmDelete()" style="margin-top:0;">Yes, Delete It</button>
+    <button class="cancel-btn" onclick="cancelDelete()">Cancel</button>
+  </div>
+</div>
+
+<div id="modal-reset-confirm" class="modal-overlay" onclick="if(event.target.id==='modal-reset-confirm') closeResetModal()">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-handle"></div>
+    <h2 style="color:var(--red);">Factory Reset</h2>
+    <p id="reset-confirm-text" style="color:var(--muted2); margin-bottom:20px; font-size:15px; line-height:1.5;">This will permanently erase all data. This action cannot be undone.</p>
+    <button class="delete-btn" onclick="executeFactoryReset()" style="margin-top:0;">Yes, Wipe All Data</button>
+    <button class="cancel-btn" onclick="closeResetModal()">Cancel</button>
+  </div>
+</div>
+
 <div id="toast" class="toast">Action updated successfully</div>
 
 <script>
 // LOCAL STORAGE MODEL STATE DEFAULTS
-let clients = JSON.parse(localStorage.getItem('brokedian_clients')) || [
+const DATA_WIPED = localStorage.getItem('brokedian_wiped') === '1';
+if(DATA_WIPED) localStorage.removeItem('brokedian_wiped');
+
+let clients = DATA_WIPED ? [] : JSON.parse(localStorage.getItem('brokedian_clients')) || [
   { id: "c1", name: "Agoda Bangkok HQ", project: "Localization Platform Architecture", status: "paid", date: "2026-05-01", items: [{desc: "Principal Cloud Architecture Development", qty: 1, cost: 120000}] },
   { id: "c2", name: "SCB 10X Venture Studio", project: "Smart Contract Safety Audits", status: "pending", date: "2026-05-12", items: [{desc: "EVM Ledger Audit Review Checks", qty: 1, cost: 85000}] }
 ];
 
-let quotes = JSON.parse(localStorage.getItem('brokedian_quotes')) || [
+let quotes = DATA_WIPED ? [] : JSON.parse(localStorage.getItem('brokedian_quotes')) || [
   { id: "q1", name: "True Digital Group", project: "E-Commerce Pipeline Audit", status: "sent", expiry: "2026-05-30", items: [{desc: "Discovery Scoping & Architecture Mapping", qty: 1, cost: 45000}] }
 ];
 
-let pipelineDeals = JSON.parse(localStorage.getItem('brokedian_pipeline')) || [
+let pipelineDeals = DATA_WIPED ? [] : JSON.parse(localStorage.getItem('brokedian_pipeline')) || [
   { id: "p1", name: "Lazada Regional Marketing Hub", amount: 160000, prob: 75, month: "current" },
   { id: "p2", name: "Bangkok Bank Innovation Lab", amount: 220000, prob: 40, month: "next" }
 ];
@@ -1465,13 +1488,41 @@ function saveClientInvoice() {
 
 function deleteClientInvoice() {
   const id = document.getElementById('c-id').value;
-  if(id) {
+  if(!id) return;
+  document.getElementById('del-confirm-type').textContent = "this invoice";
+  document.getElementById('modal-delete-confirm').dataset.action = 'deleteInvoice';
+  document.getElementById('modal-delete-confirm').classList.add('open');
+}
+
+function confirmDelete() {
+  const action = document.getElementById('modal-delete-confirm').dataset.action;
+  if(action === 'deleteInvoice') {
+    const id = document.getElementById('c-id').value;
     clients = clients.filter(c => c.id !== id);
     saveState('clients', clients);
     closeClientModal();
     showToast("Invoice entity deleted");
     renderAppContent();
+  } else if(action === 'deleteQuote') {
+    const id = document.getElementById('q-id').value;
+    quotes = quotes.filter(q => q.id !== id);
+    saveState('quotes', quotes);
+    closeQuoteModal();
+    showToast("Offer removed");
+    renderAppContent();
+  } else if(action === 'deletePipeline') {
+    const id = document.getElementById('p-id').value;
+    pipelineDeals = pipelineDeals.filter(p => p.id !== id);
+    saveState('pipeline', pipelineDeals);
+    closePipelineModal();
+    showToast("Pipeline record wiped");
+    renderAppContent();
   }
+  document.getElementById('modal-delete-confirm').classList.remove('open');
+}
+
+function cancelDelete() {
+  document.getElementById('modal-delete-confirm').classList.remove('open');
 }
 
 // ESTIMATES STORAGE ACTION HANDLERS
@@ -1544,12 +1595,9 @@ function saveQuoteEstimate() {
 }
 
 function deleteQuoteEstimate() {
-  const id = document.getElementById('q-id').value;
-  quotes = quotes.filter(q => q.id !== id);
-  saveState('quotes', quotes);
-  closeQuoteModal();
-  showToast("Offer removed");
-  renderAppContent();
+  document.getElementById('del-confirm-type').textContent = "this quote estimate";
+  document.getElementById('modal-delete-confirm').dataset.action = 'deleteQuote';
+  document.getElementById('modal-delete-confirm').classList.add('open');
 }
 
 // TARGET DEAL PIPELINE HANDLERS
@@ -1607,12 +1655,9 @@ function savePipelineDeal() {
 }
 
 function deletePipelineDeal() {
-  const id = document.getElementById('p-id').value;
-  pipelineDeals = pipelineDeals.filter(p => p.id !== id);
-  saveState('pipeline', pipelineDeals);
-  closePipelineModal();
-  showToast("Pipeline record wiped");
-  renderAppContent();
+  document.getElementById('del-confirm-type').textContent = "this pipeline deal";
+  document.getElementById('modal-delete-confirm').dataset.action = 'deletePipeline';
+  document.getElementById('modal-delete-confirm').classList.add('open');
 }
 
 // MODERN SEAMLESS INTERACTION HELPERS
@@ -1842,10 +1887,22 @@ function importDataJSON(e) {
 }
 
 function factoryResetAllData() {
-  if(confirm("Confirm action? This wipes local secure application storage keys completely.")) {
-    localStorage.clear();
-    location.reload();
-  }
+  document.getElementById('reset-confirm-text').textContent = "This will permanently erase all invoices, quotes, pipeline data, and business settings. This action cannot be undone.";
+  document.getElementById('modal-reset-confirm').classList.add('open');
+}
+
+function executeFactoryReset() {
+  clients = []; quotes = []; pipelineDeals = [];
+  const savedBiz = JSON.stringify(JSON.parse(localStorage.getItem('brokedian_biz') || '{}'));
+  localStorage.clear();
+  localStorage.setItem('brokedian_biz', savedBiz);
+  localStorage.setItem('brokedian_wiped', '1');
+  document.getElementById('modal-reset-confirm').classList.remove('open');
+  location.reload();
+}
+
+function closeResetModal() {
+  document.getElementById('modal-reset-confirm').classList.remove('open');
 }
 </script>
 </body>
