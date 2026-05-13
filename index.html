@@ -582,7 +582,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
             <div class="tooltip-box">Your current cash reserves or bank balance — the money available right now to cover expenses if income stops.</div>
           </span>
         </div>
-        <input type="number" id="cfg-savings" value="150000" oninput="updateForecast()">
+        <input type="number" id="cfg-savings" value="0" oninput="updateForecast();saveForecastConfig()">
       </div>
       <div class="config-card">
         <div class="config-label-row">
@@ -592,7 +592,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
             <div class="tooltip-box">Your total fixed monthly costs — rent, subscriptions, salaries, tools, etc. Used to calculate how many months your savings will last.</div>
           </span>
         </div>
-        <input type="number" id="cfg-burn" value="45000" oninput="updateForecast()">
+        <input type="number" id="cfg-burn" value="0" oninput="updateForecast();saveForecastConfig()">
       </div>
       <div class="config-card">
         <div class="config-label-row">
@@ -602,7 +602,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
             <div class="tooltip-box">The tax percentage deducted from your invoice income. In Thailand, VAT is typically 7%. This reduces your net take-home from each deal.</div>
           </span>
         </div>
-        <input type="number" id="cfg-tax" value="7" oninput="updateForecast()">
+        <input type="number" id="cfg-tax" value="0" oninput="updateForecast();saveForecastConfig()">
       </div>
       <div class="config-card">
         <div class="config-label-row">
@@ -612,7 +612,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
             <div class="tooltip-box">The currency symbol displayed across invoices and forecasts. This is cosmetic only — all values are stored as numbers.</div>
           </span>
         </div>
-        <select id="cfg-currency" onchange="updateForecast()">
+        <select id="cfg-currency" onchange="updateForecast();saveForecastConfig()">
           <option value="฿">THB (฿)</option>
           <option value="$">USD ($)</option>
           <option value="€">EUR (€)</option>
@@ -1020,6 +1020,7 @@ const DEFAULT_QUOTE_EXPIRY_DAYS = 30;
 document.addEventListener("DOMContentLoaded", () => {
   setGreetingTime();
   loadProfileInputs();
+  loadForecastConfig();
   renderAppContent();
 });
 
@@ -1260,6 +1261,28 @@ function renderVisualAnalyticsCharts(paid, pending, late, quoteVal) {
 }
 
 // SIMULATOR ENGINE LOGIC CALCULATIONS
+function saveForecastConfig() {
+  const cfg = {
+    savings: document.getElementById('cfg-savings')?.value || "0",
+    burn: document.getElementById('cfg-burn')?.value || "0",
+    tax: document.getElementById('cfg-tax')?.value || "0",
+    currency: document.getElementById('cfg-currency')?.value || "฿"
+  };
+  try { localStorage.setItem('brokedian_cfg', JSON.stringify(cfg)); } catch(e) {}
+}
+
+function loadForecastConfig() {
+  try {
+    const raw = localStorage.getItem('brokedian_cfg');
+    if(!raw) return;
+    const cfg = JSON.parse(raw);
+    if(document.getElementById('cfg-savings')) document.getElementById('cfg-savings').value = cfg.savings || "0";
+    if(document.getElementById('cfg-burn')) document.getElementById('cfg-burn').value = cfg.burn || "0";
+    if(document.getElementById('cfg-tax')) document.getElementById('cfg-tax').value = cfg.tax || "0";
+    if(document.getElementById('cfg-currency')) document.getElementById('cfg-currency').value = cfg.currency || "฿";
+  } catch(e) {}
+}
+
 function updateForecast() {
   const currency = document.getElementById('cfg-currency')?.value || "฿";
   const coreSavings = parseFloat(document.getElementById('cfg-savings')?.value || 0);
@@ -1893,9 +1916,10 @@ function factoryResetAllData() {
 
 function executeFactoryReset() {
   clients = []; quotes = []; pipelineDeals = [];
-  const savedBiz = JSON.stringify(JSON.parse(localStorage.getItem('brokedian_biz') || '{}'));
-  localStorage.clear();
-  localStorage.setItem('brokedian_biz', savedBiz);
+  localStorage.removeItem('brokedian_clients');
+  localStorage.removeItem('brokedian_quotes');
+  localStorage.removeItem('brokedian_pipeline');
+  localStorage.removeItem('brokedian_cfg');
   localStorage.setItem('brokedian_wiped', '1');
   document.getElementById('modal-reset-confirm').classList.remove('open');
   location.reload();
