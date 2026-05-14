@@ -241,13 +241,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px;
 }
 .chart-bars-wrap {
-  display: flex; align-items: flex-end; justify-content: space-between; height: 120px; padding-top: 10px; gap: 8px;
+  display: flex; align-items: flex-end; justify-content: space-between; height: 160px; padding: 20px 0 10px; gap: 12px;
 }
 .chart-column {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%;
 }
 .chart-bar-fill {
-  width: 100%; background: linear-gradient(to top, var(--accent), var(--accent2)); border-radius: 6px 6px 0 0; min-height: 4px; transition: height 0.4s ease; position: relative;
+  width: 100%; background: linear-gradient(to top, var(--accent), var(--accent2)); border-radius: 6px 6px 0 0; min-height: 4px; transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
 }
 .chart-bar-fill.paid-bar { background: linear-gradient(to top, #16a34a, #22c55e); }
 .chart-label { font-size: 11px; color: var(--muted); font-weight: 700; }
@@ -1316,31 +1316,37 @@ function renderQuotesTabIntelligence(currency) {
 function renderVisualAnalyticsCharts(paid, pending, late, quoteVal) {
   const wrap = document.getElementById('analytics-chart-bars');
   if(!wrap) return;
+  const currency = document.getElementById('cfg-currency')?.value || "฿";
   
-  let maxVal = Math.max(paid, pending, late, quoteVal, 1000);
+  let maxVal = Math.max(paid, pending, late, quoteVal, 1);
   
   function getPercent(val) {
     return ((val / maxVal) * 100).toFixed(0) + "%";
   }
+
+  function formatK(val) {
+    if(val >= 1000) return (val/1000).toFixed(1) + 'k';
+    return Math.round(val).toString();
+  }
   
   wrap.innerHTML = `
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--green);">฿${Math.round(paid/1000)}k</div>
+      <div style="font-size:10px; font-weight:bold; color:var(--green);">${currency}${formatK(paid)}</div>
       <div class="chart-bar-fill paid-bar" style="height: ${getPercent(paid)}"></div>
       <div class="chart-label">Paid</div>
     </div>
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--yellow);">฿${Math.round(pending/1000)}k</div>
+      <div style="font-size:10px; font-weight:bold; color:var(--yellow);">${currency}${formatK(pending)}</div>
       <div class="chart-bar-fill" style="background:var(--yellow); height: ${getPercent(pending)}"></div>
       <div class="chart-label">Pending</div>
     </div>
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--red);">฿${Math.round(late/1000)}k</div>
+      <div style="font-size:10px; font-weight:bold; color:var(--red);">${currency}${formatK(late)}</div>
       <div class="chart-bar-fill" style="background:var(--red); height: ${getPercent(late)}"></div>
       <div class="chart-label">Overdue</div>
     </div>
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--accent2);">฿${Math.round(quoteVal/1000)}k</div>
+      <div style="font-size:10px; font-weight:bold; color:var(--accent2);">${currency}${formatK(quoteVal)}</div>
       <div class="chart-bar-fill" style="background:var(--accent); height: ${getPercent(quoteVal)}"></div>
       <div class="chart-label">Quotes</div>
     </div>
