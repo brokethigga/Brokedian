@@ -471,21 +471,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   background: var(--accent); color: #0A0A0C; border-color: var(--accent);
 }
 .tooltip-box {
-  display: none; position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%);
+  --tt-x: -50%;
+  display: none; position: absolute; bottom: calc(100% + 12px); 
+  left: 50%; transform: translateX(var(--tt-x));
   background: #1C1C20; border: 1px solid rgba(200,169,110,0.4);
-  border-radius: 14px; padding: 12px 16px; width: 240px; z-index: 400;
+  border-radius: 14px; padding: 12px 16px; 
+  width: 240px; max-width: 80vw; z-index: 400;
   box-shadow: 0 12px 40px rgba(0,0,0,0.8);
   font-size: 13px; font-weight: 400; color: #fff; line-height: 1.5;
   text-align: left; pointer-events: none; font-style: normal; letter-spacing: normal;
-  animation: tooltipFade .2s ease;
+  animation: tooltipFade .2s ease forwards;
 }
-@keyframes tooltipFade { from{opacity:0; transform:translateX(-50%) translateY(5px)} to{opacity:1; transform:translateX(-50%) translateY(0)} }
+@keyframes tooltipFade { 
+  from { opacity: 0; transform: translateX(var(--tt-x)) translateY(8px); } 
+  to { opacity: 1; transform: translateX(var(--tt-x)) translateY(0); } 
+}
 .tooltip-box::after {
   content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
   border: 6px solid transparent; border-top-color: rgba(200,169,110,0.4);
 }
 .info-badge-wrap.active .tooltip-box, .info-badge-wrap:hover .tooltip-box {
   display: block;
+}
+@media(max-width: 600px) {
+  /* On mobile 2-column grid, right-side cards need right-aligned tooltips */
+  .config-card:nth-child(even) .tooltip-box {
+    --tt-x: 0;
+    left: auto; right: 0;
+  }
+  .config-card:nth-child(even) .tooltip-box::after {
+    left: auto; right: 10px; transform: none;
+  }
 }
 @media(hover: none) {
   .info-badge-wrap:hover .tooltip-box { display: none; }
