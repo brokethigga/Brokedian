@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no">
 <meta name="theme-color" content="#0B1020">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -30,12 +30,13 @@
   --radius:20px; --radius-sm:14px; --nav-h:76px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+html, body { width: 100%; height: 100%; overflow-x: hidden; position: relative; }
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing: antialiased;}
 ::-webkit-scrollbar{width:0;}
 
 /* ── LAYOUT ── */
-.layout{display:flex;flex-direction:column;min-height:100vh;}
-.main-content{flex:1;padding:0 16px calc(var(--nav-h) + 32px);}
+.layout{display:flex;flex-direction:column;min-height:100vh;width:100%;}
+.main-content{flex:1;padding:0 16px calc(var(--nav-h) + 32px);width:100%;max-width:100%;overflow-x:hidden;}
 @media(min-width:1024px){
   .layout{flex-direction:row;}
   .main-content{flex:1;padding:32px 40px 40px;max-width:1000px;}
@@ -2100,10 +2101,6 @@ function executeFactoryReset() {
 
 function closeResetModal() {
   document.getElementById('modal-reset-confirm').classList.remove('open');
-}
-</script>
-</body>
-</html>pen');
 }
 </script>
 </body>
