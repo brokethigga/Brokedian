@@ -31,8 +31,8 @@ self.addEventListener('push', e => {
   const data = e.data ? e.data.json() : { title: 'Brokedian', body: 'Check your income status' };
   const options = {
     body: data.body,
-    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="%237c6ef5"/><text x="96" y="130" font-size="100" text-anchor="middle" fill="white">💼</text></svg>',
-    badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="%237c6ef5"/><text x="96" y="130" font-size="100" text-anchor="middle" fill="white">💼</text></svg>',
+    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="%23007AFF"/><text x="96" y="130" font-size="100" text-anchor="middle" fill="white">💼</text></svg>',
+    badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="%23007AFF"/><text x="96" y="130" font-size="100" text-anchor="middle" fill="white">💼</text></svg>',
     vibrate: [100, 50, 100],
     data: { url: './' }
   };
