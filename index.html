@@ -646,7 +646,7 @@ body{font-family:'DM Sans',sans-serif;  background: linear-gradient(180deg, #EEE
     <div class="settings-panel">
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">Liquid Savings</div>
+          <div class="config-label">Liquid<br>Savings</div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
             <div class="tooltip-box">Your current cash reserves or bank balance — the money available right now to cover expenses if income stops.</div>
@@ -656,7 +656,7 @@ body{font-family:'DM Sans',sans-serif;  background: linear-gradient(180deg, #EEE
       </div>
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">Monthly Expenses</div>
+          <div class="config-label">Monthly<br>Expenses</div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
             <div class="tooltip-box">Your total fixed monthly costs — rent, subscriptions, salaries, tools, etc. Used to calculate how many months your savings will last.</div>
@@ -666,7 +666,7 @@ body{font-family:'DM Sans',sans-serif;  background: linear-gradient(180deg, #EEE
       </div>
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">VAT / Tax Rate (%)</div>
+          <div class="config-label">VAT / Tax Rate<br>(%)</div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
             <div class="tooltip-box">The tax percentage deducted from your invoice income. In Thailand, VAT is typically 7%. This reduces your net take-home from each deal.</div>
@@ -827,7 +827,7 @@ body{font-family:'DM Sans',sans-serif;  background: linear-gradient(180deg, #EEE
       </div>
     </div>
     
-    <button class="profile-save-btn" onclick="switchScreen('dashboard', document.getElementById('nav-dashboard'))">Apply and Sync Settings</button>
+    <button class="profile-save-btn" onclick="switchScreen('clients', document.getElementById('nav-clients'))">Apply and Sync Settings</button>
     <div style="height:24px"></div>
   </div>
 
@@ -1434,7 +1434,7 @@ function updateForecast() {
         </div>
         <div style="font-size:12px; color:var(--muted2); margin-top:2px; display:flex; justify-content:space-between;">
           <span>Probability Weight: ${p.prob}% (${p.month === 'current' ? 'Current Month' : 'Next Month'})</span>
-          <span style="color:var(--accent2); font-weight:700;">Expected: ${currency}${Math.round(weightedAmount).toLocaleString()}</span>
+          <span style="color:var(--accent2); font-weight:700;">Expected:<br>${currency}${Math.round(weightedAmount).toLocaleString()}</span>
         </div>
         <div class="prob-bar"><div class="prob-fill" style="width: ${p.prob}%"></div></div>
       </div>
@@ -1794,7 +1794,10 @@ function savePipelineDeal() {
   const prob = parseInt(document.getElementById('pipe-prob').value) || 0;
   const month = document.getElementById('pipe-month').value;
 
-  if(!name) return;
+  if(!name || amount <= 0) {
+    showToast("Add a target name and expected deal value");
+    return;
+  }
 
   if(!id) {
     pipelineDeals.push({ id: "p_" + Date.now(), name, amount, prob, month });
