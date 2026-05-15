@@ -478,10 +478,11 @@ body{font-family:'DM Sans',sans-serif;  background: linear-gradient(180deg, #EEE
     padding: 0 !important; margin: 0 !important; background: #fff !important; overflow: visible !important;
   }
   .invoice-preview { 
-    width: 100% !important; min-width: 0 !important; min-height: 0 !important; height: auto !important;
+    display: block !important; width: 100% !important; min-width: 0 !important; min-height: 0 !important; height: auto !important;
     padding: 5mm !important; margin: 0 !important; box-shadow: none !important; overflow: visible !important;
     border-top: none !important;
   }
+  .inv-notes-section, .inv-summary-wrap, .inv-footer { break-inside: avoid; page-break-inside: avoid; }
   .inv-brand, .inv-meta .doc-type, .inv-party-name, .inv-summary-table tr.total-row td:last-child { color: #000 !important; }
   .inv-status-badge { border: 1px solid #ddd !important; background: transparent !important; color: #000 !important; }
   .inv-table th { border-bottom: 2px solid #000 !important; color: #000 !important; }
