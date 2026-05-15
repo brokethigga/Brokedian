@@ -1163,6 +1163,7 @@ function switchScreen(screenId, element) {
   document.getElementById('screen-' + screenId).classList.add('active');
   if(element) element.classList.add('active');
   
+  document.querySelector('.main-content').scrollIntoView({ block: 'start' });
   renderAppContent();
 }
 
