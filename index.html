@@ -11,6 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <style>
 /* ═══ 1. THEME VARIABLES ═══ */
 :root {
@@ -492,7 +493,28 @@ body{font-family:'DM Sans',sans-serif;  background: linear-gradient(180deg, #EEE
   .inv-payment-box { background: #fff !important; border: 1px solid #eee !important; }
 }
 
-/* ═══ 9. TOAST ═══ */
+/* ═══ 9. CROP MODAL ═══ */
+.crop-container {
+  background: #1a1a1e; border-radius: 12px; overflow: hidden; max-height: 400px; position: relative;
+}
+.crop-container img { display: block; max-width: 100%; }
+.crop-container .cropper-view-box { border-radius: 0; outline: 1px solid #fff; outline-color: rgba(255,255,255,.75); }
+.crop-container .cropper-face { background-color: transparent; }
+.crop-container .cropper-dashed { display: none; }
+.crop-container .cropper-modal { background: rgba(0,0,0,.65); }
+.crop-zoom-row {
+  display: flex; align-items: center; gap: 12px; margin: 16px 0; padding: 0 4px;
+}
+.crop-zoom-row input[type="range"] {
+  flex: 1; -webkit-appearance: none; appearance: none; height: 4px;
+  background: var(--bg3); border-radius: 99px; outline: none;
+}
+.crop-zoom-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+  background: var(--accent); border: none; cursor: pointer;
+}
+
+/* ═══ 10. TOAST ═══ */
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);
   background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);
   padding:12px 20px;font-size:15px;font-weight:500;transition:transform .4s cubic-bezier(.16,1,.3,1);z-index:999;white-space:nowrap;}
@@ -1083,8 +1105,26 @@ body{font-family:'DM Sans',sans-serif;  background: linear-gradient(180deg, #EEE
   </div>
 </div>
 
+<div id="modal-crop" class="modal-overlay" onclick="if(event.target.id==='modal-crop') cancelCrop()">
+  <div class="modal" style="max-width:520px; padding:20px; border-radius:20px;">
+    <div class="modal-handle"></div>
+    <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:16px;">Crop Logo</h2>
+    <div class="crop-container" id="crop-container">
+      <img id="crop-image" src="" alt="Crop preview">
+    </div>
+    <div class="crop-zoom-row">
+      <svg width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35M8 11h6M11 8v6"/></svg>
+      <input type="range" id="crop-zoom" min="0.1" max="3" step="0.01" value="1" oninput="onCropZoom(this.value)">
+      <svg width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35M8 11h6"/></svg>
+    </div>
+    <button class="submit-btn" onclick="applyCrop()">Apply & Save</button>
+    <button class="cancel-btn" onclick="cancelCrop()" style="margin-top:8px;">Cancel</button>
+  </div>
+</div>
+
 <div id="toast" class="toast">Action updated successfully</div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script>
 // LOCAL STORAGE MODEL STATE DEFAULTS
 const DATA_WIPED = localStorage.getItem('brokedian_wiped') === '1';
@@ -2011,21 +2051,55 @@ function triggerLogoUpload() {
   document.getElementById('logo-file-elem').click();
 }
 
+let cropCropper = null;
+
 function handleLogoUpload(e) {
   const file = e.target.files[0];
   if(!file) return;
   const reader = new FileReader();
   reader.onload = function(evt) {
-    biz.logo = evt.target.result;
-    document.getElementById('biz-logo-img').src = biz.logo;
-    document.getElementById('biz-logo-img').style.display = "block";
-    document.getElementById('biz-logo-placeholder').style.display = "none";
-    document.getElementById('avatar-upload-guide').classList.add('hidden');
-    document.getElementById('remove-logo-btn').style.display = "inline-flex";
-    saveProfileInfo();
-    showToast("Business logo synced");
+    const img = document.getElementById('crop-image');
+    img.src = evt.target.result;
+    img.onload = function() {
+      if (cropCropper) cropCropper.destroy();
+      cropCropper = new Cropper(img, {
+        aspectRatio: 1,
+        viewMode: 1,
+        autoCropArea: 1,
+        responsive: true,
+        background: false,
+        dragMode: 'move',
+      });
+      document.getElementById('crop-zoom').value = 1;
+    };
+    document.getElementById('modal-crop').classList.add('open');
   };
   reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function onCropZoom(val) {
+  if (cropCropper) cropCropper.zoomTo(parseFloat(val));
+}
+
+function applyCrop() {
+  if (!cropCropper) return;
+  const canvas = cropCropper.getCroppedCanvas({ width: 512, height: 512, imageSmoothingQuality: 'high' });
+  biz.logo = canvas.toDataURL('image/jpeg', 0.92);
+  document.getElementById('biz-logo-img').src = biz.logo;
+  document.getElementById('biz-logo-img').style.display = "block";
+  document.getElementById('biz-logo-placeholder').style.display = "none";
+  document.getElementById('avatar-upload-guide').classList.add('hidden');
+  document.getElementById('remove-logo-btn').style.display = "inline-flex";
+  saveProfileInfo();
+  showToast("Business logo synced");
+  cancelCrop();
+}
+
+function cancelCrop() {
+  if (cropCropper) { cropCropper.destroy(); cropCropper = null; }
+  document.getElementById('modal-crop').classList.remove('open');
+  document.getElementById('crop-image').src = '';
 }
 
 function removeBizLogo() {
