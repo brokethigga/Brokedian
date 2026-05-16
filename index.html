@@ -62,10 +62,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 
 /* ═══ 3. LAYOUT & NAVIGATION ═══ */
 .layout{display:flex;flex-direction:column;min-height:100vh;width:100%;}
-.main-content{flex:1;padding:0 16px calc(var(--nav-h) + 32px);width:100%;max-width:100%;overflow-x:hidden;}
+.main-content{flex:1;padding:0 16px calc(var(--nav-h) + 32px);width:100%;overflow-x:hidden;}
 @media(min-width:1024px){
+  .screen.active { overflow: visible; }
+  .hero-dashboard-panel, .status-banner, .metrics-grid { width: 100%; }
+
   .layout{flex-direction:row;}
-  .main-content{flex:1;padding:32px 40px 40px;max-width:1000px;}
+  .main-content{flex:1;padding:32px 40px 40px;min-width:0;width:auto;max-width:1440px;margin:0 auto;}
 }
 
 .nav{
@@ -76,6 +79,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   z-index:100;padding:0 4px calc(env(safe-area-inset-bottom,0px)/2);
 }
 @media(min-width:1024px){
+  .screen.active { overflow: visible; }
+  .hero-dashboard-panel, .status-banner, .metrics-grid { width: 100%; }
+
   .nav{
     position:sticky;top:0;left:0;width:220px;height:100vh;
     flex-direction:column;justify-content:flex-start;align-items:stretch;
@@ -87,7 +93,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   .nav-logo svg{width:28px;height:28px;stroke:var(--accent2);}
 }
 .nav-logo{display:none;}
-@media(min-width:1024px){.nav-logo{display:flex;}}
+@media(min-width:1024px){
+  .screen.active { overflow: visible; }
+  .hero-dashboard-panel, .status-banner, .metrics-grid { width: 100%; }
+.nav-logo{display:flex;}}
 
 .nav-item{
   display:flex;flex-direction:column;align-items:center;gap:4px;
@@ -95,17 +104,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   transition:all 0.2s;flex:1;max-width:100px;min-width:0;
 }
 @media(min-width:1024px){
+  .screen.active { overflow: visible; }
+  .hero-dashboard-panel, .status-banner, .metrics-grid { width: 100%; }
+
   .nav-item{flex-direction:row;gap:12px;max-width:none;padding:12px 14px;flex:none;}
 }
 .nav-item svg{width:22px;height:22px;stroke:var(--muted);transition:all 0.2s;flex-shrink:0;}
 .nav-item span{font-size:10px;font-family:'Syne',sans-serif;font-weight:700;color:var(--muted);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-@media(min-width:1024px){.nav-item span{font-size:13px;letter-spacing:.05em;}}
+@media(min-width:1024px){
+  .screen.active { overflow: visible; }
+  .hero-dashboard-panel, .status-banner, .metrics-grid { width: 100%; }
+.nav-item span{font-size:13px;letter-spacing:.05em;}}
 .nav-item.active svg{stroke:var(--accent);}
 .nav-item.active span{color:var(--accent);}
 .nav-item.active{background:var(--accent-bg);}
 
-.screen{display:none;animation:fadeUp .3s ease;}
-.screen.active{display:block;}
+.screen{display:none;animation:fadeUp .3s ease;width:100%;box-sizing:border-box;}
+.screen.active{display:block;overflow:visible;}
 .page-header{padding:15px 0 15px;display:flex;align-items:center;justify-content:space-between;}
 .page-header-left{flex:1;min-width:0;}
 .page-header h1{font-family:'Syne',sans-serif;font-size:clamp(22px, 5vw, 22px);font-weight:800;line-height:1.1;}
@@ -137,6 +152,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   box-shadow: 0 4px 24px rgba(0,0,0,0.06);
   position: relative;
   transition: background .25s ease, border-color .25s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 .hero-dashboard-panel::before {
   content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px;
@@ -177,14 +194,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 }
 
 .status-banner{
-  margin:0 0 24px;padding:24px 28px;border-radius:20px;
-  position:relative;overflow:hidden;
-  border:1px solid rgba(255,255,255,0.50);
-  background:rgba(255,255,255,0.60);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  min-height:140px;display:flex;flex-direction:column;justify-content:space-between;
-  transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+  width:100%;box-sizing:border-box;
+  background:rgba(255,255,255,0.60);border:1px solid rgba(255,255,255,0.50);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:var(--radius);padding:18px 22px;margin-bottom:20px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.04);display:flex;align-items:center;
+  justify-content:space-between;gap:20px;transition:background .25s ease,border-color .25s ease;
 }
 .status-content{position:relative;z-index:2;}
 .status-label{font-size:11px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px;}
@@ -196,7 +211,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .status-banner.warn .burn-progress-bar{background:var(--yellow);}
 .status-banner.danger .burn-progress-bar{background:var(--red);}
 
-.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-bottom:24px;}
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-bottom:24px;width:100%;box-sizing:border-box;}
 @media(max-width:340px){.metrics-grid{grid-template-columns:1fr;}}
 .metric-card{background:rgba(255,255,255,0.60);border:1px solid rgba(255,255,255,0.50);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
@@ -347,13 +362,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .info-badge-wrap.active .tooltip-box, .info-badge-wrap:hover .tooltip-box {
   display: block;
 }
+@media(min-width: 600px) {
+  .config-card:nth-child(4) .info-badge-wrap .tooltip-box {
+    --tt-x: 0;
+    left: auto; right: calc(-20% + 0px);
+  }
+  .config-card:nth-child(4) .info-badge-wrap .tooltip-box::after {
+    left: auto; right: 8px; transform: none;
+    border: 6px solid transparent; border-top-color: var(--border2);
+  }
+}
 @media(max-width: 600px) {
   .config-card:nth-child(even) .tooltip-box {
     --tt-x: 0;
     left: auto; right: 0;
   }
   .config-card:nth-child(even) .tooltip-box::after {
-    left: auto; right: 10px; transform: none;
+    left: auto; right: 0px; transform: none;
   }
 }
 @media(hover: none) {
@@ -738,7 +763,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
       </div>
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">Base Currency</div>
+          <div class="config-label">Base Currency<br>&nbsp;</div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
             <div class="tooltip-box">The currency symbol displayed across invoices and forecasts. This is cosmetic only — all values are stored as numbers.</div>
