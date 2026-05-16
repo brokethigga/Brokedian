@@ -1,5 +1,8 @@
 # Project Guidelines
 
+> *Operational Protocol: Follow global ECC Instincts (defined in ../../AGENTS.md) in addition to these project-specific requirements.*
+
+
 ## 1. Required Coding Workflow
 AI MUST follow these steps for every request:
 
