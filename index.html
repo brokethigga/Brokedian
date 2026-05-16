@@ -203,7 +203,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 }
 .status-content{position:relative;z-index:2;}
 .status-label{font-size:11px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px;}
-.status-title{font-family:'Syne',sans-serif;font-size:clamp(18px, 5vw, 22px);font-weight:800;color:var(--text);line-height:1.2;}
+.status-title{font-family:'Syne',sans-serif;font-size:clamp(17px, 2vw, 17px);font-weight:700;color:var(--text);line-height:1.2;}
 .status-sub{font-size:14px;color:var(--muted2);margin-top:6px;margin-bottom:14px;}
 .burn-progress-container{width:100%;height:5px;background:rgba(0,0,0,0.06);border-radius:99px;overflow:hidden;}
 .burn-progress-bar{height:100%;width:0%;transition:width .6s ease;border-radius:99px;}
@@ -228,7 +228,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   transition:background .25s ease, border-color .25s ease, box-shadow .25s ease;
 }
 .chart-bars-wrap {
-  display: flex; align-items: flex-end; justify-content: space-between; height: 160px; padding: 20px 0 10px; gap: 12px;
+  display: flex; align-items: flex-end; justify-content: space-between; height: 200px; padding: 20px 0 10px; gap: 12px;
+}
+@media(min-width: 1024px) {
+  .chart-bars-wrap { height: 200px; padding: 24px 0 12px; }
+  .visual-chart-container { padding: 24px; }
 }
 .chart-column {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%;
@@ -237,7 +241,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   width: 100%; background: linear-gradient(to top, var(--accent), #34CADE); border-radius: 6px 6px 0 0; min-height: 4px; transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
 }
 .chart-bar-fill.paid-bar { background: linear-gradient(to top, #248A3D, #34C759); }
-.chart-label { font-size: 11px; color: var(--muted); font-weight: 700; }
+.chart-label { font-size: 12px; color: var(--muted); font-weight: 700; }
 
 .pipeline-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;}
@@ -1491,22 +1495,22 @@ function renderVisualAnalyticsCharts(paid, pending, late, quoteVal) {
   
   wrap.innerHTML = `
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--green);">${currency}${formatK(paid)}</div>
+      <div style="font-size:12px; font-weight:bold; color:var(--green);">${currency}${formatK(paid)}</div>
       <div class="chart-bar-fill paid-bar" style="height: ${getPercent(paid)}"></div>
       <div class="chart-label">Paid</div>
     </div>
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--yellow);">${currency}${formatK(pending)}</div>
+      <div style="font-size:12px; font-weight:bold; color:var(--yellow);">${currency}${formatK(pending)}</div>
       <div class="chart-bar-fill" style="background:var(--yellow); height: ${getPercent(pending)}"></div>
       <div class="chart-label">Pending</div>
     </div>
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--red);">${currency}${formatK(late)}</div>
+      <div style="font-size:12px; font-weight:bold; color:var(--red);">${currency}${formatK(late)}</div>
       <div class="chart-bar-fill" style="background:var(--red); height: ${getPercent(late)}"></div>
       <div class="chart-label">Overdue</div>
     </div>
     <div class="chart-column">
-      <div style="font-size:10px; font-weight:bold; color:var(--accent2);">${currency}${formatK(quoteVal)}</div>
+      <div style="font-size:12px; font-weight:bold; color:var(--accent2);">${currency}${formatK(quoteVal)}</div>
       <div class="chart-bar-fill" style="background:var(--accent); height: ${getPercent(quoteVal)}"></div>
       <div class="chart-label">Quotes</div>
     </div>
