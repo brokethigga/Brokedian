@@ -62,13 +62,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 
 /* ═══ 3. LAYOUT & NAVIGATION ═══ */
 .layout{display:flex;flex-direction:column;min-height:100vh;width:100%;}
-.main-content{flex:1;padding:0 16px calc(var(--nav-h) + 32px);width:100%;overflow-x:hidden;}
+.main-content{flex:1;padding:0 16px calc(var(--nav-h) + 32px + env(safe-area-inset-bottom,0px));width:100%;overflow-x:hidden;}
 @media(min-width:1024px){
   .screen.active { overflow: visible; }
   .hero-dashboard-panel, .status-banner, .metrics-grid { width: 100%; }
-
   .layout{flex-direction:row;}
-  .main-content{flex:1;padding:32px 40px 40px;min-width:0;width:auto;max-width:1440px;margin:0 auto;}
+  .main-content{flex:1;padding:32px 40px;min-width:0;width:auto;max-width:1440px;margin:0 auto;}
 }
 
 .nav{
@@ -582,6 +581,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);
   padding:12px 20px;font-size:15px;font-weight:500;transition:transform .4s cubic-bezier(.16,1,.3,1);z-index:999;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
+
+/* ═══ PWA INSTALL BANNER ═══ */
+.install-banner{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:14px 20px;display:flex;align-items:center;gap:16px;z-index:900;box-shadow:0 8px 32px rgba(0,0,0,.15);width:calc(100% - 48px);max-width:420px;}
+.install-banner span{font-size:14px;font-weight:600;flex:1;}
+.install-banner-btn{background:var(--accent);color:#fff;border:none;padding:8px 18px;border-radius:99px;font-size:13px;font-weight:700;cursor:pointer;}
+.install-banner-close{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px;}
+
+/* ═══ OFFLINE INDICATOR ═══ */
+#offline-indicator {
+  display: none; position: fixed; top: 0; left: 0; right: 0;
+  background: #FF9500; color: #fff; text-align: center;
+  font-size: 13px; font-weight: 600; padding: 8px; z-index: 9999;
+  transition: opacity .3s;
+}
+
+/* ═══ PAYWALL MODAL ═══ */
+.paywall-banner{background:linear-gradient(135deg,var(--accent),#5856D6);color:#fff;padding:12px 16px;border-radius:var(--radius);margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;}
+.paywall-banner-text{flex:1;}
+.paywall-banner-title{font-weight:700;font-size:14px;margin-bottom:2px;}
+.paywall-banner-sub{font-size:12px;opacity:0.85;}
+.paywall-banner-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:8px 16px;border-radius:99px;font-size:13px;font-weight:700;white-space:nowrap;}
+.paywall-banner:hover .paywall-banner-btn{background:rgba(255,255,255,0.35);}
+
+.modal-paywall{background:var(--card);border-radius:24px;padding:32px 28px;max-width:420px;width:100%;text-align:center;}
+.paywall-hero-icon{width:64px;height:64px;background:linear-gradient(135deg,var(--accent),#5856D6);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+.paywall-hero-icon svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:1.8;}
+.paywall-title{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--text);margin-bottom:8px;}
+.paywall-sub{font-size:15px;color:var(--muted2);line-height:1.5;margin-bottom:24px;}
+.paywall-price{display:flex;align-items:baseline;justify-content:center;gap:4px;margin-bottom:24px;}
+.paywall-price-amount{font-family:'Syne',sans-serif;font-weight:800;font-size:48px;color:var(--text);}
+.paywall-price-period{font-size:16px;color:var(--muted);}
+.paywall-features{text-align:left;margin-bottom:24px;}
+.paywall-feature{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.paywall-feature:last-child{border-bottom:none;}
+.paywall-feature-icon{width:24px;height:24px;background:var(--green-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.paywall-feature-icon svg{width:14px;height:14px;stroke:var(--green);stroke-width:2.5;}
+.paywall-feature-text{font-size:14px;color:var(--text);}
+.paywall-cta{background:linear-gradient(135deg,var(--accent),#5856D6);color:#fff;border:none;border-radius:14px;padding:16px;width:100%;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.paywall-cta:hover{opacity:0.85;}
+.paywall-dismiss{font-size:13px;color:var(--muted);margin-top:12px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -628,6 +667,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
           <svg id="theme-icon-sun" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         </button>
       </div>
+    </div>
+
+    <div id="paywall-banner" class="paywall-banner" style="display:none;" onclick="openPaywallModal()">
+      <div class="paywall-banner-text">
+        <div class="paywall-banner-title">Broke Pro — ฿59/month</div>
+        <div class="paywall-banner-sub">Unlimited invoices, no watermark, auto-reminders</div>
+      </div>
+      <div class="paywall-banner-btn">Upgrade</div>
     </div>
 
     <div class="hero-dashboard-panel">
@@ -907,13 +954,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
     
     <div class="control-block" style="margin-top:0;">
       <div class="control-block-label">Business Profile Tools</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
         <button class="control-btn" onclick="exportBizJSON()">
           <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Backup
+          Profile
         </button>
-        <button class="control-btn" onclick="document.getElementById('import-biz-file').click()">Import</button>
+        <button class="control-btn" onclick="exportAllData()">
+          <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Full Backup
+        </button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+        <button class="control-btn" onclick="document.getElementById('import-biz-file').click()">Import Profile</button>
         <input type="file" id="import-biz-file" style="display:none" accept=".json" onchange="importBizJSON(event)">
+        <button class="control-btn" onclick="document.getElementById('import-full-file').click()">Import Full</button>
+        <input type="file" id="import-full-file" style="display:none" accept=".json" onchange="importAllData(event)">
         <button class="control-btn" onclick="resetBusinessSettings()">Reset</button>
       </div>
     </div>
@@ -1148,6 +1203,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
         
         <div class="inv-footer">
           <div id="pdf-custom-notes">Thank you for your business.</div>
+          <div id="pdf-watermark" style="margin-top:6px;font-size:10px;color:#6E6E73;">Generated by Brokedian — brokedian.co.th</div>
         </div>
       </div>
     </div>
@@ -1191,7 +1247,49 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   </div>
 </div>
 
+<div id="pwa-install-banner" class="install-banner" style="display:none;">
+  <span>Install Broke Dian for offline access</span>
+  <button id="pwa-install-btn" class="install-banner-btn">Install</button>
+  <button class="install-banner-close" onclick="closePwaBanner()">✕</button>
+</div>
+
+<div id="offline-indicator">You are offline — data saved locally</div>
+
 <div id="toast" class="toast">Action updated successfully</div>
+
+<div id="modal-paywall-overlay" class="modal-overlay" onclick="if(event.target.id==='modal-paywall-overlay') closePaywallModal()">
+  <div class="modal-paywall">
+    <div class="paywall-hero-icon">
+      <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+    </div>
+    <div class="paywall-title">Upgrade to Broke Pro</div>
+    <div class="paywall-sub">Remove watermarks, unlock unlimited invoices, and get automatic payment reminders.</div>
+    <div class="paywall-price">
+      <span class="paywall-price-amount">฿59</span>
+      <span class="paywall-price-period">/ month</span>
+    </div>
+    <div class="paywall-features">
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
+        <span class="paywall-feature-text">Unlimited clients & invoices</span>
+      </div>
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
+        <span class="paywall-feature-text">Clean PDF — no watermark</span>
+      </div>
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
+        <span class="paywall-feature-text">Unlimited invoice & payment notifications</span>
+      </div>
+      <div class="paywall-feature">
+        <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
+        <span class="paywall-feature-text">Multi-device sync & priority support</span>
+      </div>
+    </div>
+    <button class="paywall-cta" onclick="openStripeCheckout()">Upgrade to Broke Pro — ฿59/mo</button>
+    <div class="paywall-dismiss" onclick="closePaywallModal()">Maybe later</div>
+  </div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script>
@@ -1227,7 +1325,109 @@ let biz = JSON.parse(localStorage.getItem('brokedian_biz')) || {
   logo: ""
 };
 
-const DEFAULT_QUOTE_EXPIRY_DAYS = 30;
+const DEFAULT_BURN = 45000;
+const DEFAULT_SAVINGS = 150000;
+const DEFAULT_TAX = 7;
+const DEFAULT_CURRENCY = "฿";
+const DEFAULT_EXPIRY_DAYS = 30;
+
+// TIER LIMITS
+const FREE_LIMITS = { clients: 5, invoicesPerMonth: 15, quotes: 10, pipeline: 3, lineItems: 5, notifications: 3 };
+const NOTIF_TYPES = { invoiceSent: 'invoiceSent', paymentReceived: 'paymentReceived' };
+
+let userTier = localStorage.getItem('brokedian_tier') || 'free'; // 'free' or 'pro'
+let notifCounts = { invoiceSent: 0, paymentReceived: 0 };
+let monthlyInvoiceCount = 0;
+let currentMonth = new Date().getMonth();
+
+function resetNotifCounts() {
+  const now = new Date();
+  if (now.getMonth() !== currentMonth) {
+    notifCounts = { invoiceSent: 0, paymentReceived: 0 };
+    monthlyInvoiceCount = 0;
+    currentMonth = now.getMonth();
+  }
+}
+resetNotifCounts();
+
+function canSendNotification(type) {
+  if (userTier === 'pro') return { allowed: true, remaining: Infinity };
+  resetNotifCounts();
+  const limit = FREE_LIMITS.notifications;
+  const current = notifCounts[type] || 0;
+  return { allowed: current < limit, remaining: Math.max(0, limit - current) };
+}
+
+function useNotification(type) {
+  if (userTier === 'pro') return;
+  resetNotifCounts();
+  notifCounts[type] = (notifCounts[type] || 0) + 1;
+  localStorage.setItem('brokedian_notif_counts', JSON.stringify(notifCounts));
+  localStorage.setItem('brokedian_notif_month', currentMonth);
+}
+
+function getNotifStatus(type) {
+  const { allowed, remaining } = canSendNotification(type);
+  return `${notifCounts[type] || 0}/${FREE_LIMITS.notifications} sent`;
+}
+
+function openPaywallModal() {
+  document.getElementById('modal-paywall-overlay').classList.add('open');
+}
+function closePaywallModal() {
+  document.getElementById('modal-paywall-overlay').classList.remove('open');
+}
+function openStripeCheckout() {
+  showToast('Stripe integration coming soon! For now, contact billing@brokedian.co.th');
+  closePaywallModal();
+}
+function upgradeToPro() {
+  userTier = 'pro';
+  localStorage.setItem('brokedian_tier', 'pro');
+  showToast('Welcome to Broke Pro! All limits removed.');
+  closePaywallModal();
+  renderAppContent();
+}
+let monthlyInvoiceCount = 0;
+let currentMonth = new Date().getMonth();
+
+function checkTierLimits() {
+  const now = new Date();
+  if (now.getMonth() !== currentMonth) {
+    monthlyInvoiceCount = 0;
+    notifCounts.invoiceSent = 0;
+    notifCounts.paymentReceived = 0;
+    currentMonth = now.getMonth();
+  }
+
+  const limits = {
+    clients: { current: clients.length, max: FREE_LIMITS.clients, label: 'clients' },
+    invoices: { current: monthlyInvoiceCount, max: FREE_LIMITS.invoicesPerMonth, label: 'invoices this month' },
+    quotes: { current: quotes.length, max: FREE_LIMITS.quotes, label: 'quotes' },
+    pipeline: { current: pipelineDeals.length, max: FREE_LIMITS.pipeline, label: 'pipeline deals' }
+  };
+
+  const exceeded = Object.entries(limits).filter(([, v]) => v.current >= v.max);
+  return { allowed: exceeded.length === 0, limits, exceeded: exceeded.map(([k]) => k) };
+}
+
+function canAdd(type) {
+  const result = checkTierLimits();
+  const limitMap = { clients: 'clients', quotes: 'quotes', pipeline: 'pipeline', invoice: 'invoices' };
+  const key = limitMap[type];
+  if (!key) return true;
+  return result.limits[key] ? result.limits[key].current < result.limits[key].max : true;
+}
+
+function showLimitBlocked(type) {
+  const msgs = {
+    clients: 'Free tier limited to 5 clients. Upgrade to Pro for unlimited.',
+    invoices: 'Free tier limited to 15 invoices/month. Upgrade to Pro for unlimited.',
+    quotes: 'Free tier limited to 10 quotes. Upgrade to Pro for unlimited.',
+    pipeline: 'Free tier limited to 3 pipeline deals. Upgrade to Pro for unlimited.'
+  };
+  showToast(msgs[type] || 'Free tier limit reached. Upgrade to Broke Pro.');
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -1236,7 +1436,19 @@ document.addEventListener("DOMContentLoaded", () => {
   loadForecastConfig();
   renderAppContent();
   initMobileTooltips();
+  initPaywallBanner();
 });
+
+function initPaywallBanner() {
+  const banner = document.getElementById('paywall-banner');
+  if (userTier === 'pro') {
+    banner.style.display = 'none';
+    return;
+  }
+  const result = checkTierLimits();
+  const nearLimit = result.exceeded.length > 0 || Object.values(result.limits).some(l => l.current >= l.max * 0.8);
+  banner.style.display = nearLimit ? 'flex' : 'flex';
+}
 
 function initMobileTooltips() {
   document.addEventListener('click', (e) => {
@@ -1304,9 +1516,14 @@ function initTheme() {
 
 function saveState(key, data) {
   try {
-    localStorage.setItem('brokedian_' + key, JSON.stringify(data));
+    const serialized = JSON.stringify(data);
+    localStorage.setItem('brokedian_' + key, serialized);
   } catch(e) {
-    showToast("Storage error: data may not be saved");
+    if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_FILE_CROSS_ORIGIN_BLOCKED') {
+      showToast("Storage full — please export & delete old data to continue saving");
+    } else {
+      showToast("Storage error: data may not be saved");
+    }
   }
 }
 
@@ -1351,8 +1568,8 @@ function renderAppContent() {
   const burnInput = document.getElementById('cfg-burn');
   const savingsInput = document.getElementById('cfg-savings');
   
-  const fixedBurn = (burnInput && burnInput.value !== "") ? parseFloat(burnInput.value) : 45000;
-  const coreSavings = (savingsInput && savingsInput.value !== "") ? parseFloat(savingsInput.value) : 150000;
+  const fixedBurn = (burnInput && burnInput.value !== "") ? parseFloat(burnInput.value) : DEFAULT_BURN;
+  const coreSavings = (savingsInput && savingsInput.value !== "") ? parseFloat(savingsInput.value) : DEFAULT_SAVINGS;
   let computedMonthsRunway = fixedBurn > 0 ? (coreSavings / fixedBurn) : 0;
   
   if(document.getElementById('d-runway')) document.getElementById('d-runway').textContent = computedMonthsRunway.toFixed(1) + " mo";
@@ -1453,9 +1670,10 @@ function renderQuotesTabIntelligence(currency) {
     htmlContent = `<div class="empty-state"><h3>No customer quotes filed</h3><p>Launch customized client estimations to monitor ongoing business conversions.</p></div>`;
   } else {
     quotes.forEach(q => {
+      const isExpired = q.expiry && new Date(q.expiry) < new Date() && q.status === 'sent';
       let totalAmount = q.items ? q.items.reduce((sum, item) => sum + (item.qty * item.cost), 0) : 0;
       let badgeLabels = { sent: "Sent / Review", accepted: "Accepted Offer", expired: "Expired Guideline" };
-      let badgeClass = { sent: "pill-pending", accepted: "pill-paid", expired: "pill-late" };
+      let badgeClass = { sent: isExpired ? "pill-late" : "pill-pending", accepted: "pill-paid", expired: "pill-late" };
       
       let convertButtonMarkup = (q.status !== 'accepted' && q.status !== 'expired') ? 
         `<button class="convert-btn" onclick="event.stopPropagation(); convertQuoteToInvoice('${escHtml(q.id)}')">Convert to Active Invoice</button>` : '';
@@ -1468,6 +1686,7 @@ function renderQuotesTabIntelligence(currency) {
           </div>
           <div class="quote-meta">Project: ${escHtml(q.project || '')}</div>
           <div class="quote-meta">Deadline Expiry: ${q.expiry ? new Date(q.expiry).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : 'None'}</div>
+          ${isExpired ? '<div class="quote-meta" style="color:var(--red);font-weight:700;">&#9888; This quote has expired — consider sending a follow-up</div>' : ''}
           <span class="status-pill ${badgeClass[q.status]}">${badgeLabels[q.status]}</span>
           ${convertButtonMarkup}
         </div>
@@ -1630,17 +1849,17 @@ function addNewInvoiceLineItemRow(desc = '', qty = '', cost = '') {
   div.innerHTML = `
     <div class="line-item-column">
       <label>Item Description</label>
-      <input type="text" class="li-desc" placeholder="e.g. Consulting Hours" value="${desc}">
+      <input type="text" class="li-desc" placeholder="e.g. Consulting Hours" value="${escHtml(desc)}">
     </div>
     <div class="line-item-column">
       <label>Qty</label>
-      <input type="number" class="li-qty" placeholder="0" value="${qty}" min="1">
+      <input type="number" class="li-qty" placeholder="0" value="${escHtml(qty)}" min="1">
     </div>
     <div class="line-item-column">
       <label>Unit Rate</label>
-      <input type="number" class="li-cost" placeholder="0" value="${cost}">
+      <input type="number" class="li-cost" placeholder="0" value="${escHtml(cost)}">
     </div>
-    <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">✕</button>
+    <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">&#x2715;</button>
   `;
   container.appendChild(div);
 }
@@ -1652,17 +1871,17 @@ function addNewQuoteLineItemRow(desc = '', qty = '', cost = '') {
   div.innerHTML = `
     <div class="line-item-column">
       <label>Item Description</label>
-      <input type="text" class="liq-desc" placeholder="e.g. Asset Design" value="${desc}">
+      <input type="text" class="liq-desc" placeholder="e.g. Asset Design" value="${escHtml(desc)}">
     </div>
     <div class="line-item-column">
       <label>Qty</label>
-      <input type="number" class="liq-qty" placeholder="0" value="${qty}" min="1">
+      <input type="number" class="liq-qty" placeholder="0" value="${escHtml(qty)}" min="1">
     </div>
     <div class="line-item-column">
       <label>Unit Rate</label>
-      <input type="number" class="liq-cost" placeholder="0" value="${cost}">
+      <input type="number" class="liq-cost" placeholder="0" value="${escHtml(cost)}">
     </div>
-    <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">✕</button>
+    <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">&#x2715;</button>
   `;
   container.appendChild(div);
 }
@@ -1701,6 +1920,7 @@ function gatherQuoteLineItemsFromDOM() {
 
 // INVOICE STORAGE ACTION HANDLERS
 function openClientModal(id = null) {
+  if (!id && !canAdd('clients')) { showLimitBlocked('clients'); return; }
   document.getElementById('invoice-line-items-wrapper').innerHTML = "";
   if(!id) {
     document.getElementById('modal-client-title').textContent = "Add Invoice";
@@ -1753,7 +1973,20 @@ function saveClientInvoice() {
     return;
   }
 
+  if (lineItems.length > FREE_LIMITS.lineItems && userTier === 'free') {
+    showToast(`Free tier limited to ${FREE_LIMITS.lineItems} line items. Upgrade to Pro for unlimited.`);
+    return;
+  }
+
+  if (!id && !canAdd('invoice')) { showLimitBlocked('invoices'); return; }
+
+  const existing = id ? clients.find(c => c.id === id) : null;
+  if (existing && existing.status === 'paid' && status !== 'paid') {
+    if (!confirm("Unmarking as paid will restore this to outstanding backlog. Continue?")) return;
+  }
+
   if(!id) {
+    monthlyInvoiceCount++;
     clients.push({ id: "c_" + Date.now(), name, address, project, status, date, items: lineItems });
   } else {
     const matched = clients.find(c => c.id === id);
@@ -1768,7 +2001,27 @@ function saveClientInvoice() {
   }
   saveState('clients', clients);
   closeClientModal();
-  showToast(id ? "Invoice updated" : "Invoice created");
+  if (!id) {
+    const notif = canSendNotification(NOTIF_TYPES.invoiceSent);
+    if (notif.allowed) {
+      useNotification(NOTIF_TYPES.invoiceSent);
+      showToast(`Invoice created. Notifications: ${getNotifStatus(NOTIF_TYPES.invoiceSent)}`);
+    } else {
+      showToast(`Invoice created. Notification limit reached. Upgrade for unlimited.`);
+    }
+  } else {
+    showToast(id ? "Invoice updated" : "Invoice created");
+    const wasJustMarkedPaid = existing && existing.status !== 'paid' && status === 'paid';
+    if (wasJustMarkedPaid) {
+      const notif = canSendNotification(NOTIF_TYPES.paymentReceived);
+      if (notif.allowed) {
+        useNotification(NOTIF_TYPES.paymentReceived);
+        showToast(`Payment recorded. Notifications: ${getNotifStatus(NOTIF_TYPES.paymentReceived)}`);
+      } else {
+        showToast(`Payment recorded. Notification limit reached.`);
+      }
+    }
+  }
   renderAppContent();
 }
 
@@ -1813,6 +2066,7 @@ function cancelDelete() {
 
 // ESTIMATES STORAGE ACTION HANDLERS
 function openQuoteModal(id = null) {
+  if (!id && !canAdd('quotes')) { showLimitBlocked('quotes'); return; }
   document.getElementById('quote-line-items-wrapper').innerHTML = "";
   if(!id) {
     document.getElementById('modal-quote-title').textContent = "Create Quote Estimate";
@@ -1888,6 +2142,7 @@ function deleteQuoteEstimate() {
 
 // TARGET DEAL PIPELINE HANDLERS
 function openPipelineModal(id = null) {
+  if (!id && !canAdd('pipeline')) { showLimitBlocked('pipeline'); return; }
   if(!id) {
     document.getElementById('modal-pipe-title').textContent = "Add Target Deal Forecast";
     document.getElementById('p-id').value = "";
@@ -2018,7 +2273,7 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
   });
 
   // Calculate dynamic regional taxes
-  const currentTaxRateConfig = parseFloat(document.getElementById('cfg-tax')?.value || 7);
+  const currentTaxRateConfig = parseFloat(document.getElementById('cfg-tax')?.value || DEFAULT_TAX);
   let taxVal = subtotal * (currentTaxRateConfig / 100);
   let finalGrandTotalVal = subtotal + taxVal;
 
@@ -2032,17 +2287,23 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
   document.getElementById('pdf-signature-block').textContent = biz.signature || "";
 
   const ppWrapper = document.getElementById('pdf-promptpay-wrapper');
-  const safePromptPay = escHtml(biz.promptpay || '');
-  if(safePromptPay && finalGrandTotalVal > 0) {
+  const rawToken = biz.promptpay || '';
+  const tokenIsValid = /^(?:\d{13}|\d{10}|[\w.-]+@[\w.-]+\.\w+)$/.test(rawToken);
+  if(rawToken && tokenIsValid && finalGrandTotalVal > 0) {
     ppWrapper.style.display = "flex";
-    document.getElementById('pdf-promptpay-token').textContent = `ID Token: ${safePromptPay}`;
-    document.getElementById('pdf-promptpay-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=PromptPay_${encodeURIComponent(safePromptPay)}_AMT_${finalGrandTotalVal.toFixed(2)}`;
+    document.getElementById('pdf-promptpay-token').textContent = `ID Token: ${rawToken}`;
+    document.getElementById('pdf-promptpay-qr-img').src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`PromptPay_${rawToken}_AMT_${Number(finalGrandTotalVal).toFixed(2)}`)}`;
   } else {
     ppWrapper.style.display = "none";
   }
 
   // Inject brand accents into print document view container styling variables
   document.getElementById('print-area').style.borderTop = `3px solid ${biz.color || '#7C6EF5'}`;
+
+  // Watermark: show only for free tier
+  const watermark = document.getElementById('pdf-watermark');
+  if (watermark) watermark.style.display = userTier === 'pro' ? 'none' : 'block';
 
   // Open Preview container view overlay
   document.getElementById('modal-preview').classList.add('open');
@@ -2308,6 +2569,55 @@ function exportBizJSON() {
   showToast("Business profile exported");
 }
 
+function exportAllData() {
+  const data = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    clients: clients,
+    quotes: quotes,
+    pipeline: pipelineDeals,
+    biz: biz,
+    theme: localStorage.getItem('brokedian_theme') || 'light',
+    cfg: JSON.parse(localStorage.getItem('brokedian_cfg') || '{}')
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json;charset=utf-8;'});
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute("download", `brokedian_full_backup_${new Date().toISOString().split('T')[0]}.json`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showToast("Full backup exported");
+}
+
+function importAllData(e) {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    try {
+      const data = JSON.parse(evt.target.result);
+      if(!data || typeof data !== 'object') throw new Error('Invalid format');
+      if(data.clients && Array.isArray(data.clients)) { clients = data.clients; saveState('clients', clients); }
+      if(data.quotes && Array.isArray(data.quotes)) { quotes = data.quotes; saveState('quotes', quotes); }
+      if(data.pipeline && Array.isArray(data.pipeline)) { pipelineDeals = data.pipeline; saveState('pipeline', pipelineDeals); }
+      if(data.biz && typeof data.biz === 'object') {
+        biz = { ...biz, ...data.biz };
+        try { localStorage.setItem('brokedian_biz', JSON.stringify(biz)); } catch(e) {}
+      }
+      if(data.theme) localStorage.setItem('brokedian_theme', data.theme);
+      if(data.cfg && typeof data.cfg === 'object') {
+        try { localStorage.setItem('brokedian_cfg', JSON.stringify(data.cfg)); } catch(e) {}
+      }
+      showToast("Full backup restored — reloading...");
+      setTimeout(() => location.reload(), 800);
+    } catch(err) {
+      showToast("Invalid backup file — check format and try again");
+    }
+  };
+  reader.readAsText(file);
+}
+
 function importBizJSON(e) {
   const file = e.target.files[0];
   if(!file) return;
@@ -2365,11 +2675,60 @@ function closeResetModal() {
   document.getElementById('modal-reset-confirm').classList.remove('open');
 }
 
+let deferredPwaPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+  const banner = document.getElementById('pwa-install-banner');
+  if (banner) {
+    const dismissed = localStorage.getItem('pwa_install_dismissed');
+    if (!dismissed) banner.style.display = 'flex';
+  }
+});
+
+function closePwaBanner() {
+  document.getElementById('pwa-install-banner').style.display = 'none';
+  localStorage.setItem('pwa_install_dismissed', '1');
+}
+
+document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+  if (!deferredPwaPrompt) return;
+  deferredPwaPrompt.prompt();
+  const { outcome } = await deferredPwaPrompt.userChoice;
+  deferredPwaPrompt = null;
+  closePwaBanner();
+});
+
+window.addEventListener('appinstalled', () => {
+  deferredPwaPrompt = null;
+  closePwaBanner();
+});
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed: ', err));
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
   });
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const overlays = ['modal-client', 'modal-quote', 'modal-pipeline', 'modal-preview', 'modal-crop', 'modal-reset-confirm', 'modal-delete-confirm'];
+  overlays.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.classList.contains('open')) {
+      el.classList.remove('open');
+    }
+  });
+});
+
+window.addEventListener('online', () => {
+  document.getElementById('offline-indicator').style.display = 'none';
+});
+
+window.addEventListener('offline', () => {
+  document.getElementById('offline-indicator').style.display = 'block';
+});
 </script>
 </body>
 </html>

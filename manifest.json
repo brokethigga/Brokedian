@@ -4,21 +4,23 @@
   "description": "Am I going to be broke next month or not?",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#F5F5F7",
-  "theme_color": "#F5F5F7",
+  "background_color": "#EEEEF2",
+  "theme_color": "#007AFF",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23007AFF'/><text x='96' y='130' font-size='100' text-anchor='middle' fill='white'>💼</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%23007AFF'/><path d='M96 36c-9.4 0-17 7.6-17 17v9H58c-9.4 0-17 7.6-17 17v72c0 9.4 7.6 17 17 17h76c9.4 0 17-7.6 17-17V79c0-9.4-7.6-17-17-17h-21v-9c0-9.4-7.6-17-17-17zm0 11c3.3 0 6 2.7 6 6v9H86v-9c0-3.3 2.7-6 6-6zm0 76c9.4 0 17 3.8 17 8.5v22.5H79V131.5c0-4.7 7.6-8.5 17-8.5z' fill='white' opacity='0.95'/><rect x='70' y='84' width='52' height='8' rx='4' fill='white' opacity='0.7'/><rect x='70' y='104' width='36' height='8' rx='4' fill='white' opacity='0.45'/></svg>",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23007AFF'/><text x='256' y='350' font-size='260' text-anchor='middle' fill='white'>💼</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%23007AFF'/><path d='M256 96c-25 0-45 20-45 45v24H151c-25 0-45 20-45 45v192c0 25 20 45 45 45h210c25 0 45-20 45-45V210c0-25-20-45-45-45h-60v-24c0-25-20-45-45-45zm0 30c8.3 0 15 6.7 15 15v24h-30v-24c0-8.3 6.7-15 15-15zm0 202c25 0 45 10 45 22.5v60H211V348.5c0-12.5 20-22.5 45-22.5z' fill='white' opacity='0.95'/><rect x='186' y='225' width='140' height='22' rx='11' fill='white' opacity='0.7'/><rect x='186' y='278' width='96' height='22' rx='11' fill='white' opacity='0.45'/></svg>",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ],
-  "categories": ["finance", "productivity"],
+  "categories": ["finance", "productivity", "business"],
   "screenshots": []
 }
