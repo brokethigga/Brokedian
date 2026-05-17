@@ -50,7 +50,7 @@
     <div class="page-header">
       <div class="page-header-left" style="display:flex;flex-direction:column;gap:4px;">
         <h1 id="dash-greeting">Good morning 👋</h1>
-        <p id="dash-date">Loading...</p>
+        <p id="dash-date" style="display:flex;align-items:center;gap:4px;">Loading...<span id="date-pro-badge" style="display:none;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span></p>
       </div>
       <div class="page-header-right">
         <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
@@ -158,7 +158,7 @@
     </div>
 
     <div id="quote-list" class="client-list"></div>
-    <div class="add-btn" onclick="openQuoteModal()">
+    <div class="add-btn" id="quote-add-btn" onclick="openQuoteModal()">
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Create estimate offer
     </div>
     <div style="height:16px"></div>
@@ -728,11 +728,22 @@ const FREE_LIMITS = { clients: 5, invoicesPerMonth: 15, quotes: 10, pipeline: 3,
 const NOTIF_TYPES = { invoiceSent: 'invoiceSent', paymentReceived: 'paymentReceived' };
 
 let userTier = localStorage.getItem('brokedian_tier') || 'free'; // 'free' or 'pro'
+if (userTier === 'pro' && localStorage.getItem('brokedian_tier_demo_expiry')) {
+  const expiry = new Date(localStorage.getItem('brokedian_tier_demo_expiry'));
+  if (expiry < new Date()) {
+    userTier = 'free';
+    localStorage.removeItem('brokedian_tier');
+    localStorage.removeItem('brokedian_tier_demo_expiry');
+  }
+}
 let notifCounts = { invoiceSent: 0, paymentReceived: 0 };
 let currentMonth = new Date().getMonth();
 let monthlyInvoiceCount = 0;
 
 function checkTierLimits() {
+  if (userTier === 'pro') {
+    return { allowed: true, limits: {}, exceeded: [] };
+  }
   const limits = {
     clients: { current: clients.length, max: FREE_LIMITS.clients, label: 'clients' },
     invoices: { current: monthlyInvoiceCount, max: FREE_LIMITS.invoicesPerMonth, label: 'invoices this month' },
@@ -796,6 +807,7 @@ function upgradeToPro() {
   renderAppContent();
   initPaywallBanner();
   updateProTrialVisibility();
+  updateProBadge();
 }
 
 function checkDemoExpiry() {
@@ -808,15 +820,22 @@ function checkDemoExpiry() {
     renderAppContent();
     initPaywallBanner();
     updateProTrialVisibility();
+    updateProBadge();
   }
 }
 
 function canAdd(type) {
+  if (userTier === 'pro') return true;
   const result = checkTierLimits();
   const limitMap = { clients: 'clients', quotes: 'quotes', pipeline: 'pipeline', invoice: 'invoices' };
   const key = limitMap[type];
   if (!key) return true;
-  return result.limits[key] ? result.limits[key].current < result.limits[key].max : true;
+  // Defensive: ensure limits object exists and has valid data
+  if (!result.limits || !result.limits[key]) return true;
+  const limit = result.limits[key];
+  const current = typeof limit.current === 'number' ? limit.current : 0;
+  const max = typeof limit.max === 'number' ? limit.max : 0;
+  return current < max;
 }
 
 function showLimitBlocked(type) {
@@ -839,6 +858,14 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileTooltips();
   initPaywallBanner();
   updateProTrialVisibility();
+  updateProBadge();
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#quote-add-btn')) {
+      console.log('quote add btn clicked');
+      openQuoteModal();
+    }
+  });
 });
 
 function initPaywallBanner() {
@@ -873,7 +900,7 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = String(msg).replace(/</g,'&lt;').replace(/>/g,'&gt;');
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(() => t.classList.remove('show'), 3500);
 }
 
 function escHtml(str) {
@@ -896,8 +923,11 @@ function setGreetingTime() {
   let greet = "Good evening";
   if(hours < 12) greet = "Good morning";
   else if(hours < 18) greet = "Good afternoon";
-  document.getElementById('dash-greeting').textContent = greet;
-  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' });
+  const isDemo = localStorage.getItem('brokedian_tier_demo_expiry');
+  const isPro = userTier === 'pro' || isDemo;
+  const badge = isPro ? '<span id="date-pro-badge" style="display:inline;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span>' : '';
+  document.getElementById('dash-greeting').innerHTML = escHtml(greet) + ' 👋';
+  document.getElementById('dash-date').innerHTML = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' }) + badge;
 }
 
 function toggleTheme() {
@@ -931,6 +961,8 @@ function saveState(key, data) {
 
 // MAIN RENDER DISTRIBUTOR LOOP
 function renderAppContent() {
+  setGreetingTime();
+  updateProBadge();
   const currency = document.getElementById('cfg-currency') ? document.getElementById('cfg-currency').value : "฿";
   
   // 1. CALCULATE CORE METRICS WITH LINE-ITEM RECOGNITION
@@ -1220,10 +1252,20 @@ function updateForecast() {
 function convertQuoteToInvoice(quoteId) {
   const qIndex = quotes.findIndex(item => item.id === quoteId);
   if(qIndex === -1) return;
-  
+
   const targetQuote = quotes[qIndex];
-  
-  // Construct corresponding client invoice payload model structure
+
+  if (userTier === 'free') {
+    if (targetQuote.items && targetQuote.items.length > FREE_LIMITS.lineItems) {
+      showToast(`Free tier limited to ${FREE_LIMITS.lineItems} line items. Upgrade to Pro for unlimited.`);
+      return;
+    }
+    if (!canAdd('invoice')) {
+      showLimitBlocked('invoices');
+      return;
+    }
+  }
+
   const newInvoice = {
     id: "c_" + Date.now(),
     name: targetQuote.name,
@@ -1232,13 +1274,13 @@ function convertQuoteToInvoice(quoteId) {
     date: new Date().toISOString().split('T')[0],
     items: targetQuote.items ? JSON.parse(JSON.stringify(targetQuote.items)) : []
   };
-  
+
   targetQuote.status = "accepted";
   clients.push(newInvoice);
-  
+
   saveState('clients', clients);
   saveState('quotes', quotes);
-  
+
   showToast("Quote converted to issued invoice!");
   renderAppContent();
 }
@@ -1268,6 +1310,7 @@ function addNewInvoiceLineItemRow(desc = '', qty = '', cost = '') {
 
 function addNewQuoteLineItemRow(desc = '', qty = '', cost = '') {
   const container = document.getElementById('quote-line-items-wrapper');
+  if(!container) { alert('Error: quote items container not found'); return; }
   const div = document.createElement('div');
   div.className = "line-item-input-row";
   div.innerHTML = `
@@ -1468,8 +1511,11 @@ function cancelDelete() {
 
 // ESTIMATES STORAGE ACTION HANDLERS
 function openQuoteModal(id = null) {
+  console.log('openQuoteModal called', id);
   if (!id && !canAdd('quotes')) { showLimitBlocked('quotes'); return; }
   document.getElementById('quote-line-items-wrapper').innerHTML = "";
+  const wrapper = document.getElementById('quote-line-items-wrapper');
+  if(!wrapper) { alert('Error: quote items container not found'); return; }
   if(!id) {
     document.getElementById('modal-quote-title').textContent = "Create Quote Estimate";
     document.getElementById('q-id').value = "";
@@ -1516,6 +1562,21 @@ function saveQuoteEstimate() {
   if(!name || items.length === 0) {
     showToast("Add a prospect name and at least one item row");
     return;
+  }
+
+  // Line items limit check - applies to both new AND edited quotes
+  if (userTier === 'free' && items.length > FREE_LIMITS.lineItems) {
+    showToast(`Free tier limited to ${FREE_LIMITS.lineItems} line items. Upgrade to Pro for unlimited.`);
+    return;
+  }
+
+  // Additional check: prevent loophole by verifying existing quotes don't exceed limit when edited
+  if (userTier === 'free' && id) {
+    const existingQuote = quotes.find(q => q.id === id);
+    if (existingQuote && existingQuote.items && existingQuote.items.length > FREE_LIMITS.lineItems) {
+      showToast(`Quote already has too many items. Free tier limited to ${FREE_LIMITS.lineItems} line items.`);
+      return;
+    }
   }
 
   if(!id) {
@@ -2063,8 +2124,22 @@ function resetProTrial() {
   localStorage.removeItem('brokedian_tier');
   localStorage.removeItem('brokedian_tier_demo_expiry');
   showToast('Pro trial ended. Downgraded to Free tier.');
+renderAppContent();
+  initPaywallBanner();
+  updateProTrialVisibility();
+  updateProBadge();
+}
+
+function resetProTrial() {
+  if(!confirm("End your Pro trial and revert to Free tier?")) return;
+  userTier = 'free';
+  localStorage.removeItem('brokedian_tier');
+  localStorage.removeItem('brokedian_tier_demo_expiry');
+  showToast('Pro trial ended. Downgraded to Free tier.');
   renderAppContent();
   initPaywallBanner();
+  updateProTrialVisibility();
+  updateProBadge();
 }
 
 function updateProTrialVisibility() {
@@ -2072,6 +2147,14 @@ function updateProTrialVisibility() {
   if (!btn) return;
   const isDemo = localStorage.getItem('brokedian_tier_demo_expiry');
   btn.style.display = (userTier === 'pro' || isDemo) ? 'block' : 'none';
+}
+
+function updateProBadge() {
+  const dateBadge = document.getElementById('date-pro-badge');
+  if (!dateBadge) return;
+  const isDemo = localStorage.getItem('brokedian_tier_demo_expiry');
+  const isPro = userTier === 'pro' || isDemo;
+  dateBadge.style.display = isPro ? 'inline' : 'none';
 }
 
 function factoryResetAllData() {
