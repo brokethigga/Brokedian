@@ -604,3 +604,5 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .paywall-cta{background:linear-gradient(135deg,var(--accent),#5856D6);color:#fff;border:none;border-radius:14px;padding:16px;width:100%;font-size:16px;font-weight:700;cursor:pointer;transition:opacity .2s;}
 .paywall-cta:hover{opacity:0.85;}
 .paywall-dismiss{font-size:13px;color:var(--muted);margin-top:12px;cursor:pointer;}
+.paywall-demo-btn{width:100%;padding:13px;background:var(--green-bg);border:1px solid var(--green-glow);border-radius:14px;color:var(--green);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;}
+.paywall-demo-btn:hover{background:var(--green);color:#fff;}

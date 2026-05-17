@@ -362,6 +362,7 @@
         <input type="file" id="import-full-file" style="display:none" accept=".json" onchange="importAllData(event)">
         <button class="control-btn" onclick="resetBusinessSettings()">Reset</button>
       </div>
+      <button id="reset-pro-trial-btn" class="reset-btn" style="display:none;" onclick="resetProTrial()">End Pro Trial & Downgrade to Free</button>
     </div>
     
     <button class="profile-save-btn" onclick="switchScreen('clients', document.getElementById('nav-clients'))">Apply and Sync Settings</button>
@@ -677,6 +678,7 @@
       </div>
     </div>
     <button class="paywall-cta" onclick="openStripeCheckout()">Upgrade to Broke Pro — ฿59/mo</button>
+    <button class="paywall-demo-btn" onclick="upgradeToPro()">Try Pro Free for 7 days</button>
     <div class="paywall-dismiss" onclick="closePaywallModal()">Maybe later</div>
   </div>
 </div>
@@ -786,9 +788,27 @@ function openStripeCheckout() {
 function upgradeToPro() {
   userTier = 'pro';
   localStorage.setItem('brokedian_tier', 'pro');
-  showToast('Welcome to Broke Pro! All limits removed.');
+  const expiry = new Date();
+  expiry.setDate(expiry.getDate() + 7);
+  localStorage.setItem('brokedian_tier_demo_expiry', expiry.toISOString());
+  showToast('7-day Pro trial activated! All limits removed.');
   closePaywallModal();
   renderAppContent();
+  initPaywallBanner();
+  updateProTrialVisibility();
+}
+
+function checkDemoExpiry() {
+  const expiry = localStorage.getItem('brokedian_tier_demo_expiry');
+  if (expiry && new Date(expiry) < new Date()) {
+    userTier = 'free';
+    localStorage.removeItem('brokedian_tier');
+    localStorage.removeItem('brokedian_tier_demo_expiry');
+    showToast('Pro trial ended. Downgraded to Free tier.');
+    renderAppContent();
+    initPaywallBanner();
+    updateProTrialVisibility();
+  }
 }
 
 function canAdd(type) {
@@ -810,6 +830,7 @@ function showLimitBlocked(type) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  checkDemoExpiry();
   initTheme();
   setGreetingTime();
   loadProfileInputs();
@@ -817,6 +838,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAppContent();
   initMobileTooltips();
   initPaywallBanner();
+  updateProTrialVisibility();
 });
 
 function initPaywallBanner() {
@@ -827,7 +849,7 @@ function initPaywallBanner() {
   }
   const result = checkTierLimits();
   const nearLimit = result.exceeded.length > 0 || Object.values(result.limits).some(l => l.current >= l.max * 0.8);
-  banner.style.display = nearLimit ? 'flex' : 'flex';
+  banner.style.display = nearLimit ? 'flex' : 'none';
 }
 
 function initMobileTooltips() {
@@ -2033,6 +2055,23 @@ function resetBusinessSettings() {
   biz = { name: "", address: "", taxid: "", email: "", phone: "", bank: "", promptpay: "", signature: "", footer: "", color: "#7C6EF5", logo: "" };
   try { localStorage.setItem('brokedian_biz', JSON.stringify(biz)); } catch(e) {}
   loadProfileInputs();
+}
+
+function resetProTrial() {
+  if(!confirm("End your Pro trial and revert to Free tier?")) return;
+  userTier = 'free';
+  localStorage.removeItem('brokedian_tier');
+  localStorage.removeItem('brokedian_tier_demo_expiry');
+  showToast('Pro trial ended. Downgraded to Free tier.');
+  renderAppContent();
+  initPaywallBanner();
+}
+
+function updateProTrialVisibility() {
+  const btn = document.getElementById('reset-pro-trial-btn');
+  if (!btn) return;
+  const isDemo = localStorage.getItem('brokedian_tier_demo_expiry');
+  btn.style.display = (userTier === 'pro' || isDemo) ? 'block' : 'none';
 }
 
 function factoryResetAllData() {
