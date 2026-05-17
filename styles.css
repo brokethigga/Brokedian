@@ -180,8 +180,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   background:rgba(255,255,255,0.60);border:1px solid rgba(255,255,255,0.50);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-radius:var(--radius);padding:18px 22px;margin-bottom:20px;
-  box-shadow:0 2px 12px rgba(0,0,0,0.04);display:flex;align-items:center;
-  justify-content:space-between;gap:20px;transition:background .25s ease,border-color .25s ease;
+  box-shadow:0 2px 12px rgba(0,0,0,0.04);display:flex;flex-direction:column;
+  gap:12px;transition:background .25s ease,border-color .25s ease;
 }
 .status-content{position:relative;z-index:2;}
 .status-label{font-size:11px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:var(--muted2);margin-bottom:8px;}
