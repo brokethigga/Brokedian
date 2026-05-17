@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -721,7 +721,7 @@ const DEFAULT_BURN = 45000;
 const DEFAULT_SAVINGS = 150000;
 const DEFAULT_TAX = 7;
 const DEFAULT_CURRENCY = "฿";
-const DEFAULT_EXPIRY_DAYS = 30;
+const DEFAULT_QUOTE_EXPIRY_DAYS = 30;
 
 // TIER LIMITS
 const FREE_LIMITS = { clients: 5, invoicesPerMonth: 15, quotes: 10, pipeline: 3, lineItems: 5, notifications: 3 };
@@ -1264,6 +1264,10 @@ function convertQuoteToInvoice(quoteId) {
       showLimitBlocked('invoices');
       return;
     }
+    if (!canAdd('clients')) {
+      showLimitBlocked('clients');
+      return;
+    }
   }
 
   const newInvoice = {
@@ -1366,6 +1370,7 @@ function gatherQuoteLineItemsFromDOM() {
 // INVOICE STORAGE ACTION HANDLERS
 function openClientModal(id = null) {
   if (!id && !canAdd('clients')) { showLimitBlocked('clients'); return; }
+    if (!id && !canAdd('invoice')) { showLimitBlocked('invoices'); return; }
   document.getElementById('invoice-line-items-wrapper').innerHTML = "";
   if(!id) {
     document.getElementById('modal-client-title').textContent = "Add Invoice";
@@ -2234,3 +2239,5 @@ window.addEventListener('offline', () => {
 </script>
 </body>
 </html>
+
+
