@@ -62,7 +62,7 @@
 
     <div id="paywall-banner" class="paywall-banner" style="display:none;" onclick="openPaywallModal()">
       <div class="paywall-banner-text">
-        <div class="paywall-banner-title">Broke Pro — ฿59/month</div>
+        <div class="paywall-banner-title">Broke&nbsp;Pro — ฿59/month</div>
         <div class="paywall-banner-sub">Unlimited invoices, no watermark, auto-reminders</div>
       </div>
       <div class="paywall-banner-btn">Upgrade</div>
@@ -343,7 +343,7 @@
       </div>
     </div>
     
-    <div class="control-block" style="margin-top:0;">
+    <div class="control-block" style="margin-top:0; margin-bottom:24px;">
       <div class="control-block-label">Business Profile Tools</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
         <button class="control-btn" onclick="exportBizJSON()">
@@ -653,7 +653,7 @@
     <div class="paywall-hero-icon">
       <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
     </div>
-    <div class="paywall-title">Upgrade to Broke Pro</div>
+    <div class="paywall-title">Upgrade to Broke&nbsp;Pro</div>
     <div class="paywall-sub">Remove watermarks, unlock unlimited invoices, and get automatic payment reminders.</div>
     <div class="paywall-price">
       <span class="paywall-price-amount">฿59</span>
@@ -677,7 +677,7 @@
         <span class="paywall-feature-text">Multi-device sync & priority support</span>
       </div>
     </div>
-    <button class="paywall-cta" onclick="openStripeCheckout()">Upgrade to Broke Pro — ฿59/mo</button>
+    <button class="paywall-cta" onclick="openStripeCheckout()">Upgrade to Broke&nbsp;Pro — ฿59/mo</button>
     <button class="paywall-demo-btn" onclick="upgradeToPro()">Try Pro Free for 7 days</button>
     <div class="paywall-dismiss" onclick="closePaywallModal()">Maybe later</div>
   </div>
@@ -845,7 +845,7 @@ function showLimitBlocked(type) {
     quotes: 'Free tier limited to 10 quotes. Upgrade to Pro for unlimited.',
     pipeline: 'Free tier limited to 3 pipeline deals. Upgrade to Pro for unlimited.'
   };
-  showToast(msgs[type] || 'Free tier limit reached. Upgrade to Broke Pro.');
+  showToast(msgs[type] || 'Free tier limit reached. Upgrade to Broke&nbsp;Pro.');
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -2239,5 +2239,7 @@ window.addEventListener('offline', () => {
 </script>
 </body>
 </html>
+
+
 
 
