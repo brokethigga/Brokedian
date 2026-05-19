@@ -1,5 +1,6 @@
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `brokedian-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `${CACHE_NAME}-runtime`;
 const ASSETS = ['./', './index.html', './manifest.json', './styles.css'];
 
 self.addEventListener('install', e => {
@@ -15,15 +16,40 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+
   const url = new URL(e.request.url);
-  if (ASSETS.some(asset => url.pathname.endsWith(asset.replace('./', '')))) {
+  const isSameOrigin = url.origin === self.location.origin;
+  const isAppAsset = isSameOrigin && ASSETS.some(asset => {
+    if (asset === './') return url.pathname === '/' || url.pathname.endsWith('/index.html');
+    return url.pathname.endsWith(asset.replace('./', ''));
+  });
+
+  if (isAppAsset) {
     e.respondWith(
-      caches.match(e.request).then(r => r || fetch(e.request))
+      caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+        const copy = res.clone();
+        caches.open(CACHE_NAME).then(c => c.put(e.request, copy));
+        return res;
+      }))
     );
-  } else {
+    return;
+  }
+
+  if (!isSameOrigin) {
     e.respondWith(
-      fetch(e.request).catch(() => caches.match('./index.html'))
+      caches.open(RUNTIME_CACHE).then(cache =>
+        fetch(e.request).then(res => {
+          cache.put(e.request, res.clone());
+          return res;
+        }).catch(() => cache.match(e.request).then(cached => cached || Response.error()))
+      )
     );
+    return;
+  }
+
+  if (e.request.mode === 'navigate') {
+    e.respondWith(fetch(e.request).catch(() => caches.match('./index.html')));
   }
 });
 
