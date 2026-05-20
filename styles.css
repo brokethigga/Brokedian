@@ -606,6 +606,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .paywall-dismiss{font-size:13px;color:var(--muted);margin-top:12px;cursor:pointer;}
 .paywall-demo-btn{width:100%;padding:13px;background:var(--green-bg);border:1px solid var(--green-glow);border-radius:14px;color:var(--green);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;}
 .paywall-demo-btn:hover{background:var(--green);color:#fff;}
+.modal-credit{background:var(--card);border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:24px 20px 32px;max-width:420px;width:100%;text-align:center;}
+@media(min-width:600px){.modal-credit{border-radius:20px;padding:28px;}}
+.credit-title{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--text);margin-bottom:8px;}
+.credit-sub{font-size:14px;color:var(--muted2);line-height:1.5;margin-bottom:16px;}
+.credit-meter{background:var(--accent-bg);border:1px solid var(--accent-glow);color:var(--accent);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;margin-bottom:14px;}
+.credit-ad-btn{width:100%;padding:15px;background:var(--green);border:none;border-radius:14px;color:#fff;font-weight:800;font-size:15px;cursor:pointer;transition:opacity .2s;}
+.credit-ad-btn:hover{opacity:.85;}
+.credit-ad-btn:disabled{opacity:.45;cursor:not-allowed;}
+.credit-upgrade-btn{width:100%;padding:13px;background:var(--accent-bg);border:1px solid var(--accent-glow);border-radius:14px;color:var(--accent);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;}
 
 
 

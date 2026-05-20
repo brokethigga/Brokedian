@@ -62,7 +62,10 @@ For App Store compliance:
 
 ### Free
 
-- Limited invoices and active records.
+- 5 invoice credits per month.
+- 5 quote credits per month.
+- Rewarded ads can unlock up to 4 extra invoice credits and 4 extra quote credits per month.
+- Monthly credits do not roll over.
 - Watermarked PDFs.
 - Local-only use or limited sync.
 
@@ -87,4 +90,3 @@ For App Store compliance:
 4. Replace demo Pro toggle with server-backed entitlements.
 5. Add Capacitor and generate iOS/Android projects.
 6. Add app icons, splash screens, privacy policy, terms, and store metadata.
-

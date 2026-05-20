@@ -362,6 +362,7 @@
         <input type="file" id="import-full-file" style="display:none" accept=".json" onchange="importAllData(event)">
         <button class="control-btn" onclick="resetBusinessSettings()">Reset</button>
       </div>
+      <button id="reset-ad-credits-btn" class="control-btn" style="width:100%;margin-bottom:8px;" onclick="resetAdCreditsForTesting()">Reset Ad Credits (Testing)</button>
       <button id="reset-pro-trial-btn" class="reset-btn" style="display:none;" onclick="resetProTrial()">End Pro Trial & Downgrade to Free</button>
     </div>
     
@@ -648,6 +649,18 @@
 
 <div id="toast" class="toast">Action updated successfully</div>
 
+<div id="modal-credit-overlay" class="modal-overlay" onclick="if(event.target.id==='modal-credit-overlay') closeCreditModal()">
+  <div class="modal-credit">
+    <div class="modal-handle"></div>
+    <div class="credit-title" id="credit-modal-title">Need one more credit?</div>
+    <div class="credit-sub" id="credit-modal-sub">Watch a short ad to unlock one extra credit for this month, or upgrade to Broke&nbsp;Pro.</div>
+    <div class="credit-meter" id="credit-modal-meter">0 / 4 ad credits used this month</div>
+    <button class="credit-ad-btn" id="credit-ad-btn" onclick="watchRewardedAdForCredit()">Watch Ad for +1 Credit</button>
+    <button class="credit-upgrade-btn" onclick="closeCreditModal(); openPaywallModal()">Upgrade to Broke&nbsp;Pro</button>
+    <div class="paywall-dismiss" onclick="closeCreditModal()">Maybe later</div>
+  </div>
+</div>
+
 <div id="modal-paywall-overlay" class="modal-overlay" onclick="if(event.target.id==='modal-paywall-overlay') closePaywallModal()">
   <div class="modal-paywall">
     <div class="paywall-hero-icon">
@@ -724,7 +737,8 @@ const DEFAULT_CURRENCY = "฿";
 const DEFAULT_QUOTE_EXPIRY_DAYS = 30;
 
 // TIER LIMITS
-const FREE_LIMITS = { clients: 5, invoicesPerMonth: 15, quotes: 10, pipeline: 3, lineItems: 5, notifications: 3 };
+const FREE_LIMITS = { clients: 5, invoicesPerMonth: 5, quotesPerMonth: 5, pipeline: 3, lineItems: 5, notifications: 3 };
+const FREE_BONUS_LIMITS = { invoices: 4, quotes: 4 };
 const NOTIF_TYPES = { invoiceSent: 'invoiceSent', paymentReceived: 'paymentReceived' };
 
 function safeJSONParse(raw, fallback) {
@@ -751,6 +765,11 @@ if (userTier === 'pro' && localStorage.getItem('brokedian_tier_demo_expiry')) {
 }
 let notifCounts = safeJSONParse(localStorage.getItem('brokedian_notif_counts'), { invoiceSent: 0, paymentReceived: 0 });
 let currentUsagePeriod = localStorage.getItem('brokedian_notif_month') || getUsagePeriodKey();
+let monthlyBonusCredits = safeJSONParse(localStorage.getItem('brokedian_bonus_credits'), {
+  period: getUsagePeriodKey(),
+  invoices: 0,
+  quotes: 0
+});
 
 function getMonthlyInvoiceCount() {
   const period = getUsagePeriodKey();
@@ -758,6 +777,16 @@ function getMonthlyInvoiceCount() {
     if (!c.date) return false;
     const invoiceDate = new Date(`${c.date}T00:00:00`);
     return !Number.isNaN(invoiceDate.getTime()) && getUsagePeriodKey(invoiceDate) === period;
+  }).length;
+}
+
+function getMonthlyQuoteCount() {
+  const period = getUsagePeriodKey();
+  return quotes.filter(q => {
+    const quoteDateValue = q.createdAt || q.date || q.expiry;
+    if (!quoteDateValue) return false;
+    const quoteDate = new Date(`${quoteDateValue}T00:00:00`);
+    return !Number.isNaN(quoteDate.getTime()) && getUsagePeriodKey(quoteDate) === period;
   }).length;
 }
 
@@ -770,14 +799,40 @@ function getUniqueClientCount(extraName = '') {
   return new Set(names).size;
 }
 
+function persistBonusCredits() {
+  localStorage.setItem('brokedian_bonus_credits', JSON.stringify(monthlyBonusCredits));
+}
+
+function resetMonthlyUsageState() {
+  const period = getUsagePeriodKey();
+  if (period !== currentUsagePeriod) {
+    notifCounts = { invoiceSent: 0, paymentReceived: 0 };
+    currentUsagePeriod = period;
+    localStorage.setItem('brokedian_notif_counts', JSON.stringify(notifCounts));
+    localStorage.setItem('brokedian_notif_month', currentUsagePeriod);
+  }
+  if (monthlyBonusCredits.period !== period) {
+    monthlyBonusCredits = { period, invoices: 0, quotes: 0 };
+    persistBonusCredits();
+  }
+}
+
+function getCreditLimit(type) {
+  resetMonthlyUsageState();
+  if (type === 'invoices') return FREE_LIMITS.invoicesPerMonth + (monthlyBonusCredits.invoices || 0);
+  if (type === 'quotes') return FREE_LIMITS.quotesPerMonth + (monthlyBonusCredits.quotes || 0);
+  return 0;
+}
+
 function checkTierLimits() {
   if (userTier === 'pro') {
     return { allowed: true, limits: {}, exceeded: [] };
   }
+  resetMonthlyUsageState();
   const limits = {
     clients: { current: getUniqueClientCount(), max: FREE_LIMITS.clients, label: 'clients' },
-    invoices: { current: getMonthlyInvoiceCount(), max: FREE_LIMITS.invoicesPerMonth, label: 'invoices this month' },
-    quotes: { current: quotes.length, max: FREE_LIMITS.quotes, label: 'quotes' },
+    invoices: { current: getMonthlyInvoiceCount(), max: getCreditLimit('invoices'), label: 'invoices this month' },
+    quotes: { current: getMonthlyQuoteCount(), max: getCreditLimit('quotes'), label: 'quotes this month' },
     pipeline: { current: pipelineDeals.length, max: FREE_LIMITS.pipeline, label: 'pipeline deals' }
   };
 
@@ -786,13 +841,7 @@ function checkTierLimits() {
 }
 
 function resetNotifCounts() {
-  const period = getUsagePeriodKey();
-  if (period !== currentUsagePeriod) {
-    notifCounts = { invoiceSent: 0, paymentReceived: 0 };
-    currentUsagePeriod = period;
-    localStorage.setItem('brokedian_notif_counts', JSON.stringify(notifCounts));
-    localStorage.setItem('brokedian_notif_month', currentUsagePeriod);
-  }
+  resetMonthlyUsageState();
 }
 resetNotifCounts();
 
@@ -869,6 +918,55 @@ function canAdd(type) {
   return current < max;
 }
 
+function getBonusCreditStatus(type) {
+  resetMonthlyUsageState();
+  const current = monthlyBonusCredits[type] || 0;
+  const max = FREE_BONUS_LIMITS[type] || 0;
+  return { current, max, remaining: Math.max(0, max - current), allowed: current < max };
+}
+
+let pendingCreditType = 'invoices';
+
+function openCreditModal(type) {
+  if (!['invoices', 'quotes'].includes(type)) return;
+  pendingCreditType = type;
+  const singular = type === 'invoices' ? 'invoice' : 'quote';
+  const used = type === 'invoices' ? getMonthlyInvoiceCount() : getMonthlyQuoteCount();
+  const limit = getCreditLimit(type);
+  const bonus = getBonusCreditStatus(type);
+  document.getElementById('credit-modal-title').textContent = `No ${singular} credits left`;
+  document.getElementById('credit-modal-sub').textContent = `You used ${used}/${limit} ${singular} credits this month. Watch a short ad for +1 more this month, or upgrade for unlimited.`;
+  document.getElementById('credit-modal-meter').textContent = `${bonus.current}/${bonus.max} ad credits used this month`;
+  const btn = document.getElementById('credit-ad-btn');
+  btn.textContent = bonus.allowed ? `Watch Ad for +1 ${singular} Credit` : 'Monthly ad bonus limit reached';
+  btn.disabled = !bonus.allowed;
+  document.getElementById('modal-credit-overlay').classList.add('open');
+}
+
+function closeCreditModal() {
+  document.getElementById('modal-credit-overlay').classList.remove('open');
+}
+
+function watchRewardedAdForCredit(type = pendingCreditType) {
+  if (!['invoices', 'quotes'].includes(type)) return;
+  if (userTier === 'pro') {
+    showToast('Pro already includes unlimited invoices and quotes.');
+    closeCreditModal();
+    return;
+  }
+  const status = getBonusCreditStatus(type);
+  if (!status.allowed) {
+    showToast(`Monthly ad bonus limit reached for ${type}. Upgrade to Pro for unlimited.`);
+    return;
+  }
+  // Placeholder for AdMob/Ad Manager rewarded-ad success callbacks.
+  monthlyBonusCredits[type] = status.current + 1;
+  persistBonusCredits();
+  showToast(`Unlocked +1 ${type.slice(0, -1)} credit for this month.`);
+  closeCreditModal();
+  initPaywallBanner();
+}
+
 function canAddClientName(name, existingId = '') {
   if (userTier === 'pro') return true;
   const normalized = String(name || '').trim().toLowerCase();
@@ -882,11 +980,14 @@ function canAddClientName(name, existingId = '') {
 function showLimitBlocked(type) {
   const msgs = {
     clients: 'Free tier limited to 5 clients. Upgrade to Pro for unlimited.',
-    invoices: 'Free tier limited to 15 invoices/month. Upgrade to Pro for unlimited.',
-    quotes: 'Free tier limited to 10 quotes. Upgrade to Pro for unlimited.',
+    invoices: `Free tier includes ${FREE_LIMITS.invoicesPerMonth} invoices/month. Watch an ad for +1 this month, or upgrade to Pro.`,
+    quotes: `Free tier includes ${FREE_LIMITS.quotesPerMonth} quotes/month. Watch an ad for +1 this month, or upgrade to Pro.`,
     pipeline: 'Free tier limited to 3 pipeline deals. Upgrade to Pro for unlimited.'
   };
   showToast(msgs[type] || 'Free tier limit reached. Upgrade to Broke&nbsp;Pro.');
+  if (type === 'invoices' || type === 'quotes') {
+    openCreditModal(type);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1619,7 +1720,7 @@ function saveQuoteEstimate() {
   }
 
   if(!id) {
-    quotes.push({ id: "q_" + Date.now(), name, project, status, expiry, items });
+    quotes.push({ id: "q_" + Date.now(), name, project, status, expiry, createdAt: new Date().toISOString().split('T')[0], items });
   } else {
     const matched = quotes.find(q => q.id === id);
     if(matched) {
@@ -2080,7 +2181,8 @@ function exportAllData() {
     pipeline: pipelineDeals,
     biz: biz,
     theme: localStorage.getItem('brokedian_theme') || 'light',
-    cfg: safeJSONParse(localStorage.getItem('brokedian_cfg'), {})
+    cfg: safeJSONParse(localStorage.getItem('brokedian_cfg'), {}),
+    bonusCredits: monthlyBonusCredits
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json;charset=utf-8;'});
   const link = document.createElement("a");
@@ -2110,6 +2212,14 @@ function importAllData(e) {
       if(data.theme) localStorage.setItem('brokedian_theme', data.theme);
       if(data.cfg && typeof data.cfg === 'object') {
         try { localStorage.setItem('brokedian_cfg', JSON.stringify(data.cfg)); } catch(e) {}
+      }
+      if(data.bonusCredits && typeof data.bonusCredits === 'object') {
+        monthlyBonusCredits = {
+          period: data.bonusCredits.period === getUsagePeriodKey() ? data.bonusCredits.period : getUsagePeriodKey(),
+          invoices: Math.min(Number(data.bonusCredits.invoices) || 0, FREE_BONUS_LIMITS.invoices),
+          quotes: Math.min(Number(data.bonusCredits.quotes) || 0, FREE_BONUS_LIMITS.quotes)
+        };
+        persistBonusCredits();
       }
       showToast("Full backup restored — reloading...");
       setTimeout(() => location.reload(), 800);
@@ -2155,6 +2265,14 @@ function resetBusinessSettings() {
   biz = { name: "", address: "", taxid: "", email: "", phone: "", bank: "", promptpay: "", signature: "", footer: "", color: "#7C6EF5", logo: "" };
   try { localStorage.setItem('brokedian_biz', JSON.stringify(biz)); } catch(e) {}
   loadProfileInputs();
+}
+
+function resetAdCreditsForTesting() {
+  monthlyBonusCredits = { period: getUsagePeriodKey(), invoices: 0, quotes: 0 };
+  persistBonusCredits();
+  closeCreditModal();
+  initPaywallBanner();
+  showToast('Ad bonus credits reset for this month.');
 }
 
 function resetProTrial() {
@@ -2242,7 +2360,7 @@ if ('serviceWorker' in navigator) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  const overlays = ['modal-client', 'modal-quote', 'modal-pipeline', 'modal-preview', 'modal-crop', 'modal-reset-confirm', 'modal-delete-confirm'];
+  const overlays = ['modal-client', 'modal-quote', 'modal-pipeline', 'modal-preview', 'modal-crop', 'modal-reset-confirm', 'modal-delete-confirm', 'modal-credit-overlay', 'modal-paywall-overlay'];
   overlays.forEach(id => {
     const el = document.getElementById(id);
     if (el && el.classList.contains('open')) {
