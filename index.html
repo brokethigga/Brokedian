@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css?v=3">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 <div class="layout">
@@ -1944,21 +1945,39 @@ function onPreviewModalClose() {
 function printInvoice() {
   const preview = document.getElementById('print-area');
   const container = document.querySelector('.invoice-preview-container');
-  if (preview) preview.style.transform = '';
-  if (container) { container.style.overflow = ''; container.style.height = ''; }
-  if (window.matchMedia) {
-    const mq = window.matchMedia('print');
-    const handler = (e) => {
-      if (!e.matches) {
-        mq.removeEventListener('change', handler);
-        fitInvoiceToScreen();
-        const modal = document.querySelector('#modal-preview .modal');
-        if (modal) modal.scrollTop = modal.scrollHeight;
-      }
-    };
-    mq.addEventListener('change', handler);
-  }
-  window.print();
+  
+  // Temporarily reset scaling for clean capture
+  const oldTransform = preview.style.transform;
+  const oldContainerHeight = container.style.height;
+  const oldContainerOverflow = container.style.overflow;
+  const oldWidth = preview.style.width;
+  
+  preview.style.transform = '';
+  preview.style.width = '794px'; // Force exact A4 pixel width
+  container.style.height = '';
+  container.style.overflow = '';
+
+  const opt = {
+    margin: 0,
+    filename: `brokedian_${document.getElementById('pdf-doc-number').textContent.replace(/\s+/g, '_')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { 
+      scale: 2, 
+      useCORS: true, 
+      letterRendering: true,
+      width: 794,
+      windowWidth: 794 // Capture as if the window is exactly A4 width
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(preview).toPdf().get('pdf').then(function (pdf) {
+    // Restore scaling after capture is prepared
+    preview.style.transform = oldTransform;
+    preview.style.width = oldWidth;
+    container.style.height = oldContainerHeight;
+    container.style.overflow = oldContainerOverflow;
+  }).save();
 }
 
 function closePreviewModal() {
