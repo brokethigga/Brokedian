@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1832,7 +1832,7 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
     pdfLogo.style.display = "none";
   }
   document.getElementById('pdf-my-bizname').textContent = biz.name || "YOUR BUSINESS NAME";
-  document.getElementById('pdf-my-taxid').textContent = biz.taxid ? `Tax ID: ${biz.taxid}` : "Tax ID: --";
+  const taxIdEl = document.getElementById('pdf-my-taxid'); if(biz.taxid) { taxIdEl.textContent = 'Tax ID: ' + biz.taxid; taxIdEl.style.display = 'block'; } else { taxIdEl.style.display = 'none'; }
   document.getElementById('pdf-doc-type').textContent = type.toUpperCase();
   document.getElementById('pdf-doc-number').textContent = `Document ID: ${docObj.id.toUpperCase()}`;
   document.getElementById('pdf-doc-date').textContent = docObj.date || docObj.expiry || new Date().toLocaleDateString();
@@ -1917,9 +1917,9 @@ function fitInvoiceToScreen() {
   const container = document.querySelector('.invoice-preview-container');
   if (!preview || !container) return;
   preview.style.transform = '';
-  container.style.overflow = '';
+  container.style.overflow = ''; container.style.alignItems = 'center';
   container.style.height = '';
-    const availWidth = container.clientWidth;
+    const cs2 = getComputedStyle(container); const padH = (parseFloat(cs2.paddingLeft)||0)+(parseFloat(cs2.paddingRight)||0); const availWidth = container.clientWidth - padH;
     const invoiceWidth = 210 * 3.7795;
     if (availWidth < invoiceWidth) {
       const scale = availWidth / invoiceWidth;
@@ -1928,7 +1928,7 @@ function fitInvoiceToScreen() {
       const cs = getComputedStyle(container);
       const padV = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
       preview.style.transform = `scale(${scale})`;
-      preview.style.transformOrigin = 'top center';
+      preview.style.transformOrigin = 'top left'; preview.style.marginLeft = '0'; container.style.alignItems = 'flex-start';
       container.style.height = (origHeight * scale + padV) + 'px';
       container.style.overflow = 'hidden';
     }
@@ -1938,24 +1938,16 @@ function onPreviewModalClose() {
   const preview = document.getElementById('print-area');
   const container = document.querySelector('.invoice-preview-container');
   if (preview) preview.style.transform = '';
-  if (container) { container.style.overflow = ''; container.style.height = ''; }
+  if (container) { container.style.overflow = ''; container.style.alignItems = 'center'; container.style.height = ''; }
   window.removeEventListener('resize', fitInvoiceToScreen);
 }
 
 function printInvoice() {
-  const preview = document.getElementById('print-area');
-  const container = document.querySelector('.invoice-preview-container');
+  const element = document.getElementById('print-area');
+  const body = document.body;
   
-  // Temporarily reset scaling for clean capture
-  const oldTransform = preview.style.transform;
-  const oldContainerHeight = container.style.height;
-  const oldContainerOverflow = container.style.overflow;
-  const oldWidth = preview.style.width;
-  
-  preview.style.transform = '';
-  preview.style.width = '794px'; // Force exact A4 pixel width
-  container.style.height = '';
-  container.style.overflow = '';
+  // Enter rendering mode - forces A4 dimensions via CSS
+  body.classList.add('pdf-rendering');
 
   const opt = {
     margin: 0,
@@ -1965,19 +1957,17 @@ function printInvoice() {
       scale: 2, 
       useCORS: true, 
       letterRendering: true,
-      width: 794,
-      windowWidth: 794 // Capture as if the window is exactly A4 width
+      windowWidth: 794,
+      scrollX: 0,
+      scrollY: 0
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
-  html2pdf().set(opt).from(preview).toPdf().get('pdf').then(function (pdf) {
-    // Restore scaling after capture is prepared
-    preview.style.transform = oldTransform;
-    preview.style.width = oldWidth;
-    container.style.height = oldContainerHeight;
-    container.style.overflow = oldContainerOverflow;
-  }).save();
+  html2pdf().set(opt).from(element).save().then(() => {
+    // Exit rendering mode
+    body.classList.remove('pdf-rendering');
+  });
 }
 
 function closePreviewModal() {

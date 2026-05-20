@@ -1,4 +1,4 @@
-﻿/* ═══ 1. THEME VARIABLES ═══ */
+/* ═══ 1. THEME VARIABLES ═══ */
 :root {
   --bg:#EEEEF2; --bg2:#FFFFFF; --bg3:#E8E8EE; --card:#FFFFFF;
   --border:rgba(0,0,0,0.06); --border2:rgba(0,0,0,0.10);
@@ -232,7 +232,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   display: flex; align-items: flex-end; justify-content: space-between; height: 200px; padding: 20px 0 10px; gap: 12px;
 }
 @media(min-width: 1024px) {
-  .chart-bars-wrap { height: 200px; padding: 24px 0 12px; }
+  .chart-bars-wrap { height: 280px; padding: 24px 0 12px; }
   .visual-chart-container { padding: 24px; }
 }
 .chart-column {
@@ -497,7 +497,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .inv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
 .inv-party-label { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.1em; margin-bottom: 4px; }
 .inv-party-name { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 0; }
-.inv-party-detail { font-size: 12px; color: #475569; line-height: 1.5; }
+.inv-party-detail { font-size: 12px; color: #475569; line-height: 1.5; white-space: pre-wrap; }
 .inv-table-wrap { width: 100%; margin-bottom: 20px; }
 .inv-table { width: 100%; border-collapse: collapse; }
 .inv-table th {
@@ -517,7 +517,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .inv-notes-section { margin-top: auto; display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; padding-top: 18px; border-top: 1px solid #e2e8f0; page-break-inside: avoid; }
 .inv-payment-box { background: #f8fafc; padding: 14px; border-radius: 8px; }
 .inv-payment-title { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
-.inv-payment-details { font-size: 11px; color: #475569; line-height: 1.5; }
+.inv-payment-details { font-size: 12px; color: #475569; line-height: 1.6; white-space: pre-wrap; }
+
+/* Desktop Print Engine Helper */
+body.pdf-rendering .invoice-preview {
+  transform: none !important;
+  width: 794px !important;
+  position: relative !important;
+  left: 0 !important;
+  top: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
 .promptpay-qr-box { margin-top: 12px; display: flex; align-items: center; gap: 12px; }
 .promptpay-qr-box img { width: 80px; height: 80px; border: 1px solid #e2e8f0; padding: 3px; background: #fff; }
 .promptpay-text { font-size: 10px; color: #64748b; }
