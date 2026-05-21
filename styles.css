@@ -417,6 +417,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   border:1px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;
   font-size:16px;padding:12px 14px;border-radius:10px;outline:none;transition:border-color .2s, background .2s, color .2s;}
 .form-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;}
+@media(min-width:1024px){.form-group .form-date{width:100%;}}
 
 .submit-btn{width:100%;padding:15px;background:var(--accent);border:none;border-radius:var(--radius);
   color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:16px;cursor:pointer;margin-top:4px;}

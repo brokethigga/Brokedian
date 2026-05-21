@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=14">
+<link rel="stylesheet" href="styles.css?v=16">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -390,7 +390,7 @@
       </button>
     </div>
 
-    <div class="form-row">
+    <div class="form-row form-row-has-date">
       <div class="form-group">
         <label>Invoice Payment Status</label>
         <select id="c-status">
@@ -399,7 +399,7 @@
           <option value="late">Overdue</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group form-date-group">
         <label>Issue / Accounting Date</label>
         <input type="date" id="c-date" class="form-date">
       </div>
@@ -436,7 +436,7 @@
       </button>
     </div>
 
-    <div class="form-row">
+    <div class="form-row form-row-has-date">
       <div class="form-group">
         <label>Offer Acceptance Tracking</label>
         <select id="q-status">
@@ -445,7 +445,7 @@
           <option value="expired">Expired / Declined</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group form-date-group">
         <label>Expiry / Deadline Date</label>
         <input type="date" id="q-expiry" class="form-date">
       </div>
