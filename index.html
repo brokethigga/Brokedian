@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=5">
+<link rel="stylesheet" href="styles.css?v=6">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -995,13 +995,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initPaywallBanner() {
   const banner = document.getElementById('paywall-banner');
-  if (userTier === 'pro') {
-    banner.style.display = 'none';
-    return;
-  }
-  const result = checkTierLimits();
-  const nearLimit = result.exceeded.length > 0 || Object.values(result.limits).some(l => l.current >= l.max * 0.8);
-  banner.style.display = nearLimit ? 'flex' : 'none';
+  banner.style.display = userTier === 'pro' ? 'none' : 'flex';
 }
 
 function initMobileTooltips() {
@@ -1424,7 +1418,14 @@ function convertQuoteToInvoice(quoteId) {
 }
 
 // ITEMIZED ROW BUILDER METHODS (WITH FIXED VISUAL LABEL HEADINGS)
-function addNewInvoiceLineItemRow(desc = '', qty = '', cost = '') {
+function addNewInvoiceLineItemRow(desc = '', qty = '', cost = '', silent) {
+  if (!silent && userTier === 'free') {
+    var current = document.querySelectorAll('#invoice-line-items-wrapper .line-item-input-row').length;
+    if (current >= FREE_LIMITS.lineItems) {
+      showToast('Free tier limited to ' + FREE_LIMITS.lineItems + ' line items. Upgrade to Pro for unlimited.');
+      return;
+    }
+  }
   const container = document.getElementById('invoice-line-items-wrapper');
   const div = document.createElement('div');
   div.className = "line-item-input-row";
@@ -1446,7 +1447,14 @@ function addNewInvoiceLineItemRow(desc = '', qty = '', cost = '') {
   container.appendChild(div);
 }
 
-function addNewQuoteLineItemRow(desc = '', qty = '', cost = '') {
+function addNewQuoteLineItemRow(desc = '', qty = '', cost = '', silent) {
+  if (!silent && userTier === 'free') {
+    var current = document.querySelectorAll('#quote-line-items-wrapper .line-item-input-row').length;
+    if (current >= FREE_LIMITS.lineItems) {
+      showToast('Free tier limited to ' + FREE_LIMITS.lineItems + ' line items. Upgrade to Pro for unlimited.');
+      return;
+    }
+  }
   const container = document.getElementById('quote-line-items-wrapper');
   if(!container) { alert('Error: quote items container not found'); return; }
   const div = document.createElement('div');
@@ -1515,7 +1523,7 @@ function openClientModal(id = null) {
     document.getElementById('c-date').value = new Date().toISOString().split('T')[0];
     document.getElementById('delete-client-btn').style.display = "none";
     document.getElementById('preview-client-btn').style.display = "none";
-    addNewInvoiceLineItemRow('', 1, 0); 
+    addNewInvoiceLineItemRow('', 1, 0, true);
   } else {
     const item = clients.find(c => c.id === id);
     if(!item) return;
@@ -1530,9 +1538,9 @@ function openClientModal(id = null) {
     document.getElementById('preview-client-btn').style.display = "block";
     
     if(item.items && item.items.length) {
-      item.items.forEach(line => addNewInvoiceLineItemRow(line.desc, line.qty, line.cost));
+      item.items.forEach(line => addNewInvoiceLineItemRow(line.desc, line.qty, line.cost, true));
     } else {
-      addNewInvoiceLineItemRow(item.project, 1, 0); 
+      addNewInvoiceLineItemRow(item.project, 1, 0, true);
     }
   }
   document.getElementById('modal-client').classList.add('open');
@@ -1664,7 +1672,7 @@ function openQuoteModal(id = null) {
     document.getElementById('q-expiry').value = new Date(Date.now() + DEFAULT_QUOTE_EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; 
     document.getElementById('delete-quote-btn').style.display = "none";
     document.getElementById('preview-quote-btn').style.display = "none";
-    addNewQuoteLineItemRow('', '', '');
+    addNewQuoteLineItemRow('', '', '', true);
   } else {
     const item = quotes.find(q => q.id === id);
     if(!item) return;
@@ -1678,9 +1686,9 @@ function openQuoteModal(id = null) {
     document.getElementById('preview-quote-btn').style.display = "block";
     
     if(item.items && item.items.length) {
-      item.items.forEach(line => addNewQuoteLineItemRow(line.desc, line.qty, line.cost));
+      item.items.forEach(line => addNewQuoteLineItemRow(line.desc, line.qty, line.cost, true));
     } else {
-      addNewQuoteLineItemRow(item.project, 1, 0);
+      addNewQuoteLineItemRow(item.project, 1, 0, true);
     }
   }
   document.getElementById('modal-quote').classList.add('open');
