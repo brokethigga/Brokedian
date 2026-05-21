@@ -519,16 +519,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .inv-payment-title { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #94a3b8; margin-bottom: 8px; }
 .inv-payment-details { font-size: 12px; color: #475569; line-height: 1.6; white-space: pre-wrap; }
 
-/* Desktop Print Engine Helper */
-body.pdf-rendering .invoice-preview {
-  transform: none !important;
-  width: 794px !important;
-  position: relative !important;
-  left: 0 !important;
-  top: 0 !important;
-  box-shadow: none !important;
-  margin: 0 !important;
-}
 .promptpay-qr-box { margin-top: 12px; display: flex; align-items: center; gap: 12px; }
 .promptpay-qr-box img { width: 80px; height: 80px; border: 1px solid #e2e8f0; padding: 3px; background: #fff; }
 .promptpay-text { font-size: 10px; color: #64748b; }
@@ -539,7 +529,14 @@ body.pdf-rendering .invoice-preview {
 @media print {
   @page { size: A4; margin: 0; }
   html, body { background: #fff !important; color: #000 !important; height: auto !important; overflow: visible !important; }
-  body > *:not(#modal-preview) { display: none !important; }
+  body > *:not(#modal-preview):not(.print-invoice-clone) { display: none !important; }
+
+  .print-invoice-clone {
+    display: block !important; position: static !important;
+    width: 794px !important; padding: 5mm !important;
+    margin: 0 auto !important; box-shadow: none !important; border: none !important;
+  }
+
   #modal-preview {
     display: block !important; position: absolute !important; left: 0 !important; top: 0 !important;
     width: 100% !important; height: auto !important; overflow: visible !important;

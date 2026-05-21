@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=5">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
@@ -1943,30 +1943,75 @@ function onPreviewModalClose() {
 }
 
 function printInvoice() {
-  const element = document.getElementById('print-area');
-  const body = document.body;
-  
-  // Enter rendering mode - forces A4 dimensions via CSS
-  body.classList.add('pdf-rendering');
+  if (window.innerWidth >= 1024) {
+    printInvoiceDesktop();
+  } else {
+    printInvoiceMobile();
+  }
+}
+
+function printInvoiceDesktop() {
+  closePreviewModal();
+  const original = document.getElementById('print-area');
+  if (!original) return;
+
+  const clone = original.cloneNode(true);
+  clone.classList.add('print-invoice-clone');
+  clone.style.transform = 'none';
+  clone.style.transformOrigin = '';
+  clone.style.borderTop = original.style.borderTop || '';
+
+  const watermark = clone.querySelector('#pdf-watermark');
+  if (watermark) watermark.style.display = userTier === 'pro' ? 'none' : 'block';
+
+  document.body.appendChild(clone);
+
+  const cleanup = () => {
+    if (clone.parentNode) clone.parentNode.removeChild(clone);
+    window.removeEventListener('afterprint', cleanup);
+  };
+  window.addEventListener('afterprint', cleanup);
+  window.print();
+}
+
+function printInvoiceMobile() {
+  const original = document.getElementById('print-area');
+  if (!original) return;
+
+  const clone = original.cloneNode(true);
+  const wrapper = document.createElement('div');
+  wrapper.appendChild(clone);
+  wrapper.style.cssText = 'position:fixed;left:-9999px;top:0;width:794px;background:#fff;z-index:-1;';
+  document.body.appendChild(wrapper);
+
+  clone.style.transform = 'none';
+  clone.style.transformOrigin = '';
+  clone.style.margin = '0 auto';
+
+  const watermark = clone.querySelector('#pdf-watermark');
+  if (watermark) watermark.style.display = userTier === 'pro' ? 'none' : 'block';
+
+  clone.style.borderTop = original.style.borderTop || '';
+
+  const docNumEl = document.getElementById('pdf-doc-number');
+  const filename = docNumEl ? 'brokedian_' + docNumEl.textContent.replace(/\s+/g, '_') : 'brokedian_invoice';
 
   const opt = {
     margin: 0,
-    filename: `brokedian_${document.getElementById('pdf-doc-number').textContent.replace(/\s+/g, '_')}.pdf`,
+    filename: filename + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { 
-      scale: 2, 
-      useCORS: true, 
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
       letterRendering: true,
-      windowWidth: 794,
-      scrollX: 0,
-      scrollY: 0
+      width: 794,
+      windowWidth: 794
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   };
 
-  html2pdf().set(opt).from(element).save().then(() => {
-    // Exit rendering mode
-    body.classList.remove('pdf-rendering');
+  html2pdf().set(opt).from(clone).save().then(() => {
+    if (wrapper.parentNode) wrapper.parentNode.removeChild(wrapper);
   });
 }
 
