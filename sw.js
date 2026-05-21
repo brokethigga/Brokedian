@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v10';
 const CACHE_NAME = `brokedian-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_NAME}-runtime`;
 const ASSETS = ['./', './index.html', './manifest.json', './styles.css?v=5'];

@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="styles.css?v=5">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 </head>
 <body>
 <div class="layout">
@@ -1813,6 +1814,51 @@ function closeModalOnOverlay(e, modalId) {
 }
 
 // PRINT DRIVEN GENERATION LOGIC WITH DETAILED TABLE PREVIEWS
+// PromptPay QR helpers
+function crc16CCITT(str) {
+  let crc = 0xFFFF;
+  for (let i = 0; i < str.length; i++) {
+    crc ^= str.charCodeAt(i) << 8;
+    for (let j = 0; j < 8; j++) {
+      crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1;
+      crc &= 0xFFFF;
+    }
+  }
+  return crc;
+}
+function pad2(n) { return String(n).padStart(2, '0'); }
+function buildPromptPayPayload(target, amount) {
+  const digits = target.replace(/[^0-9]/g, '');
+  let targetType, targetValue;
+  if (digits.length >= 15) {
+    targetType = '03'; targetValue = digits; // e-Wallet
+  } else if (digits.length >= 13) {
+    targetType = '02'; targetValue = digits; // tax ID
+  } else {
+    targetType = '01'; // mobile
+    targetValue = ('0000000000000' + digits.replace(/^0/, '66')).slice(-13);
+  }
+  function f(id, val) { return id + pad2(val.length) + val; }
+  const merchantData = f('00', 'A000000677010111') + f(targetType, targetValue);
+  const body = f('00', '01') + f('01', '12') + f('29', merchantData) + f('58', 'TH') + f('53', '764') + f('54', amount.toFixed(2));
+  const crcVal = crc16CCITT(body + '6304');
+  return body + '6304' + crcVal.toString(16).toUpperCase().padStart(4, '0');
+}
+function generateQRDataURL(data) {
+  if (typeof qrcode === 'undefined') return '';
+  try {
+    const qr = qrcode(0, 'M');
+    qr.addData(data);
+    qr.make();
+    const modCount = qr.getModuleCount();
+    const cellSize = Math.max(2, Math.floor(160 / (modCount + 4)));
+    return qr.createDataURL(cellSize, 2);
+  } catch (e) {
+    console.warn('QR generation failed:', e);
+    return '';
+  }
+}
+
 function launchPrintViewInvoicePDF(id, type = 'invoice') {
   let docObj = null;
   const currency = document.getElementById('cfg-currency')?.value || "฿";
@@ -1893,8 +1939,12 @@ function launchPrintViewInvoicePDF(id, type = 'invoice') {
   if(rawToken && tokenIsValid && finalGrandTotalVal > 0) {
     ppWrapper.style.display = "flex";
     document.getElementById('pdf-promptpay-token').textContent = `ID Token: ${rawToken}`;
-    document.getElementById('pdf-promptpay-qr-img').src =
-      `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`PromptPay_${rawToken}_AMT_${Number(finalGrandTotalVal).toFixed(2)}`)}`;
+    const payload = buildPromptPayPayload(rawToken, finalGrandTotalVal);
+    if (payload) {
+      document.getElementById('pdf-promptpay-qr-img').src = generateQRDataURL(payload);
+    } else {
+      document.getElementById('pdf-promptpay-qr-img').src = '';
+    }
   } else {
     ppWrapper.style.display = "none";
   }
