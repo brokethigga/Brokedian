@@ -255,7 +255,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);}
 .ft-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.10em;text-transform:uppercase;margin-bottom:6px;}
-.ft-value{font-family:'Syne',sans-serif;font-weight:800;font-size:32px;color:var(--accent2);letter-spacing:-.02em;}
+.ft-value{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:32px;color:var(--accent2);letter-spacing:-.04em;font-variant-numeric:tabular-nums;}
 
 .forecast-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
