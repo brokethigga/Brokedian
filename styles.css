@@ -647,5 +647,99 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .credit-ad-btn:disabled{opacity:.45;cursor:not-allowed;}
 .credit-upgrade-btn{width:100%;padding:13px;background:var(--accent-bg);border:1px solid var(--accent-glow);border-radius:14px;color:var(--accent);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;}
 
+/* Thai language: bump all small text for readability */
+.lang-th .hero-label{font-size:14px;}
+.lang-th .hero-subtext{font-size:15px;}
+.lang-th .status-label{font-size:14px;}
+.lang-th .status-sub{font-size:16px;}
+.lang-th .m-label{font-size:14px;}
+.lang-th .m-sub{font-size:14px;}
+.lang-th .chart-label{font-size:14px;}
+.lang-th .ft-label{font-size:14px;}
+.lang-th .fr-label{font-size:16px;}
+.lang-th .nav-item span{font-size:14px;}
+.lang-th .nav-action-btn{font-size:16px;}
+.lang-th .nav-upgrade-item{font-size:15px;}
+.lang-th .page-header p{font-size:17px;}
+.lang-th .control-block-label{font-size:14px;}
+.lang-th .control-btn{font-size:16px;}
+.lang-th .reset-btn{font-size:15px;}
+.lang-th .csv-btn{font-size:14px;}
+.lang-th .config-label{font-size:14px;}
+.lang-th .tooltip-box{font-size:15px;}
+.lang-th .info-badge{font-size:12px;}
+.lang-th .client-avatar{font-size:16px;}
+.lang-th .client-name{font-size:17px;}
+.lang-th .client-project{font-size:15px;}
+.lang-th .client-amount{font-size:17px;}
+.lang-th .status-pill{font-size:13px;}
+.lang-th .quote-name{font-size:17px;}
+.lang-th .quote-amount{font-size:17px;}
+.lang-th .quote-meta{font-size:15px;}
+.lang-th .convert-btn{font-size:14px;}
+.lang-th .sr-month{font-size:17px;}
+.lang-th .sr-earned{font-size:19px;}
+.lang-th .empty-state h3{font-size:20px;}
+.lang-th .empty-state p{font-size:16px;}
+.lang-th .add-btn{font-size:17px;}
+.lang-th .profile-section-title{font-size:14px;}
+.lang-th .profile-avatar-placeholder span{font-size:13px;}
+.lang-th .profile-avatar-label{font-size:14px;}
+.lang-th .profile-field label{font-size:15px;}
+.lang-th .form-group label{font-size:15px;}
+.lang-th .inv-preview-mini{font-size:15px;}
+.lang-th .inv-party-label{font-size:13px;}
+.lang-th .inv-party-name{font-size:17px;}
+.lang-th .inv-party-detail{font-size:14px;}
+.lang-th .inv-table th{font-size:13px;}
+.lang-th .inv-table td{font-size:15px;}
+.lang-th .inv-summary-table td{font-size:15px;}
+.lang-th .inv-summary-table tr.total-row td{font-size:16px;}
+.lang-th .inv-payment-title{font-size:13px;}
+.lang-th .inv-payment-details{font-size:14px;}
+.lang-th .promptpay-text{font-size:13px;}
+.lang-th .promptpay-text strong{font-size:14px;}
+.lang-th .inv-footer{font-size:14px;}
+.lang-th .inv-meta .doc-info{font-size:14px;}
+.lang-th .inv-status-badge{font-size:13px;}
+.lang-th .toast{font-size:17px;}
+.lang-th .install-banner span{font-size:16px;}
+.lang-th .install-banner-btn{font-size:15px;}
+.lang-th #offline-indicator{font-size:15px;}
+.lang-th .paywall-banner-title{font-size:16px;}
+.lang-th .paywall-banner-sub{font-size:14px;}
+.lang-th .paywall-banner-btn{font-size:15px;}
+.lang-th .paywall-sub{font-size:17px;}
+.lang-th .paywall-feature-text{font-size:16px;}
+.lang-th .paywall-dismiss{font-size:15px;}
+.lang-th .paywall-demo-btn{font-size:17px;}
+.lang-th .credit-sub{font-size:16px;}
+.lang-th .credit-meter{font-size:15px;}
+.lang-th .credit-ad-btn{font-size:17px;}
+.lang-th .credit-upgrade-btn{font-size:17px;}
+.lang-th .line-item-column label{font-size:13px !important;}
+.lang-th .line-item-input-row input{font-size:16px !important;}
+.lang-th .inv-brand{font-size:18px;}
+/* Thai: normalize letter-spacing for all UI text (Thai script doesn't need tracking) */
+.lang-th :where(
+  .nav-item span, .hero-label, .status-label, .m-label, .ft-label,
+  .status-pill, .control-block-label, .config-label, .form-group label,
+  .profile-section-title, .profile-field label, .line-item-column label,
+  .inv-party-label, .inv-table th, .inv-status-badge, .inv-payment-title,
+  .page-header p, .page-header h1, .hero-subtext, .section-title,
+  .quote-meta, .empty-state h3, .empty-state p, .modal h2,
+  .submit-btn, .cancel-btn, .delete-btn, .secondary-action-btn,
+  .paywall-title, .paywall-sub, .paywall-dismiss, .credit-title, .credit-sub,
+  .add-btn, .client-name, .client-amount, .quote-name, .quote-amount,
+  .sr-month, .sr-earned, .convert-btn, .toast,
+  .install-banner span, .install-banner-btn,
+  .paywall-banner-title, .paywall-banner-sub, .paywall-banner-btn,
+  .paywall-cta, .paywall-demo-btn, .credit-ad-btn, .credit-upgrade-btn,
+  .credit-meter, .control-btn, .reset-btn, .csv-btn, .fr-label, .client-project,
+  .profile-avatar-placeholder span, .profile-avatar-label, .inv-preview-mini,
+  .inv-party-name, .inv-party-detail, .inv-table td, .inv-summary-table td,
+  .inv-payment-details, .promptpay-text, .promptpay-text strong, .inv-footer,
+  .inv-meta .doc-info, #offline-indicator, .nav-action-btn, .nav-upgrade-item
+) { letter-spacing: normal !important; }
 
 

@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=22">
+<link rel="stylesheet" href="styles.css?v=27">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -153,11 +153,11 @@
     
     <div class="metrics-grid" style="margin-bottom:16px;">
       <div class="metric-card mc-accent" style="padding:14px;">
-        <div class="m-label" style="font-size:10px;" data-i18n="quote_conversion">Quote Conversion Rate</div>
+        <div class="m-label" data-i18n="quote_conversion">Quote Conversion Rate</div>
         <div class="m-value" id="quote-conversion-rate" style="font-size:18px;">0%</div>
       </div>
       <div class="metric-card mc-yellow" style="padding:14px;">
-        <div class="m-label" style="font-size:10px;" data-i18n="quote_active">Active Pipeline Quotes</div>
+        <div class="m-label" data-i18n="quote_active">Active Pipeline Quotes</div>
         <div class="m-value" id="quote-active-value" style="font-size:18px;">฿0</div>
       </div>
     </div>
@@ -1093,6 +1093,7 @@ const DICTIONARY = {
 };
 
 let currentLang = localStorage.getItem('brokedian_lang') || 'en';
+document.documentElement.classList.toggle('lang-th', currentLang === 'th');
 
 function t(key) {
   return DICTIONARY[currentLang][key] || DICTIONARY['en'][key] || key;
@@ -1101,6 +1102,7 @@ function t(key) {
 function switchLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('brokedian_lang', lang);
+  document.documentElement.classList.toggle('lang-th', lang === 'th');
   updateUILanguage();
 }
 
@@ -1947,7 +1949,7 @@ function openClientModal(id = null) {
   if (!id && !canAdd('invoice')) { showLimitBlocked('invoices'); return; }
   document.getElementById('invoice-line-items-wrapper').innerHTML = "";
   if(!id) {
-    document.getElementById('modal-client-title').innerHTML = '<span data-i18n="modal_add_invoice">Add Invoice</span>';
+    document.getElementById('modal-client-title').innerHTML = '<span>' + t('modal_add_invoice') + '</span>';
     document.getElementById('c-id').value = "";
     document.getElementById('c-name').value = "";
     document.getElementById('c-address').value = "";
@@ -2097,7 +2099,7 @@ function openQuoteModal(id = null) {
   const wrapper = document.getElementById('quote-line-items-wrapper');
   if(!wrapper) { alert('Error: quote items container not found'); return; }
   if(!id) {
-    document.getElementById('modal-quote-title').innerHTML = '<span data-i18n="modal_create_quote">Create Quote Estimate</span>';
+    document.getElementById('modal-quote-title').innerHTML = '<span>' + t('modal_create_quote') + '</span>';
     document.getElementById('q-id').value = "";
     document.getElementById('q-name').value = "";
     document.getElementById('q-project').value = "";
@@ -2187,7 +2189,7 @@ function deleteQuoteEstimate() {
 function openPipelineModal(id = null) {
   if (!id && !canAdd('pipeline')) { showLimitBlocked('pipeline'); return; }
   if(!id) {
-    document.getElementById('modal-pipe-title').innerHTML = '<span data-i18n="modal_add_forecast">Add Target Deal Forecast</span>';
+    document.getElementById('modal-pipe-title').innerHTML = '<span>' + t('modal_add_forecast') + '</span>';
     document.getElementById('p-id').value = "";
     document.getElementById('pipe-name').value = "";
     document.getElementById('pipe-amount').value = "";
