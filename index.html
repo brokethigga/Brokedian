@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=16">
+<link rel="stylesheet" href="styles.css?v=17">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -22,29 +22,29 @@
 <nav class="nav">
   <div class="nav-logo">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.37 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
-    <span>Brokedian</span>
+    <span data-i18n="brand_short">Brokedian</span>
   </div>
   <div class="nav-item active" id="nav-dashboard" onclick="switchScreen('dashboard',this)">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 22V12h6v10"/></svg>
-    <span>Dashboard</span>
+    <span data-i18n="nav_dashboard">Dashboard</span>
   </div>
   <div class="nav-item" id="nav-clients" onclick="switchScreen('clients',this)">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-    <span>Invoices</span>
+    <span data-i18n="nav_invoices">Invoices</span>
   </div>
   <div class="nav-item" id="nav-quotes" onclick="switchScreen('quotes',this)">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-    <span>Quotes</span>
+    <span data-i18n="nav_quotes">Quotes</span>
   </div>
   <div class="nav-item" id="nav-forecast" onclick="switchScreen('forecast',this)">
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline stroke-linecap="round" stroke-linejoin="round" points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-    <span>Forecast</span>
+    <span data-i18n="nav_forecast">Forecast</span>
   </div>
   <div class="nav-spacer"></div>
   <div class="nav-bottom-actions">
     <div id="nav-upgrade-btn" class="nav-upgrade-item" onclick="openPaywallModal()">
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-      <span>Broke Pro</span>
+      <span data-i18n="brand_name">Broke Pro</span>
     </div>
   </div>
 </nav>
@@ -54,7 +54,7 @@
   <div id="screen-dashboard" class="screen active">
     <div class="page-header">
       <div class="page-header-left" style="display:flex;flex-direction:column;gap:4px;">
-        <h1 id="dash-greeting">Good morning 👋</h1>
+        <h1 id="dash-greeting" data-i18n="greeting">Good morning 👋</h1>
         <p id="dash-date" style="display:flex;align-items:center;gap:4px;">Loading...<span id="date-pro-badge" style="display:none;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span></p>
       </div>
       <div class="page-header-right">
@@ -127,8 +127,8 @@
   <div id="screen-clients" class="screen">
     <div class="page-header">
       <div class="page-header-left">
-        <h1>Invoices</h1>
-        <p>Create invoices and keep track of your clients</p>
+        <h1 data-i18n="invoices_title">Invoices</h1>
+        <p data-i18n="invoices_desc">Create invoices and keep track of your clients</p>
       </div>
       <div class="page-header-right">
         <button class="theme-toggle-btn" onclick="switchScreen('profile', null)">
@@ -261,7 +261,7 @@
       <div class="profile-avatar-label">Click area to attach company logo</div>
     </div>
 
-    <div class="profile-section">
+<div class="profile-section">
       <div class="profile-section-title">Primary Profile Data</div>
       <div class="profile-field">
         <label>Registered Business Name</label>
@@ -285,7 +285,7 @@
       </div>
     </div>
 
-    <div class="profile-section">
+<div class="profile-section">
       <div class="profile-section-title">Fintech & Localization (Thailand Standard)</div>
       <div class="profile-field">
         <label>Bank Account Wire Instructions</label>
@@ -306,7 +306,7 @@
       </div>
     </div>
 
-    <div class="profile-section">
+<div class="profile-section">
       <div class="profile-section-title">Brand Styling Scheme</div>
       <div class="invoice-color-row">
         <div class="color-swatch selected" style="background:#7C6EF5;" onclick="pickBrandColor('#7C6EF5',this)"></div>
@@ -344,6 +344,13 @@
         <button class="control-btn" onclick="factoryResetAllData()">Wipe Data</button>
       </div>
       
+      <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
+        <div class="control-block-label">Language Settings</div>
+        <div style="display:flex; gap:10px; margin-bottom:12px;">
+          <button class="control-btn" onclick="switchLanguage('en')">English</button>
+          <button class="control-btn" onclick="switchLanguage('th')">Thai</button>
+        </div>
+      </div>
       <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
         <div class="control-block-label">Developer & Pro Tools</div>
         <button id="reset-ad-credits-btn" class="control-btn" style="width:100%;margin-bottom:8px;" onclick="resetAdCreditsForTesting()">Reset Ad Credits (Testing)</button>
@@ -683,6 +690,68 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script>
+// 1. DICTIONARY DEFINITION
+const DICTIONARY = {
+  en: {
+    brand_short: "Brokedian",
+    nav_dashboard: "Dashboard",
+    nav_invoices: "Invoices",
+    nav_quotes: "Quotes",
+    nav_forecast: "Forecast",
+    brand_name: "Broke Pro",
+    greeting: "Good morning 👋",
+    invoices_title: "Invoices",
+    invoices_desc: "Create invoices and keep track of your clients",
+    quotes_title: "Quotes & Estimates",
+    quotes_desc: "Send quotes, track deadlines, and see your future work",
+    forecast_title: "Income Forecast Simulator",
+    forecast_desc: "Estimate your future income and see how long your savings will last",
+    profile_title: "Business Configuration Settings",
+    profile_desc: "Set up your business details, payment info, and digital signature",
+  },
+  th: {
+    brand_short: "Brokedian",
+    nav_dashboard: "แดชบอร์ด",
+    nav_invoices: "ใบแจ้งหนี้",
+    nav_quotes: "ใบเสนอราคา",
+    nav_forecast: "พยากรณ์รายได้",
+    brand_name: "Broke Pro",
+    greeting: "สวัสดีตอนเช้า 👋",
+    invoices_title: "ใบแจ้งหนี้",
+    invoices_desc: "สร้างใบแจ้งหนี้และติดตามลูกค้าของคุณ",
+    quotes_title: "ใบเสนอราคา",
+    quotes_desc: "ส่งใบเสนอราคา ติดตามกำหนดการ และดูงานในอนาคตของคุณ",
+    forecast_title: "เครื่องมือพยากรณ์รายได้",
+    forecast_desc: "ประเมินรายได้ในอนาคตและดูว่าเงินสำรองของคุณจะอยู่ได้นานแค่ไหน",
+    profile_title: "ตั้งค่าธุรกิจ",
+    profile_desc: "ตั้งค่ารายละเอียดธุรกิจ ข้อมูลการชำระเงิน และลายเซ็นดิจิทัล",
+  }
+};
+
+let currentLang = localStorage.getItem('brokedian_lang') || 'en';
+
+function t(key) {
+  return DICTIONARY[currentLang][key] || DICTIONARY['en'][key] || key;
+}
+
+updateUILanguage();
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('brokedian_lang', lang);
+  updateUILanguage();
+}
+
+function updateUILanguage() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = t(key);
+    } else {
+        el.textContent = t(key);
+    }
+  });
+}
 // LOCAL STORAGE MODEL STATE DEFAULTS
 const DATA_WIPED = localStorage.getItem('brokedian_wiped') === '1';
 if(DATA_WIPED) localStorage.removeItem('brokedian_wiped');
