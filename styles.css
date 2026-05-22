@@ -647,7 +647,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .credit-ad-btn:disabled{opacity:.45;cursor:not-allowed;}
 .credit-upgrade-btn{width:100%;padding:13px;background:var(--accent-bg);border:1px solid var(--accent-glow);border-radius:14px;color:var(--accent);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;}
 
-/* Thai language: bump all small text for readability */
+/* Thai language: bump small text by 2-3px (except control sections) */
 .lang-th .hero-label{font-size:14px;}
 .lang-th .hero-subtext{font-size:15px;}
 .lang-th .status-label{font-size:14px;}
@@ -662,7 +662,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .lang-th .nav-upgrade-item{font-size:15px;}
 .lang-th .page-header p{font-size:17px;}
 .lang-th .control-block-label{font-size:14px;}
-.lang-th .control-btn{font-size:16px;}
+.lang-th .control-btn{font-size:13px;}
 .lang-th .reset-btn{font-size:15px;}
 .lang-th .csv-btn{font-size:14px;}
 .lang-th .config-label{font-size:14px;}
