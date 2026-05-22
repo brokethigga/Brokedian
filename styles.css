@@ -742,4 +742,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   .inv-meta .doc-info, #offline-indicator, .nav-action-btn, .nav-upgrade-item
 ) { letter-spacing: normal !important; }
 
+/* Thai: Kanit font only for descriptive/text-heavy areas — keep DM Sans for UI chrome */
+.lang-th :where(
+  .page-header p, .hero-subtext, .m-label, .m-sub, .status-sub,
+  .status-label, .ft-label, .control-block-label, .config-label,
+  .section-title, .quote-meta, .client-project, .empty-state p,
+  .form-group label, .profile-field label, .profile-section-title,
+  .inv-party-label, .inv-payment-title, .inv-table th,
+  .paywall-sub, .paywall-feature-text, .credit-sub,
+  .line-item-column label
+) { font-family: 'Kanit', 'DM Sans', sans-serif; font-weight: 400; }
 
+.lang-th { line-height: 1.6; }
+.lang-th .nav-item span { line-height: 1.4; }
+.lang-th .client-card,
+.lang-th .quote-card,
+.lang-th .pipeline-card { line-height: 1.6; }
+.lang-th .modal { line-height: 1.6; }
+.lang-th .inv-preview-mini { line-height: 1.6; }
+.lang-th .profile-section { line-height: 1.6; }
+.lang-th .empty-state { line-height: 1.6; }
+.lang-th .form-group label,
+.lang-th .profile-field label,
+.lang-th .control-block-label,
+.lang-th .m-label,
+.lang-th .ft-label,
+.lang-th .status-label { line-height: 1.5; }
+.lang-th .m-value { line-height: 1.3; }
