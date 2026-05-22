@@ -7,11 +7,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Brokedian">
-<title>Brokedian — Income Control</title>
+<title data-i18n="page_title">Brokedian — Income Control</title>
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=21">
+<link rel="stylesheet" href="styles.css?v=22">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -217,9 +217,9 @@
           </span>
         </div>
         <select id="cfg-currency" onchange="updateForecast();saveForecastConfig()">
-          <option value="฿">THB (฿)</option>
-          <option value="$">USD ($)</option>
-          <option value="€">EUR (€)</option>
+          <option value="฿" data-i18n="currency_thb">THB (฿)</option>
+          <option value="$" data-i18n="currency_usd">USD ($)</option>
+          <option value="€" data-i18n="currency_eur">EUR (€)</option>
         </select>
       </div>
     </div>
@@ -252,17 +252,17 @@
         <img id="biz-logo-img" style="display:none;">
         <div id="biz-logo-placeholder" class="profile-avatar-placeholder">
           <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          <span>Logo</span>
+          <span data-i18n="logo_placeholder">Logo</span>
         </div>
         <div id="avatar-upload-guide" class="avatar-upload-guide"></div>
       </div>
       <input type="file" id="logo-file-elem" style="display:none" accept="image/*" onchange="handleLogoUpload(event)">
-      <button id="remove-logo-btn" class="control-btn" style="display:none;padding:6px 12px;font-size:12px;" onclick="removeBizLogo()">Remove logo</button>
-      <div class="profile-avatar-label">Click area to attach company logo</div>
+      <button id="remove-logo-btn" class="control-btn" style="display:none;padding:6px 12px;font-size:12px;" onclick="removeBizLogo()"><span data-i18n="remove_logo">Remove logo</span></button>
+      <div class="profile-avatar-label" data-i18n="avatar_label">Click area to attach company logo</div>
     </div>
 
 <div class="profile-section">
-      <div class="profile-section-title">Primary Profile Data</div>
+      <div class="profile-section-title" data-i18n="primary_profile">Primary Profile Data</div>
       <div class="profile-field">
         <label data-i18n="prof_bizname">Registered Business Name</label>
         <input type="text" id="p-bizname" placeholder="Your Business / Full Name" oninput="saveProfileInfo()">
@@ -319,7 +319,7 @@
       <div class="inv-preview-mini">
         <div style="font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;" data-i18n="live_preview">Live Preview Signature String:</div>
         <span id="prev-bizname" style="font-weight:700;">Your Business Name</span> &bull; <span id="prev-email">your@email.com</span>
-        <div id="prev-phone-wrap" style="display:none; font-size:12px; margin-top:2px;">Phone: <span id="prev-phone"></span></div>
+        <div id="prev-phone-wrap" style="display:none; font-size:12px; margin-top:2px;"><span data-i18n="phone_label">Phone:</span> <span id="prev-phone"></span></div>
         <div id="prev-footer-wrap" style="display:none; font-size:12px; color:var(--muted); margin-top:4px; border-top:1px dashed var(--border2); padding-top:4px;"></div>
       </div>
     </div>
@@ -347,8 +347,8 @@
       <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
         <div class="control-block-label" data-i18n="lang_settings">Language Settings</div>
         <div style="display:flex; gap:10px; margin-bottom:12px;">
-          <button class="control-btn" onclick="switchLanguage('en')">English</button>
-          <button class="control-btn" onclick="switchLanguage('th')">Thai</button>
+          <button class="control-btn" onclick="switchLanguage('en')"><span data-i18n="lang_en">English</span></button>
+          <button class="control-btn" onclick="switchLanguage('th')"><span data-i18n="lang_th">Thai</span></button>
         </div>
       </div>
       <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
@@ -843,6 +843,52 @@ const DICTIONARY = {
     pdf_terms_label: "Terms:",
     pdf_thanks: "Thank you for your business.",
     pdf_generated: "Generated by Brokedian —",
+    page_title: "Brokedian — Income Control",
+    currency_thb: "THB (฿)",
+    currency_usd: "USD ($)",
+    currency_eur: "EUR (€)",
+    logo_placeholder: "Logo",
+    remove_logo: "Remove logo",
+    avatar_label: "Click area to attach company logo",
+    primary_profile: "Primary Profile Data",
+    phone_label: "Phone:",
+    lang_en: "English",
+    lang_th: "Thai",
+    no_invoices_title: "No invoices yet",
+    no_invoices_desc: "Click below to create your first invoice.",
+    no_quotes_title: "No customer quotes yet",
+    no_quotes_desc: "Create a quote to start tracking potential work.",
+    no_deals_title: "No target deals added",
+    no_deals_desc: "Add potential deals to see how they affect your future income.",
+    convert_to_invoice: "Convert to Active Invoice",
+    project_label: "Project",
+    deadline_label: "Deadline Expiry",
+    none_label: "None",
+    quote_expired_warn: "⚠ This quote has expired — consider sending a follow-up",
+    chart_quotes: "Quotes",
+    banner_safe: "Next Month Secured",
+    banner_safe_sub: "Total liquid cash ({currency}{amount}) covers {months} months of expenses. You are safe.",
+    banner_warn: "Approaching Zero Balance",
+    banner_warn_sub: "Only {months} months left. Current cash won't cover the full next 30 days.",
+    banner_danger: "Broke Next Month",
+    banner_danger_sub: "Runway critically low at {months} months. You will be broke before next month ends without more inflow.",
+    invoices_issued: "{n} invoices issued",
+    overdue_terms: "{n} outstanding past terms",
+    edit_invoice: "Edit Invoice Details",
+    edit_quote: "Modify Offer Estimate",
+    edit_forecast: "Modify Forecast Weight",
+    item_desc: "Item Description",
+    item_desc_ph: "e.g. Consulting Hours",
+    item_desc_ph_quote: "e.g. Asset Design",
+    item_qty: "Qty",
+    item_rate: "Unit Rate",
+    limit_line_items: "Free tier limited to {n} line items. Upgrade to Pro for unlimited.",
+    err_items_container: "Error: quote items container not found",
+    prob_weight: "Probability Weight",
+    expected: "Expected:",
+    months_label: "Months",
+    summary_earned: "Active Month Earned Base (Settled)",
+    summary_unpaid: "Outstanding Booked Backlog (Unpaid)",
     btn_close_preview: "Close Preview",
   },
   th: {
@@ -996,6 +1042,52 @@ const DICTIONARY = {
     pdf_terms_label: "\u0e40\u0e07\u0e37\u0e48\u0e2d\u0e19\u0e44\u0e02:",
     pdf_thanks: "\u0e02\u0e2d\u0e1a\u0e04\u0e38\u0e13\u0e17\u0e35\u0e48\u0e43\u0e0a\u0e49\u0e1a\u0e23\u0e34\u0e01\u0e32\u0e23",
     pdf_generated: "\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e42\u0e14\u0e22 Brokedian \u2014",
+    page_title: "Brokedian \u2014 \u0e08\u0e31\u0e14\u0e01\u0e32\u0e23\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49",
+    currency_thb: "THB (\u0e3f)",
+    currency_usd: "USD ($)",
+    currency_eur: "EUR (\u20ac)",
+    logo_placeholder: "\u0e42\u0e25\u0e42\u0e01\u0e49",
+    remove_logo: "\u0e25\u0e1a\u0e42\u0e25\u0e42\u0e01\u0e49",
+    avatar_label: "\u0e04\u0e25\u0e34\u0e01\u0e1e\u0e37\u0e49\u0e19\u0e17\u0e35\u0e48\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e41\u0e19\u0e1a\u0e42\u0e25\u0e42\u0e01\u0e49\u0e1a\u0e23\u0e34\u0e29\u0e31\u0e17",
+    primary_profile: "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e42\u0e1b\u0e23\u0e44\u0e1f\u0e25\u0e4c\u0e2b\u0e25\u0e31\u0e01",
+    phone_label: "\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c:",
+    lang_en: "English",
+    lang_th: "\u0e44\u0e17\u0e22",
+    no_invoices_title: "\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49",
+    no_invoices_desc: "\u0e04\u0e25\u0e34\u0e01\u0e14\u0e49\u0e32\u0e19\u0e25\u0e48\u0e32\u0e07\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49\u0e43\u0e1a\u0e41\u0e23\u0e01",
+    no_quotes_title: "\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e43\u0e1a\u0e40\u0e2a\u0e19\u0e2d\u0e23\u0e32\u0e04\u0e32",
+    no_quotes_desc: "\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e43\u0e1a\u0e40\u0e2a\u0e19\u0e2d\u0e23\u0e32\u0e04\u0e32\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e34\u0e14\u0e15\u0e32\u0e21\u0e07\u0e32\u0e19\u0e17\u0e35\u0e48\u0e2d\u0e32\u0e08\u0e40\u0e01\u0e34\u0e14\u0e02\u0e36\u0e49\u0e19",
+    no_deals_title: "\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e21\u0e35\u0e14\u0e35\u0e25\u0e40\u0e1b\u0e49\u0e32\u0e2b\u0e21\u0e32\u0e22",
+    no_deals_desc: "\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e14\u0e35\u0e25\u0e17\u0e35\u0e48\u0e2d\u0e32\u0e08\u0e40\u0e01\u0e34\u0e14\u0e02\u0e36\u0e49\u0e19\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e14\u0e39\u0e1c\u0e25\u0e01\u0e23\u0e30\u0e17\u0e1a\u0e15\u0e48\u0e2d\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e43\u0e19\u0e2d\u0e19\u0e32\u0e04\u0e15",
+    convert_to_invoice: "\u0e41\u0e1b\u0e25\u0e07\u0e40\u0e1b\u0e47\u0e19\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49",
+    project_label: "\u0e42\u0e04\u0e23\u0e07\u0e01\u0e32\u0e23",
+    deadline_label: "\u0e27\u0e31\u0e19\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38",
+    none_label: "\u0e44\u0e21\u0e48\u0e21\u0e35",
+    quote_expired_warn: "\u26a0 \u0e43\u0e1a\u0e40\u0e2a\u0e19\u0e2d\u0e23\u0e32\u0e04\u0e32\u0e19\u0e35\u0e49\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38\u0e41\u0e25\u0e49\u0e27 \u2014 \u0e04\u0e27\u0e23\u0e2a\u0e48\u0e07\u0e15\u0e34\u0e14\u0e15\u0e32\u0e21\u0e1c\u0e25",
+    chart_quotes: "\u0e43\u0e1a\u0e40\u0e2a\u0e19\u0e2d\u0e23\u0e32\u0e04\u0e32",
+    banner_safe: "\u0e21\u0e31\u0e48\u0e19\u0e04\u0e07\u0e16\u0e36\u0e07\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32",
+    banner_safe_sub: "\u0e2a\u0e20\u0e32\u0e1e\u0e04\u0e25\u0e48\u0e2d\u0e07\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14 ({currency}{amount}) \u0e40\u0e1e\u0e35\u0e22\u0e07\u0e1e\u0e2d {months} \u0e40\u0e14\u0e37\u0e2d\u0e19 \u0e04\u0e38\u0e13\u0e1b\u0e25\u0e2d\u0e14\u0e20\u0e31\u0e22",
+    banner_warn: "\u0e43\u0e01\u0e25\u0e49\u0e16\u0e36\u0e07\u0e08\u0e38\u0e14\u0e27\u0e34\u0e01\u0e24\u0e15",
+    banner_warn_sub: "\u0e40\u0e2b\u0e25\u0e37\u0e2d\u0e40\u0e1e\u0e35\u0e22\u0e07 {months} \u0e40\u0e14\u0e37\u0e2d\u0e19 \u0e40\u0e07\u0e34\u0e19\u0e2a\u0e14\u0e1b\u0e31\u0e08\u0e08\u0e38\u0e1a\u0e31\u0e19\u0e44\u0e21\u0e48\u0e04\u0e23\u0e2d\u0e1a\u0e04\u0e25\u0e38\u0e21 30 \u0e27\u0e31\u0e19\u0e02\u0e49\u0e32\u0e07\u0e2b\u0e19\u0e49\u0e32",
+    banner_danger: "\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32\u0e2d\u0e32\u0e08\u0e2b\u0e21\u0e14\u0e15\u0e31\u0e27",
+    banner_danger_sub: "\u0e2a\u0e20\u0e32\u0e1e\u0e04\u0e25\u0e48\u0e2d\u0e07\u0e15\u0e48\u0e33\u0e21\u0e32\u0e01\u0e17\u0e35\u0e48 {months} \u0e40\u0e14\u0e37\u0e2d\u0e19 \u0e04\u0e38\u0e13\u0e2d\u0e32\u0e08\u0e2b\u0e21\u0e14\u0e15\u0e31\u0e27\u0e01\u0e48\u0e2d\u0e19\u0e2a\u0e34\u0e49\u0e19\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32",
+    invoices_issued: "\u0e2d\u0e2d\u0e01 {n} \u0e43\u0e1a",
+    overdue_terms: "\u0e04\u0e49\u0e32\u0e07\u0e0a\u0e33\u0e23\u0e30 {n} \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23",
+    edit_invoice: "\u0e41\u0e01\u0e49\u0e44\u0e02\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49",
+    edit_quote: "\u0e41\u0e01\u0e49\u0e44\u0e02\u0e43\u0e1a\u0e40\u0e2a\u0e19\u0e2d\u0e23\u0e32\u0e04\u0e32",
+    edit_forecast: "\u0e41\u0e01\u0e49\u0e44\u0e02\u0e01\u0e32\u0e23\u0e1e\u0e22\u0e32\u0e01\u0e23\u0e13\u0e4c",
+    item_desc: "\u0e23\u0e32\u0e22\u0e25\u0e30\u0e40\u0e2d\u0e35\u0e22\u0e14\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32",
+    item_desc_ph: "\u0e40\u0e0a\u0e48\u0e19 \u0e0a\u0e31\u0e48\u0e27\u0e42\u0e21\u0e07\u0e1b\u0e23\u0e36\u0e01\u0e29\u0e32",
+    item_desc_ph_quote: "\u0e40\u0e0a\u0e48\u0e19 \u0e2d\u0e2d\u0e01\u0e41\u0e1a\u0e1a\u0e2a\u0e34\u0e19\u0e17\u0e23\u0e31\u0e1e\u0e22\u0e4c",
+    item_qty: "\u0e08\u0e33\u0e19\u0e27\u0e19",
+    item_rate: "\u0e23\u0e32\u0e04\u0e32\u0e15\u0e48\u0e2d\u0e2b\u0e19\u0e48\u0e27\u0e22",
+    limit_line_items: "\u0e1f\u0e23\u0e35\u0e08\u0e33\u0e01\u0e31\u0e14\u0e17\u0e35\u0e48 {n} \u0e23\u0e32\u0e22\u0e01\u0e32\u0e23 \u0e2d\u0e31\u0e1e\u0e40\u0e01\u0e23\u0e14\u0e40\u0e1b\u0e47\u0e19 Pro \u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e44\u0e21\u0e48\u0e08\u0e33\u0e01\u0e31\u0e14",
+    err_items_container: "\u0e02\u0e49\u0e2d\u0e1c\u0e34\u0e14\u0e1e\u0e25\u0e32\u0e14: \u0e44\u0e21\u0e48\u0e1e\u0e1a\u0e04\u0e2d\u0e19\u0e40\u0e17\u0e19\u0e40\u0e19\u0e2d\u0e23\u0e4c\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e43\u0e1a\u0e40\u0e2a\u0e19\u0e2d\u0e23\u0e32\u0e04\u0e32",
+    prob_weight: "\u0e19\u0e49\u0e33\u0e2b\u0e19\u0e31\u0e01\u0e04\u0e27\u0e32\u0e21\u0e19\u0e48\u0e32\u0e08\u0e30\u0e40\u0e1b\u0e47\u0e19",
+    expected: "\u0e04\u0e32\u0e14\u0e27\u0e48\u0e32:",
+    months_label: "\u0e40\u0e14\u0e37\u0e2d\u0e19",
+    summary_earned: "\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49 (\u0e0a\u0e33\u0e23\u0e30\u0e41\u0e25\u0e49\u0e27)",
+    summary_unpaid: "\u0e07\u0e32\u0e19\u0e04\u0e49\u0e32\u0e07\u0e04\u0e07\u0e04\u0e49\u0e32\u0e07 (\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e0a\u0e33\u0e23\u0e30)",
     btn_close_preview: "\u0e1b\u0e34\u0e14\u0e15\u0e31\u0e27\u0e2d\u0e22\u0e48\u0e32\u0e07",
   }
 };
@@ -1460,9 +1552,9 @@ function renderAppContent() {
   }
   if(document.getElementById('d-paid')) document.getElementById('d-paid').textContent = currency + paidSum.toLocaleString();
   if(document.getElementById('d-pending')) document.getElementById('d-pending').textContent = currency + pendingSum.toLocaleString();
-  if(document.getElementById('d-pending-count')) document.getElementById('d-pending-count').textContent = `${activePendingCount} invoices issued`;
+  if(document.getElementById('d-pending-count')) document.getElementById('d-pending-count').textContent = t('invoices_issued').replace('{n}', activePendingCount);
   if(document.getElementById('d-late')) document.getElementById('d-late').textContent = currency + lateSum.toLocaleString();
-  if(document.getElementById('d-late-count')) document.getElementById('d-late-count').textContent = `${outstandingLateCount} outstanding past terms`;
+  if(document.getElementById('d-late-count')) document.getElementById('d-late-count').textContent = t('overdue_terms').replace('{n}', outstandingLateCount);
 
   // Runway mechanics: Include current month's paid earnings in the liquid pool
   const burnInput = document.getElementById('cfg-burn');
@@ -1489,16 +1581,16 @@ function renderAppContent() {
 
     if(computedMonthsRunway >= 1) {
       sBanner.className = "status-banner safe";
-      sTitle.textContent = "Next Month Secured";
-      sSub.textContent = `Total liquid cash (${currency}${totalLiquidPool.toLocaleString()}) covers ${computedMonthsRunway.toFixed(1)} months of expenses. You are safe.`;
+      sTitle.textContent = t('banner_safe');
+      sSub.textContent = t('banner_safe_sub').replace('{currency}', currency).replace('{amount}', totalLiquidPool.toLocaleString()).replace('{months}', computedMonthsRunway.toFixed(1));
     } else if(computedMonthsRunway >= 0.5) {
       sBanner.className = "status-banner warn";
-      sTitle.textContent = "Approaching Zero Balance";
-      sSub.textContent = `Only ${computedMonthsRunway.toFixed(1)} months left. Current cash won't cover the full next 30 days.`;
+      sTitle.textContent = t('banner_warn');
+      sSub.textContent = t('banner_warn_sub').replace('{months}', computedMonthsRunway.toFixed(1));
     } else {
       sBanner.className = "status-banner danger";
-      sTitle.textContent = "Broke Next Month";
-      sSub.textContent = `Runway critically low at ${computedMonthsRunway.toFixed(1)} months. You will be broke before next month ends without more inflow.`;
+      sTitle.textContent = t('banner_danger');
+      sSub.textContent = t('banner_danger_sub').replace('{months}', computedMonthsRunway.toFixed(1));
     }
   }
 
@@ -1515,13 +1607,13 @@ function renderDashboardAndClientLists(currency) {
   
   let htmlContent = "";
   if(clients.length === 0) {
-    htmlContent = `<div class="empty-state"><h3>No invoices yet</h3><p>Click below to create your first invoice.</p></div>`;
+    htmlContent = `<div class="empty-state"><h3>${t('no_invoices_title')}</h3><p>${t('no_invoices_desc')}</p></div>`;
   } else {
     // Sort descending order by date
     let sorted = [...clients].sort((a,b) => new Date(b.date) - new Date(a.date));
     sorted.forEach(c => {
       let totalAmount = c.items ? c.items.reduce((sum, item) => sum + (item.qty * item.cost), 0) : 0;
-      let statusLabels = { paid: "Paid", pending: "Issued Pending", late: "Overdue" };
+      let statusLabels = { paid: t('status_paid'), pending: t('status_pending'), late: t('status_overdue') };
       let statusClass = { paid: "pill-paid", pending: "pill-pending", late: "pill-late" };
       
       htmlContent += `
@@ -1570,16 +1662,16 @@ function renderQuotesTabIntelligence(currency) {
   }
 
   if(quotes.length === 0) {
-    htmlContent = `<div class="empty-state"><h3>No customer quotes yet</h3><p>Create a quote to start tracking potential work.</p></div>`;
+    htmlContent = `<div class="empty-state"><h3>${t('no_quotes_title')}</h3><p>${t('no_quotes_desc')}</p></div>`;
   } else {
     quotes.forEach(q => {
       const isExpired = q.expiry && new Date(q.expiry) < new Date() && q.status === 'sent';
       let totalAmount = q.items ? q.items.reduce((sum, item) => sum + (item.qty * item.cost), 0) : 0;
-      let badgeLabels = { sent: "Sent / Review", accepted: "Accepted Offer", expired: "Expired Guideline" };
+      let badgeLabels = { sent: t('q_status_sent'), accepted: t('q_status_accepted'), expired: t('q_status_expired') };
       let badgeClass = { sent: isExpired ? "pill-late" : "pill-pending", accepted: "pill-paid", expired: "pill-late" };
       
       let convertButtonMarkup = (q.status !== 'accepted' && q.status !== 'expired') ? 
-        `<button class="convert-btn" onclick="event.stopPropagation(); convertQuoteToInvoice('${escHtml(q.id)}')">Convert to Active Invoice</button>` : '';
+        `<button class="convert-btn" onclick="event.stopPropagation(); convertQuoteToInvoice('${escHtml(q.id)}')">${t('convert_to_invoice')}</button>` : '';
         
       htmlContent += `
         <div class="quote-card" onclick="openQuoteModal('${escHtml(q.id)}')">
@@ -1587,9 +1679,9 @@ function renderQuotesTabIntelligence(currency) {
             <div class="quote-name">${escHtml(q.name)}</div>
             <div class="quote-amount">${currency}${totalAmount.toLocaleString()}</div>
           </div>
-          <div class="quote-meta">Project: ${escHtml(q.project || '')}</div>
-          <div class="quote-meta">Deadline Expiry: ${q.expiry ? new Date(q.expiry).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : 'None'}</div>
-          ${isExpired ? '<div class="quote-meta" style="color:var(--red);font-weight:700;">&#9888; This quote has expired — consider sending a follow-up</div>' : ''}
+          <div class="quote-meta">${t('project_label')}: ${escHtml(q.project || '')}</div>
+          <div class="quote-meta">${t('deadline_label')}: ${q.expiry ? new Date(q.expiry).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : t('none_label')}</div>
+          ${isExpired ? `<div class="quote-meta" style="color:var(--red);font-weight:700;">${t('quote_expired_warn')}</div>` : ''}
           <span class="status-pill ${badgeClass[q.status]}">${badgeLabels[q.status]}</span>
           ${convertButtonMarkup}
         </div>
@@ -1619,22 +1711,22 @@ function renderVisualAnalyticsCharts(paid, pending, late, quoteVal) {
     <div class="chart-column">
       <div style="font-size:12px; font-weight:bold; color:var(--green);">${currency}${formatK(paid)}</div>
       <div class="chart-bar-fill paid-bar" style="height: ${getPercent(paid)}"></div>
-      <div class="chart-label">Paid</div>
+      <div class="chart-label">${t('status_paid')}</div>
     </div>
     <div class="chart-column">
       <div style="font-size:12px; font-weight:bold; color:var(--yellow);">${currency}${formatK(pending)}</div>
       <div class="chart-bar-fill" style="background:var(--yellow); height: ${getPercent(pending)}"></div>
-      <div class="chart-label">Pending</div>
+      <div class="chart-label">${t('status_pending')}</div>
     </div>
     <div class="chart-column">
       <div style="font-size:12px; font-weight:bold; color:var(--red);">${currency}${formatK(late)}</div>
       <div class="chart-bar-fill" style="background:var(--red); height: ${getPercent(late)}"></div>
-      <div class="chart-label">Overdue</div>
+      <div class="chart-label">${t('status_overdue')}</div>
     </div>
     <div class="chart-column">
       <div style="font-size:12px; font-weight:bold; color:var(--accent2);">${currency}${formatK(quoteVal)}</div>
       <div class="chart-bar-fill" style="background:var(--accent); height: ${getPercent(quoteVal)}"></div>
-      <div class="chart-label">Quotes</div>
+      <div class="chart-label">${t('chart_quotes')}</div>
     </div>
   `;
 }
@@ -1682,8 +1774,8 @@ function updateForecast() {
           <span style="font-weight:800; font-size:16px;">${currency}${p.amount.toLocaleString()}</span>
         </div>
         <div style="font-size:12px; color:var(--muted2); margin-top:2px; display:flex; justify-content:space-between;">
-          <span>Probability Weight: ${p.prob}% (${p.month === 'current' ? 'Current Month' : 'Next Month'})</span>
-          <span style="color:var(--accent2); font-weight:700;">Expected:<br>${currency}${Math.round(weightedAmount).toLocaleString()}</span>
+          <span>${t('prob_weight')}: ${p.prob}% (${p.month === 'current' ? t('pipe_month_current') : t('pipe_month_next')})</span>
+          <span style="color:var(--accent2); font-weight:700;">${t('expected')}:<br>${currency}${Math.round(weightedAmount).toLocaleString()}</span>
         </div>
         <div class="prob-bar"><div class="prob-fill" style="width: ${p.prob}%"></div></div>
       </div>
@@ -1691,14 +1783,14 @@ function updateForecast() {
   });
   
   const pipelineListWrap = document.getElementById('forecast-pipeline-list');
-  if(pipelineListWrap) pipelineListWrap.innerHTML = pipelineHtml || `<div class="empty-state"><h3>No target deals added</h3><p>Add potential deals to see how they affect your future income.</p></div>`;
+  if(pipelineListWrap) pipelineListWrap.innerHTML = pipelineHtml || `<div class="empty-state"><h3>${t('no_deals_title')}</h3><p>${t('no_deals_desc')}</p></div>`;
 
   // Compute forecast total runtimes
   let adjustedLiquidPool = coreSavings + (expectedPipelineInflow * taxMultiplier);
   let computedSimMonths = fixedBurn > 0 ? (adjustedLiquidPool / fixedBurn) : 0;
   
   if(document.getElementById('f-total-runway')) {
-    document.getElementById('f-total-runway').textContent = computedSimMonths.toFixed(1) + " Months";
+    document.getElementById('f-total-runway').textContent = computedSimMonths.toFixed(1) + " " + t('months_label');
   }
   
   // Render Summary History blocks dynamically for the visualization view
@@ -1706,11 +1798,11 @@ function updateForecast() {
   if(summaryWrap) {
     summaryWrap.innerHTML = `
       <div class="summary-row">
-        <span class="sr-month">Active Month Earned Base (Settled)</span>
+        <span class="sr-month">${t('summary_earned')}</span>
         <span class="sr-earned" style="color:var(--green);">${currency}${clients.filter(c=>c.status==='paid').reduce((acc,c)=>acc+(c.items?c.items.reduce((s,i)=>s+(i.qty*i.cost),0):0),0).toLocaleString()}</span>
       </div>
       <div class="summary-row">
-        <span class="sr-month">Outstanding Booked Backlog (Unpaid)</span>
+        <span class="sr-month">${t('summary_unpaid')}</span>
         <span class="sr-earned" style="color:var(--yellow);">${currency}${clients.filter(c=>c.status!=='paid').reduce((acc,c)=>acc+(c.items?c.items.reduce((s,i)=>s+(i.qty*i.cost),0):0),0).toLocaleString()}</span>
       </div>
     `;
@@ -1772,15 +1864,15 @@ function addNewInvoiceLineItemRow(desc = '', qty = '', cost = '', silent) {
   div.className = "line-item-input-row";
   div.innerHTML = `
     <div class="line-item-column">
-      <label>Item Description</label>
-      <input type="text" class="li-desc" placeholder="e.g. Consulting Hours" value="${escHtml(desc)}">
+      <label>${t('item_desc')}</label>
+      <input type="text" class="li-desc" placeholder="${t('item_desc_ph')}" value="${escHtml(desc)}">
     </div>
     <div class="line-item-column">
-      <label>Qty</label>
+      <label>${t('item_qty')}</label>
       <input type="number" class="li-qty" placeholder="0" value="${escHtml(qty)}" min="1">
     </div>
     <div class="line-item-column">
-      <label>Unit Rate</label>
+      <label>${t('item_rate')}</label>
       <input type="number" class="li-cost" placeholder="0" value="${escHtml(cost)}">
     </div>
     <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">&#x2715;</button>
@@ -1792,25 +1884,25 @@ function addNewQuoteLineItemRow(desc = '', qty = '', cost = '', silent) {
   if (!silent && userTier === 'free') {
     var current = document.querySelectorAll('#quote-line-items-wrapper .line-item-input-row').length;
     if (current >= FREE_LIMITS.lineItems) {
-      showToast('Free tier limited to ' + FREE_LIMITS.lineItems + ' line items. Upgrade to Pro for unlimited.');
+      showToast(t('limit_line_items').replace('{n}', FREE_LIMITS.lineItems));
       return;
     }
   }
   const container = document.getElementById('quote-line-items-wrapper');
-  if(!container) { alert('Error: quote items container not found'); return; }
+  if(!container) { showToast(t('err_items_container')); return; }
   const div = document.createElement('div');
   div.className = "line-item-input-row";
   div.innerHTML = `
     <div class="line-item-column">
-      <label>Item Description</label>
-      <input type="text" class="liq-desc" placeholder="e.g. Asset Design" value="${escHtml(desc)}">
+      <label>${t('item_desc')}</label>
+      <input type="text" class="liq-desc" placeholder="${t('item_desc_ph_quote')}" value="${escHtml(desc)}">
     </div>
     <div class="line-item-column">
-      <label>Qty</label>
+      <label>${t('item_qty')}</label>
       <input type="number" class="liq-qty" placeholder="0" value="${escHtml(qty)}" min="1">
     </div>
     <div class="line-item-column">
-      <label>Unit Rate</label>
+      <label>${t('item_rate')}</label>
       <input type="number" class="liq-cost" placeholder="0" value="${escHtml(cost)}">
     </div>
     <button type="button" class="remove-item-btn" onclick="this.parentElement.remove()">&#x2715;</button>
@@ -1868,7 +1960,7 @@ function openClientModal(id = null) {
   } else {
     const item = clients.find(c => c.id === id);
     if(!item) return;
-    document.getElementById('modal-client-title').innerHTML = '<span>Edit Invoice Details</span>';
+    document.getElementById('modal-client-title').innerHTML = '<span>' + t('edit_invoice') + '</span>';
     document.getElementById('c-id').value = item.id;
     document.getElementById('c-name').value = item.name;
     document.getElementById('c-address').value = item.address || "";
@@ -2017,7 +2109,7 @@ function openQuoteModal(id = null) {
   } else {
     const item = quotes.find(q => q.id === id);
     if(!item) return;
-    document.getElementById('modal-quote-title').textContent = "Modify Offer Estimate";
+    document.getElementById('modal-quote-title').textContent = t('edit_quote');
     document.getElementById('q-id').value = item.id;
     document.getElementById('q-name').value = item.name;
     document.getElementById('q-project').value = item.project;
@@ -2105,7 +2197,7 @@ function openPipelineModal(id = null) {
   } else {
     const matched = pipelineDeals.find(p => p.id === id);
     if(!matched) return;
-    document.getElementById('modal-pipe-title').textContent = "Modify Forecast Weight";
+    document.getElementById('modal-pipe-title').textContent = t('edit_forecast');
     document.getElementById('p-id').value = matched.id;
     document.getElementById('pipe-name').value = matched.name;
     document.getElementById('pipe-amount').value = matched.amount;
