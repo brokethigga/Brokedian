@@ -133,7 +133,7 @@
     <div class="page-header">
       <div class="page-header-left">
         <h1>Invoices</h1>
-        <p>Issue line-item customer invoices and track client intelligence</p>
+        <p>Create invoices and keep track of your clients</p>
       </div>
       <div class="page-header-right">
         <button class="theme-toggle-btn" onclick="switchScreen('profile', null)">
@@ -152,7 +152,7 @@
     <div class="page-header">
       <div class="page-header-left">
         <h1>Quotes & Estimates</h1>
-        <p>Manage prospects, follow up on expiry guidelines, and monitor pipeline health</p>
+        <p>Send quotes, track deadlines, and see your future work</p>
       </div>
     </div>
     
@@ -178,7 +178,7 @@
     <div class="page-header">
       <div class="page-header-left">
         <h1>Income Forecast Simulator</h1>
-        <p>Configure client pipeline weights to project your forward baseline runway</p>
+        <p>Estimate your future income and see how long your savings will last</p>
       </div>
     </div>
 
@@ -248,7 +248,7 @@
     <div class="page-header">
       <div class="page-header-left">
         <h1>Business Configuration Settings</h1>
-        <p>Set up corporate entities, regional fields, signature specs, and PromptPay tokens</p>
+        <p>Set up your business details, payment info, and digital signature</p>
       </div>
     </div>
 
@@ -377,7 +377,7 @@
       <textarea id="c-address" placeholder="Building 4B, 12th Floor, Silom, Bangkok"></textarea>
     </div>
     <div class="form-group">
-      <label>Project Scope Context / Description</label>
+      <label>Project Name or Description</label>
       <input type="text" id="c-project" placeholder="Q2 Product Strategy Consulting">
     </div>
 
@@ -469,12 +469,12 @@
       <input type="text" id="pipe-name" placeholder="Global Synergy Opportunity">
     </div>
     <div class="form-group">
-      <label>Expected Target Deal Valuation</label>
+      <label>How much do you expect to earn?</label>
       <input type="number" id="pipe-amount" placeholder="120000">
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Confidence Probability (%)</label>
+        <label>How likely is this deal? (%)</label>
         <input type="number" id="pipe-prob" value="50" min="0" max="100">
       </div>
       <div class="form-group">
@@ -995,7 +995,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initPaywallBanner() {
   const banner = document.getElementById('paywall-banner');
-  banner.style.display = userTier === 'pro' ? 'none' : 'flex';
+  if (banner) banner.style.display = userTier === 'pro' ? 'none' : 'flex';
+  const navBtn = document.getElementById('nav-upgrade-btn');
+  if (navBtn) navBtn.style.display = userTier === 'pro' ? 'none' : 'flex';
 }
 
 function initMobileTooltips() {
@@ -1174,7 +1176,7 @@ function renderDashboardAndClientLists(currency) {
   
   let htmlContent = "";
   if(clients.length === 0) {
-    htmlContent = `<div class="empty-state"><h3>No active invoices found</h3><p>Click below to construct your first itemized receipt document.</p></div>`;
+    htmlContent = `<div class="empty-state"><h3>No invoices yet</h3><p>Click below to create your first invoice.</p></div>`;
   } else {
     // Sort descending order by date
     let sorted = [...clients].sort((a,b) => new Date(b.date) - new Date(a.date));
@@ -1229,7 +1231,7 @@ function renderQuotesTabIntelligence(currency) {
   }
 
   if(quotes.length === 0) {
-    htmlContent = `<div class="empty-state"><h3>No customer quotes filed</h3><p>Launch customized client estimations to monitor ongoing business conversions.</p></div>`;
+    htmlContent = `<div class="empty-state"><h3>No customer quotes yet</h3><p>Create a quote to start tracking potential work.</p></div>`;
   } else {
     quotes.forEach(q => {
       const isExpired = q.expiry && new Date(q.expiry) < new Date() && q.status === 'sent';
@@ -1350,7 +1352,7 @@ function updateForecast() {
   });
   
   const pipelineListWrap = document.getElementById('forecast-pipeline-list');
-  if(pipelineListWrap) pipelineListWrap.innerHTML = pipelineHtml || `<div class="empty-state"><h3>No dynamic target pipeline added</h3><p>Include simulated prospects to stress test runtime projections.</p></div>`;
+  if(pipelineListWrap) pipelineListWrap.innerHTML = pipelineHtml || `<div class="empty-state"><h3>No target deals added</h3><p>Add potential deals to see how they affect your future income.</p></div>`;
 
   // Compute forecast total runtimes
   let adjustedLiquidPool = coreSavings + (expectedPipelineInflow * taxMultiplier);
