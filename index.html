@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=17">
+<link rel="stylesheet" href="styles.css?v=21">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -55,7 +55,7 @@
     <div class="page-header">
       <div class="page-header-left" style="display:flex;flex-direction:column;gap:4px;">
         <h1 id="dash-greeting" data-i18n="greeting">Good morning 👋</h1>
-        <p id="dash-date" style="display:flex;align-items:center;gap:4px;">Loading...<span id="date-pro-badge" style="display:none;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span></p>
+        <p id="dash-date" style="display:flex;align-items:center;gap:4px;"><span data-i18n="dash_date_loading">Loading...</span><span id="date-pro-badge" style="display:none;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span></p>
       </div>
       <div class="page-header-right">
         <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
@@ -67,25 +67,25 @@
 
     <div id="paywall-banner" class="paywall-banner" style="display:none;" onclick="openPaywallModal()">
       <div class="paywall-banner-text">
-        <div class="paywall-banner-title">Broke&nbsp;Pro — ฿59/month</div>
-        <div class="paywall-banner-sub">Unlimited invoices, no watermark, auto-reminders</div>
+        <div class="paywall-banner-title" data-i18n="banner_pro_title">Broke&nbsp;Pro &mdash; ฿59/month</div>
+        <div class="paywall-banner-sub" data-i18n="banner_pro_sub">Unlimited invoices, no watermark, auto-reminders</div>
       </div>
-      <div class="paywall-banner-btn">Upgrade</div>
+      <div class="paywall-banner-btn" data-i18n="banner_upgrade">Upgrade</div>
     </div>
 
     <div class="hero-dashboard-panel">
-      <div class="hero-label">Total Monthly Backlog Pipeline</div>
+      <div class="hero-label" data-i18n="dash_total_backlog">Total Monthly Backlog Pipeline</div>
       <div class="hero-value" id="hero-total-pipeline">฿0.00</div>
       <div class="hero-subtext">
         <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-        <span>Combines paid revenue, active pending invoices, and likely forecasts.</span>
+        <span data-i18n="dash_backlog_desc">Combines paid revenue, active pending invoices, and likely forecasts.</span>
       </div>
     </div>
 
     <div id="status-banner" class="status-banner safe">
         <div class="status-content">
-          <div class="status-label" id="status-label">Financial Runway Progress</div>
-          <div class="status-title" id="status-title">Calculating baseline...</div>
+          <div class="status-label" id="status-label"><span data-i18n="status_runway">Financial Runway Progress</span></div>
+          <div class="status-title" id="status-title"><span data-i18n="status_baseline">Calculating baseline...</span></div>
           <div class="status-sub" id="status-sub"></div>
         </div>
         <div class="burn-progress-container"><div id="burn-bar" class="burn-progress-bar"></div></div>
@@ -93,34 +93,34 @@
 
     <div class="metrics-grid">
       <div class="metric-card mc-green">
-        <div class="m-label">Earned this month</div>
+        <div class="m-label" data-i18n="dash_earned_month">Earned this month</div>
         <div class="m-value" id="d-paid">—</div>
-        <div class="m-sub">net clear take-home</div>
+        <div class="m-sub" data-i18n="dash_earned_sub">net clear take-home</div>
       </div>
       <div class="metric-card mc-yellow">
-        <div class="m-label">Pending invoices</div>
+        <div class="m-label" data-i18n="dash_pending">Pending invoices</div>
         <div class="m-value" id="d-pending">—</div>
-        <div class="m-sub" id="d-pending-count">0 invoices issued</div>
+        <div class="m-sub" id="d-pending-count" data-i18n="dash_pending_sub">0 invoices issued</div>
       </div>
       <div class="metric-card mc-red">
-        <div class="m-label">Overdue collections</div>
+        <div class="m-label" data-i18n="dash_overdue">Overdue collections</div>
         <div class="m-value" id="d-late">—</div>
-        <div class="m-sub" id="d-late-count">0 outstanding past terms</div>
+        <div class="m-sub" id="d-late-count" data-i18n="dash_overdue_sub">0 outstanding past terms</div>
       </div>
       <div class="metric-card mc-accent">
-        <div class="m-label">Survival Runway</div>
+        <div class="m-label" data-i18n="dash_runway">Survival Runway</div>
         <div class="m-value" id="d-runway">— mo</div>
-        <div class="m-sub">total savings ÷ fixed costs</div>
+        <div class="m-sub" data-i18n="dash_runway_sub">total savings &divide; fixed costs</div>
       </div>
     </div>
 
-    <div class="section-title"><span>Income Analytics Breakdown</span></div>
+    <div class="section-title"><span data-i18n="dash_analytics">Income Analytics Breakdown</span></div>
     <div class="visual-chart-container">
       <div class="chart-bars-wrap" id="analytics-chart-bars">
         </div>
     </div>
 
-    <div class="section-title"><span>Recent Invoices Activity</span></div>
+    <div class="section-title"><span data-i18n="dash_recent">Recent Invoices Activity</span></div>
     <div id="dash-clients" class="client-list"></div>
   </div>
 
@@ -138,7 +138,7 @@
     </div>
     <div id="client-list" class="client-list"></div>
     <div class="add-btn" onclick="openClientModal()">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Add invoice
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> <span data-i18n="btn_add_invoice">Add invoice</span>
     </div>
     <div style="height:16px"></div>
   </div>
@@ -146,25 +146,25 @@
   <div id="screen-quotes" class="screen">
     <div class="page-header">
       <div class="page-header-left">
-        <h1>Quotes & Estimates</h1>
-        <p>Send quotes, track deadlines, and see your future work</p>
+        <h1 data-i18n="quotes_title">Quotes & Estimates</h1>
+        <p data-i18n="quotes_desc">Send quotes, track deadlines, and see your future work</p>
       </div>
     </div>
     
     <div class="metrics-grid" style="margin-bottom:16px;">
       <div class="metric-card mc-accent" style="padding:14px;">
-        <div class="m-label" style="font-size:10px;">Quote Conversion Rate</div>
+        <div class="m-label" style="font-size:10px;" data-i18n="quote_conversion">Quote Conversion Rate</div>
         <div class="m-value" id="quote-conversion-rate" style="font-size:18px;">0%</div>
       </div>
       <div class="metric-card mc-yellow" style="padding:14px;">
-        <div class="m-label" style="font-size:10px;">Active Pipeline Quotes</div>
+        <div class="m-label" style="font-size:10px;" data-i18n="quote_active">Active Pipeline Quotes</div>
         <div class="m-value" id="quote-active-value" style="font-size:18px;">฿0</div>
       </div>
     </div>
 
     <div id="quote-list" class="client-list"></div>
     <div class="add-btn" id="quote-add-btn" onclick="openQuoteModal()">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Create estimate offer
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> <span data-i18n="btn_create_quote">Create estimate offer</span>
     </div>
     <div style="height:16px"></div>
   </div>
@@ -172,48 +172,48 @@
   <div id="screen-forecast" class="screen">
     <div class="page-header">
       <div class="page-header-left">
-        <h1>Income Forecast Simulator</h1>
-        <p>Estimate your future income and see how long your savings will last</p>
+        <h1 data-i18n="forecast_title">Income Forecast Simulator</h1>
+        <p data-i18n="forecast_desc">Estimate your future income and see how long your savings will last</p>
       </div>
     </div>
 
     <div class="settings-panel">
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">Liquid<br>Savings</div>
+          <div class="config-label"><span data-i18n="liquid_savings">Liquid Savings</span></div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
-            <div class="tooltip-box">Your current cash reserves or bank balance — the money available right now to cover expenses if income stops.</div>
+            <div class="tooltip-box" data-i18n="forecasts_savings_tt">Your current cash reserves or bank balance — the money available right now to cover expenses if income stops.</div>
           </span>
         </div>
         <input type="number" id="cfg-savings" value="0" oninput="updateForecast();saveForecastConfig()">
       </div>
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">Monthly<br>Expenses</div>
+          <div class="config-label"><span data-i18n="monthly_expenses">Monthly Expenses</span></div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
-            <div class="tooltip-box">Your total fixed monthly costs — rent, subscriptions, salaries, tools, etc. Used to calculate how many months your savings will last.</div>
+            <div class="tooltip-box" data-i18n="forecasts_expenses_tt">Your total fixed monthly costs — rent, subscriptions, salaries, tools, etc. Used to calculate how many months your savings will last.</div>
           </span>
         </div>
         <input type="number" id="cfg-burn" value="0" oninput="updateForecast();saveForecastConfig()">
       </div>
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">VAT / Tax Rate<br>(%)</div>
+          <div class="config-label" data-i18n="vat_rate">VAT / Tax Rate (%)</div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
-            <div class="tooltip-box">The tax percentage deducted from your invoice income. In Thailand, VAT is typically 7%. This reduces your net take-home from each deal.</div>
+            <div class="tooltip-box" data-i18n="forecasts_vat_tt">The tax percentage deducted from your invoice income. In Thailand, VAT is typically 7%. This reduces your net take-home from each deal.</div>
           </span>
         </div>
         <input type="number" id="cfg-tax" value="0" oninput="updateForecast();saveForecastConfig()">
       </div>
       <div class="config-card">
         <div class="config-label-row">
-          <div class="config-label">Base Currency<br>&nbsp;</div>
+          <div class="config-label"><span data-i18n="base_currency">Base Currency</span><br>&nbsp;</div>
           <span class="info-badge-wrap">
             <i class="info-badge">?</i>
-            <div class="tooltip-box">The currency symbol displayed across invoices and forecasts. This is cosmetic only — all values are stored as numbers.</div>
+            <div class="tooltip-box" data-i18n="forecasts_currency_tt">The currency symbol displayed across invoices and forecasts. This is cosmetic only — all values are stored as numbers.</div>
           </span>
         </div>
         <select id="cfg-currency" onchange="updateForecast();saveForecastConfig()">
@@ -226,15 +226,15 @@
 
     <div class="forecast-total">
       <div>
-        <div class="ft-label">Projected Runway Evaluation</div>
+        <div class="ft-label" data-i18n="forecast_runway">Projected Runway Evaluation</div>
         <div class="ft-value" id="f-total-runway">0.0 months</div>
       </div>
     </div>
 
-    <div class="section-title"><span>Simulated Client Funnel Adjustments</span></div>
+    <div class="section-title"><span data-i18n="forecast_funnel">Simulated Client Funnel Adjustments</span></div>
     <div id="forecast-pipeline-list"></div>
     <div class="add-btn" onclick="openPipelineModal()">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Add placeholder deal target
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> <span data-i18n="forecast_add_deal">Add placeholder deal target</span>
     </div>
     <div style="height:16px"></div>
   </div>
@@ -242,8 +242,8 @@
   <div id="screen-profile" class="screen">
     <div class="page-header">
       <div class="page-header-left">
-        <h1>Business Configuration Settings</h1>
-        <p>Set up your business details, payment info, and digital signature</p>
+        <h1 data-i18n="profile_title">Business Configuration Settings</h1>
+        <p data-i18n="profile_desc">Set up your business details, payment info, and digital signature</p>
       </div>
     </div>
 
@@ -264,50 +264,50 @@
 <div class="profile-section">
       <div class="profile-section-title">Primary Profile Data</div>
       <div class="profile-field">
-        <label>Registered Business Name</label>
+        <label data-i18n="prof_bizname">Registered Business Name</label>
         <input type="text" id="p-bizname" placeholder="Your Business / Full Name" oninput="saveProfileInfo()">
       </div>
       <div class="profile-field">
-        <label>Corporate / Business Address</label>
+        <label data-i18n="prof_address">Corporate / Business Address</label>
         <textarea id="p-address" placeholder="123 Sukhumvit Road, Khlong Toei, Bangkok 10110" oninput="saveProfileInfo()"></textarea>
       </div>
       <div class="profile-field">
-        <label>Tax Identification Number (Tax ID)</label>
+        <label data-i18n="prof_taxid">Tax Identification Number (Tax ID)</label>
         <input type="text" id="p-taxid" placeholder="01055XXXXXXXX" oninput="saveProfileInfo()">
       </div>
       <div class="profile-field">
-        <label>Email Address</label>
+        <label data-i18n="prof_email">Email Address</label>
         <input type="email" id="p-email" placeholder="accounting@company.com" oninput="saveProfileInfo()">
       </div>
       <div class="profile-field">
-        <label>Contact Phone Number</label>
+        <label data-i18n="prof_phone">Contact Phone Number</label>
         <input type="text" id="p-phone" placeholder="+66 2 123 4567" oninput="saveProfileInfo()">
       </div>
     </div>
 
 <div class="profile-section">
-      <div class="profile-section-title">Fintech & Localization (Thailand Standard)</div>
+      <div class="profile-section-title" data-i18n="prof_fintech_title">Fintech & Localization (Thailand Standard)</div>
       <div class="profile-field">
-        <label>Bank Account Wire Instructions</label>
+        <label data-i18n="prof_bank">Bank Account Wire Instructions</label>
         <textarea id="p-bank" placeholder="Kasikornbank (KBank)&#10;Account No: 012-3-45678-9&#10;Account Name: John Doe" oninput="saveProfileInfo()"></textarea>
       </div>
       <div class="profile-field">
-        <label>PromptPay QR ID / Phone / Tax ID (Thailand Payment)</label>
+        <label data-i18n="prof_promptpay">PromptPay QR ID / Phone / Tax ID (Thailand Payment)</label>
         <input type="text" id="p-promptpay" placeholder="0812345678 or Tax ID" oninput="saveProfileInfo()">
-        <small style="color:var(--muted); font-size:11px; margin-top:4px; display:block;">Used dynamically during invoice construction to generate custom scan parameters.</small>
+        <small style="color:var(--muted); font-size:11px; margin-top:4px; display:block;" data-i18n="prof_promptpay_hint">Used dynamically during invoice construction to generate custom scan parameters.</small>
       </div>
       <div class="profile-field">
-        <label>Digital Signature Token Text</label>
+        <label data-i18n="prof_signature">Digital Signature Token Text</label>
         <input type="text" id="p-signature" placeholder="Authorized Signatory: John Doe" oninput="saveProfileInfo()">
       </div>
       <div class="profile-field">
-        <label>Payment Terms / Standard Disclaimer Notes</label>
+        <label data-i18n="prof_terms">Payment Terms / Standard Disclaimer Notes</label>
         <textarea id="p-footer" placeholder="Payment due within 30 days. Transfer via bank wire or scan the PromptPay QR below." oninput="saveProfileInfo()"></textarea>
       </div>
     </div>
 
 <div class="profile-section">
-      <div class="profile-section-title">Brand Styling Scheme</div>
+      <div class="profile-section-title" data-i18n="prof_brand_title">Brand Styling Scheme</div>
       <div class="invoice-color-row">
         <div class="color-swatch selected" style="background:#7C6EF5;" onclick="pickBrandColor('#7C6EF5',this)"></div>
         <div class="color-swatch" style="background:#22C55E;" onclick="pickBrandColor('#22C55E',this)"></div>
@@ -317,7 +317,7 @@
         <div class="color-swatch" style="background:#0f172a;" onclick="pickBrandColor('#0f172a',this)"></div>
       </div>
       <div class="inv-preview-mini">
-        <div style="font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Live Preview Signature String:</div>
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;" data-i18n="live_preview">Live Preview Signature String:</div>
         <span id="prev-bizname" style="font-weight:700;">Your Business Name</span> &bull; <span id="prev-email">your@email.com</span>
         <div id="prev-phone-wrap" style="display:none; font-size:12px; margin-top:2px;">Phone: <span id="prev-phone"></span></div>
         <div id="prev-footer-wrap" style="display:none; font-size:12px; color:var(--muted); margin-top:4px; border-top:1px dashed var(--border2); padding-top:4px;"></div>
@@ -325,40 +325,40 @@
     </div>
     
     <div class="control-block" style="margin-top:0; margin-bottom:24px;">
-      <div class="control-block-label">System & Data Management</div>
+      <div class="control-block-label" data-i18n="sys_data_mgmt">System & Data Management</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
         <button class="control-btn" onclick="exportDataCSV()">
           <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          CSV Export
+          <span data-i18n="csv_export">CSV Export</span>
         </button>
         <button class="control-btn" onclick="exportAllData()">
           <svg style="width:16px; height:16px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-          Full Backup
+          <span data-i18n="full_backup">Full Backup</span>
         </button>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
-        <button class="control-btn" onclick="triggerImportSelection()">Import Data</button>
+        <button class="control-btn" onclick="triggerImportSelection()"><span data-i18n="import_data">Import Data</span></button>
         <input type="file" id="import-file-elem" style="display:none" onchange="importDataJSON(event)">
-        <button class="control-btn" onclick="document.getElementById('import-full-file').click()">Restore Full</button>
+        <button class="control-btn" onclick="document.getElementById('import-full-file').click()"><span data-i18n="restore_full">Restore Full</span></button>
         <input type="file" id="import-full-file" style="display:none" accept=".json" onchange="importAllData(event)">
-        <button class="control-btn" onclick="factoryResetAllData()">Wipe Data</button>
+        <button class="control-btn" onclick="factoryResetAllData()"><span data-i18n="wipe_data">Wipe Data</span></button>
       </div>
       
       <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
-        <div class="control-block-label">Language Settings</div>
+        <div class="control-block-label" data-i18n="lang_settings">Language Settings</div>
         <div style="display:flex; gap:10px; margin-bottom:12px;">
           <button class="control-btn" onclick="switchLanguage('en')">English</button>
           <button class="control-btn" onclick="switchLanguage('th')">Thai</button>
         </div>
       </div>
       <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
-        <div class="control-block-label">Developer & Pro Tools</div>
-        <button id="reset-ad-credits-btn" class="control-btn" style="width:100%;margin-bottom:8px;" onclick="resetAdCreditsForTesting()">Reset Ad Credits (Testing)</button>
-        <button id="reset-pro-trial-btn" class="reset-btn" style="display:none;" onclick="resetProTrial()">End Pro Trial & Downgrade to Free</button>
+        <div class="control-block-label" data-i18n="dev_tools">Developer & Pro Tools</div>
+        <button id="reset-ad-credits-btn" class="control-btn" style="width:100%;margin-bottom:8px;" onclick="resetAdCreditsForTesting()"><span data-i18n="reset_ad_credits">Reset Ad Credits (Testing)</span></button>
+        <button id="reset-pro-trial-btn" class="reset-btn" style="display:none;" onclick="resetProTrial()"><span data-i18n="end_trial">End Pro Trial & Downgrade to Free</span></button>
       </div>
     </div>
     
-    <button class="profile-save-btn" onclick="switchScreen('clients', document.getElementById('nav-clients'))">Apply and Sync Settings</button>
+    <button class="profile-save-btn" onclick="switchScreen('clients', document.getElementById('nav-clients'))"><span data-i18n="apply_sync">Apply and Sync Settings</span></button>
     <div style="height:24px"></div>
   </div>
 
@@ -367,130 +367,130 @@
 <div id="modal-client" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-client')">
   <div class="modal">
     <div class="modal-handle"></div>
-    <h2 id="modal-client-title">Add Invoice</h2>
+    <h2 id="modal-client-title"><span data-i18n="modal_add_invoice">Add Invoice</span></h2>
     <input type="hidden" id="c-id">
     
     <div class="form-group">
-      <label>Client / Corporation Name</label>
+      <label data-i18n="inv_client_name">Client / Corporation Name</label>
       <input type="text" id="c-name" placeholder="Acme International Corp">
     </div>
     <div class="form-group">
-      <label>Client Billing Address Detail</label>
+      <label data-i18n="inv_address">Client Billing Address Detail</label>
       <textarea id="c-address" placeholder="Building 4B, 12th Floor, Silom, Bangkok"></textarea>
     </div>
     <div class="form-group">
-      <label>Project Name or Description</label>
+      <label data-i18n="inv_project">Project Name or Description</label>
       <input type="text" id="c-project" placeholder="Q2 Product Strategy Consulting">
     </div>
 
     <div class="form-group">
-      <label>Invoice Itemized Table Breakdown</label>
+      <label data-i18n="inv_items_label">Invoice Itemized Table Breakdown</label>
       <div id="invoice-line-items-wrapper" class="items-list-container">
         </div>
       <button type="button" class="control-btn" style="padding:8px 12px; font-size:13px; width:max-content;" onclick="addNewInvoiceLineItemRow('', '', '')">
-        + Add Item Row
+        <span data-i18n="btn_add_item">+ Add Item Row</span>
       </button>
     </div>
 
     <div class="form-row form-row-has-date">
       <div class="form-group">
-        <label>Invoice Payment Status</label>
+        <label data-i18n="inv_status">Invoice Payment Status</label>
         <select id="c-status">
-          <option value="pending">Pending</option>
-          <option value="paid">Paid</option>
-          <option value="late">Overdue</option>
+          <option value="pending" data-i18n="status_pending">Pending</option>
+          <option value="paid" data-i18n="status_paid">Paid</option>
+          <option value="late" data-i18n="status_overdue">Overdue</option>
         </select>
       </div>
       <div class="form-group form-date-group">
-        <label>Issue / Accounting Date</label>
+        <label data-i18n="inv_date">Issue / Accounting Date</label>
         <input type="date" id="c-date" class="form-date">
       </div>
     </div>
     
-    <button class="submit-btn" onclick="saveClientInvoice()">Save Invoice Entry</button>
-    <button id="preview-client-btn" class="secondary-action-btn" onclick="launchPrintViewInvoicePDF(document.getElementById('c-id').value, 'invoice')">Preview & Print PDF</button>
-    <button class="cancel-btn" onclick="closeClientModal()">Cancel</button>
-    <button id="delete-client-btn" class="delete-btn" style="display:none;" onclick="deleteClientInvoice()">Delete Entry</button>
+    <button class="submit-btn" onclick="saveClientInvoice()"><span data-i18n="btn_save_invoice">Save Invoice Entry</span></button>
+    <button id="preview-client-btn" class="secondary-action-btn" onclick="launchPrintViewInvoicePDF(document.getElementById('c-id').value, 'invoice')"><span data-i18n="preview_pdf">Preview & Print PDF</span></button>
+    <button class="cancel-btn" onclick="closeClientModal()"><span data-i18n="btn_cancel">Cancel</span></button>
+    <button id="delete-client-btn" class="delete-btn" style="display:none;" onclick="deleteClientInvoice()"><span data-i18n="btn_delete">Delete Entry</span></button>
   </div>
 </div>
 
 <div id="modal-quote" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-quote')">
   <div class="modal">
     <div class="modal-handle"></div>
-    <h2 id="modal-quote-title">Create Quote Estimate</h2>
+    <h2 id="modal-quote-title"><span data-i18n="modal_create_quote">Create Quote Estimate</span></h2>
     <input type="hidden" id="q-id">
     
     <div class="form-group">
-      <label>Prospect Client Name</label>
+      <label data-i18n="q_client_name">Prospect Client Name</label>
       <input type="text" id="q-name" placeholder="Potential Partner Ltd">
     </div>
     <div class="form-group">
-      <label>Project Scope Target</label>
+      <label data-i18n="q_project">Project Scope Target</label>
       <input type="text" id="q-project" placeholder="Website Overhaul Proposal">
     </div>
 
     <div class="form-group">
-      <label>Quote Itemized Table Breakdown</label>
+      <label data-i18n="q_items_label">Quote Itemized Table Breakdown</label>
       <div id="quote-line-items-wrapper" class="items-list-container">
         </div>
       <button type="button" class="control-btn" style="padding:8px 12px; font-size:13px; width:max-content;" onclick="addNewQuoteLineItemRow('', 1, 0)">
-        + Add Quote Item
+        <span data-i18n="btn_add_quote_item">+ Add Quote Item</span>
       </button>
     </div>
 
     <div class="form-row form-row-has-date">
       <div class="form-group">
-        <label>Offer Acceptance Tracking</label>
+        <label data-i18n="q_status_label">Offer Acceptance Tracking</label>
         <select id="q-status">
-          <option value="sent">Sent / Under Review</option>
-          <option value="accepted">Accepted</option>
-          <option value="expired">Expired / Declined</option>
+          <option value="sent" data-i18n="q_status_sent">Sent / Under Review</option>
+          <option value="accepted" data-i18n="q_status_accepted">Accepted</option>
+          <option value="expired" data-i18n="q_status_expired">Expired / Declined</option>
         </select>
       </div>
       <div class="form-group form-date-group">
-        <label>Expiry / Deadline Date</label>
+        <label data-i18n="q_expiry_label">Expiry / Deadline Date</label>
         <input type="date" id="q-expiry" class="form-date">
       </div>
     </div>
     
-    <button class="submit-btn" onclick="saveQuoteEstimate()">Save Quote Offer</button>
-    <button id="preview-quote-btn" class="secondary-action-btn" onclick="launchPrintViewInvoicePDF(document.getElementById('q-id').value, 'quote')">Preview & Print PDF</button>
-    <button class="cancel-btn" onclick="closeQuoteModal()">Cancel</button>
-    <button id="delete-quote-btn" class="delete-btn" style="display:none;" onclick="deleteQuoteEstimate()">Delete Offer</button>
+    <button class="submit-btn" onclick="saveQuoteEstimate()"><span data-i18n="btn_save_quote">Save Quote Offer</span></button>
+    <button id="preview-quote-btn" class="secondary-action-btn" onclick="launchPrintViewInvoicePDF(document.getElementById('q-id').value, 'quote')"><span data-i18n="preview_pdf">Preview & Print PDF</span></button>
+    <button class="cancel-btn" onclick="closeQuoteModal()"><span data-i18n="btn_cancel">Cancel</span></button>
+    <button id="delete-quote-btn" class="delete-btn" style="display:none;" onclick="deleteQuoteEstimate()"><span data-i18n="btn_delete">Delete Offer</span></button>
   </div>
 </div>
 
 <div id="modal-pipeline" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-pipeline')">
   <div class="modal">
     <div class="modal-handle"></div>
-    <h2 id="modal-pipe-title">Add Target Deal Forecast</h2>
+    <h2 id="modal-pipe-title"><span data-i18n="modal_add_forecast">Add Target Deal Forecast</span></h2>
     <input type="hidden" id="p-id">
     
     <div class="form-group">
-      <label>Target Account Name</label>
+      <label data-i18n="pipe_target">Target Account Name</label>
       <input type="text" id="pipe-name" placeholder="Global Synergy Opportunity">
     </div>
     <div class="form-group">
-      <label>How much do you expect to earn?</label>
+      <label data-i18n="pipe_earn">How much do you expect to earn?</label>
       <input type="number" id="pipe-amount" placeholder="120000">
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>How likely is this deal? (%)</label>
+        <label data-i18n="pipe_likely">How likely is this deal? (%)</label>
         <input type="number" id="pipe-prob" value="50" min="0" max="100">
       </div>
       <div class="form-group">
-        <label>Projected Target Month</label>
+        <label data-i18n="pipe_month_label">Projected Target Month</label>
         <select id="pipe-month">
-          <option value="current">Current Month</option>
-          <option value="next">Next Month</option>
+          <option value="current" data-i18n="pipe_month_current">Current Month</option>
+          <option value="next" data-i18n="pipe_month_next">Next Month</option>
         </select>
       </div>
     </div>
     
-    <button class="submit-btn" onclick="savePipelineDeal()">Save Target Forecast</button>
-    <button class="cancel-btn" onclick="closePipelineModal()">Cancel</button>
-    <button id="delete-pipe-btn" class="delete-btn" style="display:none;" onclick="deletePipelineDeal()">Remove Entry</button>
+    <button class="submit-btn" onclick="savePipelineDeal()"><span data-i18n="btn_save_forecast">Save Target Forecast</span></button>
+    <button class="cancel-btn" onclick="closePipelineModal()"><span data-i18n="btn_cancel">Cancel</span></button>
+    <button id="delete-pipe-btn" class="delete-btn" style="display:none;" onclick="deletePipelineDeal()"><span data-i18n="btn_remove">Remove Entry</span></button>
   </div>
 </div>
 
@@ -498,8 +498,8 @@
   <div class="modal" style="max-width:940px; background:#fff; padding:0; border:1px solid rgba(0,0,0,0.06); overflow-y:auto; height:95vh; max-height:95vh; border-radius:20px;">
     <div class="modal-handle" style="margin-top:20px; background:rgba(0,0,0,0.12);"></div>
     <div class="inv-actions" style="position:sticky; top:0; z-index:10; padding:12px 20px; background:rgba(255,255,255,0.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); display:flex; gap:12px;">
-      <button class="submit-btn" style="flex:1; padding:11px; font-size:14px;" onclick="printInvoice()">Print / Save PDF</button>
-      <button class="cancel-btn" style="flex:1; margin-top:0; padding:11px; font-size:14px;" onclick="closePreviewModal()">Close Preview</button>
+      <button class="submit-btn" style="flex:1; padding:11px; font-size:14px;" onclick="printInvoice()"><span data-i18n="btn_print">Print / Save PDF</span></button>
+      <button class="cancel-btn" style="flex:1; margin-top:0; padding:11px; font-size:14px;" onclick="closePreviewModal()"><span data-i18n="btn_close_preview">Close Preview</span></button>
     </div>
     
     <div class="invoice-preview-container" style="background:#f5f5f7; padding:20px 10px;">
@@ -509,8 +509,8 @@
             <div class="doc-type" id="pdf-doc-type">INVOICE</div>
             <div class="doc-info">
               <span id="pdf-doc-number">INV-2026-001</span><br>
-              Date: <span id="pdf-doc-date">May 15, 2026</span><br>
-              Terms: <span id="pdf-payment-terms">Net 30</span><br>
+              <span data-i18n="pdf_date_label">Date:</span> <span id="pdf-doc-date">May 15, 2026</span><br>
+              <span data-i18n="pdf_terms_label">Terms:</span> <span id="pdf-payment-terms">Net 30</span><br>
               <div id="pdf-status-badge" class="inv-status-badge" style="margin-top:8px;">PENDING</div>
             </div>
           </div>
@@ -523,12 +523,12 @@
         
         <div class="inv-parties">
           <div>
-            <div class="inv-party-label">From / Remitter</div>
+            <div class="inv-party-label" data-i18n="pdf_from">From / Remitter</div>
             <div class="inv-party-name" id="pdf-from-name">My Company</div>
             <div class="inv-party-detail" id="pdf-from-details">my@email.com</div>
           </div>
           <div>
-            <div class="inv-party-label">Bill To / Client</div>
+            <div class="inv-party-label" data-i18n="pdf_to">Bill To / Client</div>
             <div class="inv-party-name" id="pdf-to-name">Client Corporation</div>
             <div class="inv-party-detail" id="pdf-to-details">Client Address Spec</div>
           </div>
@@ -538,10 +538,10 @@
           <table class="inv-table">
             <thead>
               <tr>
-                <th>Description</th>
-                <th class="right-align" style="width:60px;">Qty</th>
-                <th class="right-align" style="width:120px;">Unit Rate</th>
-                <th class="right-align" style="width:140px;">Amount</th>
+                <th><span data-i18n="pdf_col_desc">Description</span></th>
+                <th class="right-align" style="width:60px;"><span data-i18n="pdf_col_qty">Qty</span></th>
+                <th class="right-align" style="width:120px;"><span data-i18n="pdf_col_rate">Unit Rate</span></th>
+                <th class="right-align" style="width:140px;"><span data-i18n="pdf_col_amount">Amount</span></th>
               </tr>
             </thead>
             <tbody id="pdf-table-items-body"></tbody>
@@ -551,7 +551,7 @@
         <div class="inv-summary-wrap">
           <table class="inv-summary-table">
             <tr>
-              <td>Subtotal</td>
+              <td data-i18n="pdf_subtotal">Subtotal</td>
               <td id="pdf-subtotal">฿0.00</td>
             </tr>
             <tr>
@@ -559,7 +559,7 @@
               <td id="pdf-tax-amount">฿0.00</td>
             </tr>
             <tr class="total-row">
-              <td>Total Due</td>
+              <td data-i18n="pdf_total_due">Total Due</td>
               <td id="pdf-grand-total">฿0.00</td>
             </tr>
           </table>
@@ -567,27 +567,27 @@
 
         <div class="inv-notes-section">
           <div class="inv-payment-box">
-            <div class="inv-payment-title">Payment Instructions</div>
+            <div class="inv-payment-title" data-i18n="pdf_payment_instructions">Payment Instructions</div>
             <div id="pdf-bank-instructions" class="inv-payment-details">Bank details go here...</div>
             
             <div class="promptpay-qr-box" id="pdf-promptpay-wrapper" style="display:none;">
               <img id="pdf-promptpay-qr-img" src="" alt="PromptPay QR">
               <div class="promptpay-text">
-                <strong>PromptPay Scan</strong>
-                <span id="pdf-promptpay-token">Token: --</span>
+                <strong data-i18n="pdf_promptpay">PromptPay Scan</strong>
+                <span id="pdf-promptpay-token"><span data-i18n="pdf_token">Token:</span> --</span>
               </div>
             </div>
           </div>
           
           <div style="text-align:right;">
             <div id="pdf-signature-block" style="font-style:italic; font-weight:600; color:#0f172a; margin-top:10px; font-size:13px;"></div>
-            <div style="font-size:10px; color:#94a3b8; margin-top:2px;">Authorized Signature</div>
+            <div style="font-size:10px; color:#94a3b8; margin-top:2px;" data-i18n="pdf_signature">Authorized Signature</div>
           </div>
         </div>
         
         <div class="inv-footer">
-          <div id="pdf-custom-notes">Thank you for your business.</div>
-          <div id="pdf-watermark" style="margin-top:6px;font-size:10px;color:#6E6E73;">Generated by Brokedian — brokedian.co.th</div>
+          <div id="pdf-custom-notes" data-i18n="pdf_thanks">Thank you for your business.</div>
+          <div id="pdf-watermark" style="margin-top:6px;font-size:10px;color:#6E6E73;"><span data-i18n="pdf_generated">Generated by Brokedian —</span> brokedian.co.th</div>
         </div>
       </div>
     </div>
@@ -597,27 +597,27 @@
 <div id="modal-delete-confirm" class="modal-overlay" onclick="if(event.target.id==='modal-delete-confirm') cancelDelete()">
   <div class="modal" style="max-width:400px;">
     <div class="modal-handle"></div>
-    <h2 style="color:var(--red);">Confirm Deletion</h2>
+    <h2 style="color:var(--red);" data-i18n="confirm_delete_title">Confirm Deletion</h2>
     <p style="color:var(--muted2); margin-bottom:20px; font-size:15px; line-height:1.5;">Are you sure you want to delete <strong id="del-confirm-type" style="color:var(--text);">this item</strong>? This action cannot be undone.</p>
-    <button class="delete-btn" onclick="confirmDelete()" style="margin-top:0;">Yes, Delete It</button>
-    <button class="cancel-btn" onclick="cancelDelete()">Cancel</button>
+    <button class="delete-btn" onclick="confirmDelete()" style="margin-top:0;"><span data-i18n="confirm_delete_btn">Yes, Delete It</span></button>
+    <button class="cancel-btn" onclick="cancelDelete()"><span data-i18n="btn_cancel">Cancel</span></button>
   </div>
 </div>
 
 <div id="modal-reset-confirm" class="modal-overlay" onclick="if(event.target.id==='modal-reset-confirm') closeResetModal()">
   <div class="modal" style="max-width:400px;">
     <div class="modal-handle"></div>
-    <h2 style="color:var(--red);">Factory Reset</h2>
-    <p id="reset-confirm-text" style="color:var(--muted2); margin-bottom:20px; font-size:15px; line-height:1.5;">This will permanently erase all data. This action cannot be undone.</p>
-    <button class="delete-btn" onclick="executeFactoryReset()" style="margin-top:0;">Yes, Wipe All Data</button>
-    <button class="cancel-btn" onclick="closeResetModal()">Cancel</button>
+    <h2 style="color:var(--red);" data-i18n="reset_title">Factory Reset</h2>
+    <p id="reset-confirm-text" style="color:var(--muted2); margin-bottom:20px; font-size:15px; line-height:1.5;" data-i18n="reset_msg">This will permanently erase all data. This action cannot be undone.</p>
+    <button class="delete-btn" onclick="executeFactoryReset()" style="margin-top:0;"><span data-i18n="reset_btn">Yes, Wipe All Data</span></button>
+    <button class="cancel-btn" onclick="closeResetModal()"><span data-i18n="btn_cancel">Cancel</span></button>
   </div>
 </div>
 
 <div id="modal-crop" class="modal-overlay" onclick="if(event.target.id==='modal-crop') cancelCrop()">
   <div class="modal" style="max-width:520px; padding:20px; border-radius:20px;">
     <div class="modal-handle"></div>
-    <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:16px;">Crop Logo</h2>
+    <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:16px;" data-i18n="crop_title">Crop Logo</h2>
     <div class="crop-container" id="crop-container">
       <img id="crop-image" src="" alt="Crop preview">
     </div>
@@ -626,30 +626,30 @@
       <input type="range" id="crop-zoom" min="0.1" max="3" step="0.01" value="1" oninput="onCropZoom(this.value)">
       <svg width="16" height="16" fill="none" stroke="var(--muted)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35M8 11h6"/></svg>
     </div>
-    <button class="submit-btn" onclick="applyCrop()">Apply & Save</button>
-    <button class="cancel-btn" onclick="cancelCrop()" style="margin-top:8px;">Cancel</button>
+    <button class="submit-btn" onclick="applyCrop()"><span data-i18n="crop_apply">Apply & Save</span></button>
+    <button class="cancel-btn" onclick="cancelCrop()" style="margin-top:8px;"><span data-i18n="btn_cancel">Cancel</span></button>
   </div>
 </div>
 
 <div id="pwa-install-banner" class="install-banner" style="display:none;">
-  <span>Install Broke Dian for offline access</span>
-  <button id="pwa-install-btn" class="install-banner-btn">Install</button>
+  <span data-i18n="install_banner">Install Broke Dian for offline access</span>
+  <button id="pwa-install-btn" class="install-banner-btn"><span data-i18n="install_btn">Install</span></button>
   <button class="install-banner-close" onclick="closePwaBanner()">✕</button>
 </div>
 
-<div id="offline-indicator">You are offline — data saved locally</div>
+<div id="offline-indicator" data-i18n="offline_msg">You are offline — data saved locally</div>
 
 <div id="toast" class="toast">Action updated successfully</div>
 
 <div id="modal-credit-overlay" class="modal-overlay" onclick="if(event.target.id==='modal-credit-overlay') closeCreditModal()">
   <div class="modal-credit">
     <div class="modal-handle"></div>
-    <div class="credit-title" id="credit-modal-title">Need one more credit?</div>
-    <div class="credit-sub" id="credit-modal-sub">Watch a short ad to unlock one extra credit for this month, or upgrade to Broke&nbsp;Pro.</div>
-    <div class="credit-meter" id="credit-modal-meter">0 / 4 ad credits used this month</div>
-    <button class="credit-ad-btn" id="credit-ad-btn" onclick="watchRewardedAdForCredit()">Watch Ad for +1 Credit</button>
-    <button class="credit-upgrade-btn" onclick="closeCreditModal(); openPaywallModal()">Upgrade to Broke&nbsp;Pro</button>
-    <div class="paywall-dismiss" onclick="closeCreditModal()">Maybe later</div>
+    <div class="credit-title" id="credit-modal-title" data-i18n="credit_title">Need one more credit?</div>
+    <div class="credit-sub" id="credit-modal-sub" data-i18n="credit_sub">Watch a short ad to unlock one extra credit for this month, or upgrade to Broke&nbsp;Pro.</div>
+    <div class="credit-meter" id="credit-modal-meter" data-i18n="credit_meter">0 / 4 ad credits used this month</div>
+    <button class="credit-ad-btn" id="credit-ad-btn" onclick="watchRewardedAdForCredit()"><span data-i18n="credit_watch_ad">Watch Ad for +1 Credit</span></button>
+    <button class="credit-upgrade-btn" onclick="closeCreditModal(); openPaywallModal()"><span data-i18n="credit_upgrade">Upgrade to Broke&nbsp;Pro</span></button>
+    <div class="paywall-dismiss" onclick="closeCreditModal()" data-i18n="paywall_later">Maybe later</div>
   </div>
 </div>
 
@@ -658,33 +658,33 @@
     <div class="paywall-hero-icon">
       <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
     </div>
-    <div class="paywall-title">Upgrade to Broke&nbsp;Pro</div>
-    <div class="paywall-sub">Remove watermarks, unlock unlimited invoices, and get automatic payment reminders.</div>
+    <div class="paywall-title" data-i18n="paywall_title">Upgrade to Broke&nbsp;Pro</div>
+    <div class="paywall-sub" data-i18n="paywall_sub">Remove watermarks, unlock unlimited invoices, and get automatic payment reminders.</div>
     <div class="paywall-price">
       <span class="paywall-price-amount">฿59</span>
-      <span class="paywall-price-period">/ month</span>
+      <span class="paywall-price-period" data-i18n="paywall_period">/ month</span>
     </div>
     <div class="paywall-features">
       <div class="paywall-feature">
         <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
-        <span class="paywall-feature-text">Unlimited clients & invoices</span>
+        <span class="paywall-feature-text" data-i18n="paywall_feat1">Unlimited clients & invoices</span>
       </div>
       <div class="paywall-feature">
         <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
-        <span class="paywall-feature-text">Clean PDF — no watermark</span>
+        <span class="paywall-feature-text" data-i18n="paywall_feat2">Clean PDF — no watermark</span>
       </div>
       <div class="paywall-feature">
         <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
-        <span class="paywall-feature-text">Unlimited invoice & payment notifications</span>
+        <span class="paywall-feature-text" data-i18n="paywall_feat3">Unlimited invoice & payment notifications</span>
       </div>
       <div class="paywall-feature">
         <div class="paywall-feature-icon"><svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5"/></svg></div>
-        <span class="paywall-feature-text">Multi-device sync & priority support</span>
+        <span class="paywall-feature-text" data-i18n="paywall_feat4">Multi-device sync & priority support</span>
       </div>
     </div>
-    <button class="paywall-cta" onclick="openStripeCheckout()">Upgrade to Broke&nbsp;Pro — ฿59/mo</button>
-    <button class="paywall-demo-btn" onclick="upgradeToPro()">Try Pro Free for 7 days</button>
-    <div class="paywall-dismiss" onclick="closePaywallModal()">Maybe later</div>
+    <button class="paywall-cta" onclick="openStripeCheckout()"><span data-i18n="paywall_cta">Upgrade to Broke&nbsp;Pro — ฿59/mo</span></button>
+    <button class="paywall-demo-btn" onclick="upgradeToPro()"><span data-i18n="paywall_trial">Try Pro Free for 7 days</span></button>
+    <div class="paywall-dismiss" onclick="closePaywallModal()" data-i18n="paywall_later">Maybe later</div>
   </div>
 </div>
 
@@ -700,14 +700,150 @@ const DICTIONARY = {
     nav_forecast: "Forecast",
     brand_name: "Broke Pro",
     greeting: "Good morning 👋",
+    dash_date_loading: "Loading...",
+    dash_total_backlog: "Total Monthly Backlog Pipeline",
+    dash_backlog_desc: "Combines paid revenue, active pending invoices, and likely forecasts.",
+    dash_earned_month: "Earned this month",
+    dash_earned_sub: "net clear take-home",
+    dash_pending: "Pending invoices",
+    dash_pending_sub: "0 invoices issued",
+    dash_overdue: "Overdue collections",
+    dash_overdue_sub: "0 outstanding past terms",
+    dash_runway: "Survival Runway",
+    dash_runway_sub: "total savings \u00f7 fixed costs",
+    dash_analytics: "Income Analytics Breakdown",
+    dash_recent: "Recent Invoices Activity",
+    status_runway: "Financial Runway Progress",
+    status_baseline: "Calculating baseline...",
     invoices_title: "Invoices",
     invoices_desc: "Create invoices and keep track of your clients",
     quotes_title: "Quotes & Estimates",
     quotes_desc: "Send quotes, track deadlines, and see your future work",
+    quote_conversion: "Quote Conversion Rate",
+    quote_active: "Active Pipeline Quotes",
     forecast_title: "Income Forecast Simulator",
     forecast_desc: "Estimate your future income and see how long your savings will last",
+    vat_rate: "VAT / Tax Rate (%)",
+    forecasts_savings_tt: "Your current cash reserves or bank balance \u2014 the money available right now to cover expenses if income stops.",
+    forecasts_expenses_tt: "Your total fixed monthly costs \u2014 rent, subscriptions, salaries, tools, etc. Used to calculate how many months your savings will last.",
+    forecasts_vat_tt: "The tax percentage deducted from your invoice income. In Thailand, VAT is typically 7%. This reduces your net take-home from each deal.",
+    forecasts_currency_tt: "The currency symbol displayed across invoices and forecasts. This is cosmetic only \u2014 all values are stored as numbers.",
+    forecast_runway: "Projected Runway Evaluation",
+    forecast_funnel: "Simulated Client Funnel Adjustments",
+    forecast_add_deal: "Add placeholder deal target",
     profile_title: "Business Configuration Settings",
     profile_desc: "Set up your business details, payment info, and digital signature",
+    btn_add_invoice: "Add invoice",
+    btn_create_quote: "Create estimate offer",
+    liquid_savings: "Liquid Savings",
+    monthly_expenses: "Monthly Expenses",
+    base_currency: "Base Currency",
+    modal_add_invoice: "Add Invoice",
+    btn_add_item: "+ Add Item Row",
+    btn_save_invoice: "Save Invoice Entry",
+    btn_cancel: "Cancel",
+    btn_delete: "Delete Entry",
+    modal_create_quote: "Create Quote Estimate",
+    btn_add_quote_item: "+ Add Quote Item",
+    btn_save_quote: "Save Quote Offer",
+    modal_add_forecast: "Add Target Deal Forecast",
+    btn_save_forecast: "Save Target Forecast",
+    btn_remove: "Remove Entry",
+    btn_print: "Print / Save PDF",
+    banner_pro_title: "Broke Pro \u2014 ฿59/month",
+    banner_pro_sub: "Unlimited invoices, no watermark, auto-reminders",
+    banner_upgrade: "Upgrade",
+    prof_bizname: "Registered Business Name",
+    prof_address: "Corporate / Business Address",
+    prof_taxid: "Tax Identification Number (Tax ID)",
+    prof_email: "Email Address",
+    prof_phone: "Contact Phone Number",
+    prof_fintech_title: "Fintech & Localization (Thailand Standard)",
+    prof_bank: "Bank Account Wire Instructions",
+    prof_promptpay: "PromptPay QR ID / Phone / Tax ID (Thailand Payment)",
+    prof_promptpay_hint: "Used dynamically during invoice construction to generate custom scan parameters.",
+    prof_signature: "Digital Signature Token Text",
+    prof_terms: "Payment Terms / Standard Disclaimer Notes",
+    prof_brand_title: "Brand Styling Scheme",
+    sys_data_mgmt: "System & Data Management",
+    csv_export: "CSV Export",
+    full_backup: "Full Backup",
+    import_data: "Import Data",
+    restore_full: "Restore Full",
+    wipe_data: "Wipe Data",
+    lang_settings: "Language Settings",
+    dev_tools: "Developer & Pro Tools",
+    reset_ad_credits: "Reset Ad Credits (Testing)",
+    end_trial: "End Pro Trial & Downgrade to Free",
+    apply_sync: "Apply and Sync Settings",
+    inv_client_name: "Client / Corporation Name",
+    inv_address: "Client Billing Address Detail",
+    inv_project: "Project Name or Description",
+    inv_items_label: "Invoice Itemized Table Breakdown",
+    inv_status: "Invoice Payment Status",
+    inv_date: "Issue / Accounting Date",
+    status_pending: "Pending",
+    status_paid: "Paid",
+    status_overdue: "Overdue",
+    preview_pdf: "Preview & Print PDF",
+    q_client_name: "Prospect Client Name",
+    q_project: "Project Scope Target",
+    q_items_label: "Quote Itemized Table Breakdown",
+    q_status_label: "Offer Acceptance Tracking",
+    q_status_sent: "Sent / Under Review",
+    q_status_accepted: "Accepted",
+    q_status_expired: "Expired / Declined",
+    q_expiry_label: "Expiry / Deadline Date",
+    pipe_target: "Target Account Name",
+    pipe_earn: "How much do you expect to earn?",
+    pipe_likely: "How likely is this deal? (%)",
+    pipe_month_label: "Projected Target Month",
+    pipe_month_current: "Current Month",
+    pipe_month_next: "Next Month",
+    confirm_delete_title: "Confirm Deletion",
+    confirm_delete_msg: "Are you sure you want to delete this item? This action cannot be undone.",
+    confirm_delete_btn: "Yes, Delete It",
+    reset_title: "Factory Reset",
+    reset_msg: "This will permanently erase all data. This action cannot be undone.",
+    reset_btn: "Yes, Wipe All Data",
+    crop_title: "Crop Logo",
+    crop_apply: "Apply & Save",
+    paywall_title: "Upgrade to Broke Pro",
+    paywall_sub: "Remove watermarks, unlock unlimited invoices, and get automatic payment reminders.",
+    paywall_period: "/ month",
+    paywall_feat1: "Unlimited clients & invoices",
+    paywall_feat2: "Clean PDF — no watermark",
+    paywall_feat3: "Unlimited invoice & payment notifications",
+    paywall_feat4: "Multi-device sync & priority support",
+    paywall_cta: "Upgrade to Broke Pro — ฿59/mo",
+    paywall_trial: "Try Pro Free for 7 days",
+    paywall_later: "Maybe later",
+    credit_title: "Need one more credit?",
+    credit_sub: "Watch a short ad to unlock one extra credit for this month, or upgrade to Broke Pro.",
+    credit_meter: "0 / 4 ad credits used this month",
+    credit_watch_ad: "Watch Ad for +1 Credit",
+    credit_upgrade: "Upgrade to Broke Pro",
+    install_banner: "Install Broke Dian for offline access",
+    install_btn: "Install",
+    offline_msg: "You are offline — data saved locally",
+    live_preview: "Live Preview Signature String:",
+    pdf_from: "From / Remitter",
+    pdf_to: "Bill To / Client",
+    pdf_col_desc: "Description",
+    pdf_col_qty: "Qty",
+    pdf_col_rate: "Unit Rate",
+    pdf_col_amount: "Amount",
+    pdf_subtotal: "Subtotal",
+    pdf_total_due: "Total Due",
+    pdf_payment_instructions: "Payment Instructions",
+    pdf_promptpay: "PromptPay Scan",
+    pdf_token: "Token:",
+    pdf_signature: "Authorized Signature",
+    pdf_date_label: "Date:",
+    pdf_terms_label: "Terms:",
+    pdf_thanks: "Thank you for your business.",
+    pdf_generated: "Generated by Brokedian —",
+    btn_close_preview: "Close Preview",
   },
   th: {
     brand_short: "Brokedian",
@@ -717,14 +853,150 @@ const DICTIONARY = {
     nav_forecast: "พยากรณ์รายได้",
     brand_name: "Broke Pro",
     greeting: "สวัสดีตอนเช้า 👋",
+    dash_date_loading: "กำลังโหลด...",
+    dash_total_backlog: "มูลค่างานทั้งหมด",
+    dash_backlog_desc: "รวมรายได้ที่ได้รับ ใบแจ้งหนี้ที่รอชำระ และประมาณการในอนาคต",
+    dash_earned_month: "รายได้เดือนนี้",
+    dash_earned_sub: "รายได้สุทธิ",
+    dash_pending: "ใบแจ้งหนี้ที่รอชำระ",
+    dash_pending_sub: "0 ใบที่ออก",
+    dash_overdue: "หนี้ค้างชำระ",
+    dash_overdue_sub: "0 รายการเกินกำหนด",
+    dash_runway: "ระยะเวลาทางการเงิน",
+    dash_runway_sub: "เงินออม \u00f7 ค่าใช้จ่ายคงที่",
+    dash_analytics: "วิเคราะห์รายได้",
+    dash_recent: "กิจกรรมล่าสุด",
+    status_runway: "สถานะทางการเงิน",
+    status_baseline: "กำลังคำนวณ...",
     invoices_title: "ใบแจ้งหนี้",
     invoices_desc: "สร้างใบแจ้งหนี้และติดตามลูกค้าของคุณ",
     quotes_title: "ใบเสนอราคา",
     quotes_desc: "ส่งใบเสนอราคา ติดตามกำหนดการ และดูงานในอนาคตของคุณ",
+    quote_conversion: "อัตราการปิดการขาย",
+    quote_active: "ใบเสนอราคาที่ใช้งาน",
     forecast_title: "เครื่องมือพยากรณ์รายได้",
     forecast_desc: "ประเมินรายได้ในอนาคตและดูว่าเงินสำรองของคุณจะอยู่ได้นานแค่ไหน",
+    vat_rate: "ภาษีมูลค่าเพิ่ม (%)",
+    forecasts_savings_tt: "เงินสดสำรองหรือยอดเงินในบัญชีของคุณ \u2014 เงินที่พร้อมใช้จ่ายหากรายได้หยุดชะงัก",
+    forecasts_expenses_tt: "ค่าใช้จ่ายคงที่รายเดือนของคุณ \u2014 ค่าเช่า ค่าสมัครสมาชิก เงินเดือน เครื่องมือ ฯลฯ ใช้คำนวณว่าเงินออมของคุณจะอยู่ได้กี่เดือน",
+    forecasts_vat_tt: "เปอร์เซ็นต์ภาษีที่หักจากรายได้ใบแจ้งหนี้ของคุณ ในประเทศไทย VAT ปกติคือ 7%",
+    forecasts_currency_tt: "สัญลักษณ์สกุลเงินที่แสดงในใบแจ้งหนี้และการพยากรณ์ เป็นการตกแต่งเท่านั้น \u2014 ข้อมูลทั้งหมดถูกจัดเก็บเป็นตัวเลข",
+    forecast_runway: "ประเมินระยะเวลาทางการเงิน",
+    forecast_funnel: "ปรับเปลี่ยนช่องทางรายได้",
+    forecast_add_deal: "เพิ่มเป้าหมายรายได้",
     profile_title: "ตั้งค่าธุรกิจ",
     profile_desc: "ตั้งค่ารายละเอียดธุรกิจ ข้อมูลการชำระเงิน และลายเซ็นดิจิทัล",
+    btn_add_invoice: "เพิ่มใบแจ้งหนี้",
+    btn_create_quote: "สร้างใบเสนอราคา",
+    liquid_savings: "เงินออม",
+    monthly_expenses: "ค่าใช้จ่ายต่อเดือน",
+    base_currency: "สกุลเงิน",
+    modal_add_invoice: "เพิ่มใบแจ้งหนี้",
+    btn_add_item: "+ เพิ่มรายการ",
+    btn_save_invoice: "บันทึกใบแจ้งหนี้",
+    btn_cancel: "ยกเลิก",
+    btn_delete: "ลบรายการ",
+    modal_create_quote: "สร้างใบเสนอราคา",
+    btn_add_quote_item: "+ เพิ่มรายการ",
+    btn_save_quote: "บันทึกใบเสนอราคา",
+    modal_add_forecast: "เพิ่มเป้าหมาย",
+    btn_save_forecast: "บันทึกเป้าหมาย",
+    btn_remove: "ลบรายการ",
+    btn_print: "พิมพ์ / บันทึก PDF",
+    banner_pro_title: "Broke Pro \u2014 ฿59/\u0e40\u0e14\u0e37\u0e2d\u0e19",
+    banner_pro_sub: "\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49\u0e44\u0e21\u0e48\u0e08\u0e33\u0e01\u0e31\u0e14, \u0e44\u0e21\u0e48\u0e21\u0e35\u0e25\u0e32\u0e22\u0e19\u0e49\u0e33, \u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34",
+    banner_upgrade: "\u0e2d\u0e31\u0e1e\u0e40\u0e01\u0e23\u0e14",
+    prof_bizname: "\u0e0a\u0e37\u0e48\u0e2d\u0e18\u0e38\u0e23\u0e01\u0e34\u0e08\u0e17\u0e35\u0e48\u0e08\u0e14\u0e17\u0e30\u0e40\u0e1a\u0e35\u0e22\u0e19",
+    prof_address: "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e1a\u0e23\u0e34\u0e29\u0e31\u0e17",
+    prof_taxid: "\u0e40\u0e25\u0e02\u0e1b\u0e23\u0e30\u0e08\u0e33\u0e15\u0e31\u0e27\u0e1c\u0e39\u0e49\u0e40\u0e2a\u0e35\u0e22\u0e20\u0e32\u0e29\u0e35",
+    prof_email: "\u0e2d\u0e35\u0e40\u0e21\u0e25",
+    prof_phone: "\u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c",
+    prof_fintech_title: "\u0e01\u0e32\u0e23\u0e40\u0e07\u0e34\u0e19\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e0a\u0e33\u0e23\u0e30 (\u0e21\u0e32\u0e15\u0e23\u0e10\u0e32\u0e19\u0e44\u0e17\u0e22)",
+    prof_bank: "\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e01\u0e32\u0e23\u0e42\u0e2d\u0e19\u0e40\u0e07\u0e34\u0e19\u0e18\u0e19\u0e32\u0e04\u0e32\u0e23",
+    prof_promptpay: "PromptPay QR ID / \u0e40\u0e1a\u0e2d\u0e23\u0e4c\u0e42\u0e17\u0e23\u0e28\u0e31\u0e1e\u0e17\u0e4c / \u0e40\u0e25\u0e02\u0e1b\u0e23\u0e30\u0e08\u0e33\u0e15\u0e31\u0e27\u0e1c\u0e39\u0e49\u0e40\u0e2a\u0e35\u0e22\u0e20\u0e32\u0e29\u0e35",
+    prof_promptpay_hint: "\u0e43\u0e0a\u0e49\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e04\u0e35\u0e22\u0e4c\u0e2a\u0e41\u0e01\u0e19\u0e43\u0e19\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34",
+    prof_signature: "\u0e25\u0e32\u0e22\u0e40\u0e0b\u0e47\u0e19\u0e14\u0e34\u0e08\u0e34\u0e17\u0e31\u0e25",
+    prof_terms: "\u0e40\u0e07\u0e37\u0e48\u0e2d\u0e19\u0e44\u0e02\u0e01\u0e32\u0e23\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19",
+    prof_brand_title: "\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e2a\u0e35\u0e41\u0e1a\u0e23\u0e19\u0e14\u0e4c",
+    sys_data_mgmt: "\u0e23\u0e30\u0e1a\u0e1a\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e08\u0e31\u0e14\u0e01\u0e32\u0e23\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
+    csv_export: "\u0e2a\u0e48\u0e07\u0e2d\u0e2d\u0e01 CSV",
+    full_backup: "\u0e2a\u0e33\u0e23\u0e2d\u0e07\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
+    import_data: "\u0e19\u0e33\u0e40\u0e02\u0e49\u0e32\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
+    restore_full: "\u0e01\u0e39\u0e49\u0e04\u0e37\u0e19\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
+    wipe_data: "\u0e25\u0e49\u0e32\u0e07\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
+    lang_settings: "\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e20\u0e32\u0e29\u0e32",
+    dev_tools: "\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e21\u0e37\u0e19\u0e31\u0e01\u0e1e\u0e31\u0e12\u0e19\u0e32",
+    reset_ad_credits: "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u0e04\u0e30\u0e41\u0e19\u0e19\u0e42\u0e06\u0e29\u0e13\u0e32 (\u0e17\u0e14\u0e2a\u0e2d\u0e1a)",
+    end_trial: "\u0e22\u0e38\u0e15\u0e34\u0e17\u0e14\u0e25\u0e2d\u0e07\u0e43\u0e0a\u0e49 Pro",
+    apply_sync: "\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e30\u0e0b\u0e34\u0e07\u0e04\u0e4c",
+    inv_client_name: "\u0e0a\u0e37\u0e48\u0e2d\u0e25\u0e39\u0e01\u0e04\u0e49\u0e32",
+    inv_address: "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08",
+    inv_project: "\u0e0a\u0e37\u0e48\u0e2d\u0e42\u0e04\u0e23\u0e07\u0e01\u0e32\u0e23",
+    inv_items_label: "\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32",
+    inv_status: "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e01\u0e32\u0e23\u0e0a\u0e33\u0e23\u0e30",
+    inv_date: "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08",
+    status_pending: "\u0e23\u0e2d\u0e0a\u0e33\u0e23\u0e30",
+    status_paid: "\u0e0a\u0e33\u0e23\u0e30\u0e41\u0e25\u0e49\u0e27",
+    status_overdue: "\u0e40\u0e01\u0e34\u0e19\u0e01\u0e33\u0e2b\u0e19\u0e14",
+    preview_pdf: "\u0e15\u0e31\u0e27\u0e2d\u0e22\u0e48\u0e32\u0e07 & \u0e1e\u0e34\u0e21\u0e1e\u0e4c PDF",
+    q_client_name: "\u0e0a\u0e37\u0e48\u0e2d\u0e25\u0e39\u0e01\u0e04\u0e49\u0e32\u0e17\u0e35\u0e48\u0e04\u0e32\u0e14\u0e08\u0e30\u0e40\u0e1b\u0e47\u0e19",
+    q_project: "\u0e02\u0e2d\u0e1a\u0e40\u0e02\u0e15\u0e42\u0e04\u0e23\u0e07\u0e01\u0e32\u0e23",
+    q_items_label: "\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e23\u0e32\u0e04\u0e32\u0e2a\u0e34\u0e19\u0e04\u0e49\u0e32",
+    q_status_label: "\u0e2a\u0e16\u0e32\u0e19\u0e30\u0e01\u0e32\u0e23\u0e15\u0e2d\u0e1a\u0e23\u0e31\u0e1a\u0e02\u0e49\u0e2d\u0e40\u0e2a\u0e19\u0e2d",
+    q_status_sent: "\u0e2a\u0e48\u0e07\u0e41\u0e25\u0e49\u0e27 / \u0e23\u0e2d\u0e1e\u0e34\u0e08\u0e32\u0e23\u0e13\u0e4c",
+    q_status_accepted: "\u0e22\u0e2d\u0e21\u0e23\u0e31\u0e1a\u0e41\u0e25\u0e49\u0e27",
+    q_status_expired: "\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38 / \u0e1b\u0e0f\u0e34\u0e40\u0e2a\u0e18",
+    q_expiry_label: "\u0e27\u0e31\u0e19\u0e2b\u0e21\u0e14\u0e2d\u0e32\u0e22\u0e38",
+    pipe_target: "\u0e0a\u0e37\u0e48\u0e2d\u0e1a\u0e31\u0e0d\u0e0a\u0e35\u0e40\u0e1b\u0e49\u0e32\u0e2b\u0e21\u0e32\u0e22",
+    pipe_earn: "\u0e04\u0e32\u0e14\u0e27\u0e48\u0e32\u0e08\u0e30\u0e44\u0e14\u0e49\u0e23\u0e32\u0e22\u0e44\u0e14\u0e49\u0e40\u0e17\u0e48\u0e32\u0e44\u0e23?",
+    pipe_likely: "\u0e42\u0e2d\u0e01\u0e32\u0e2a\u0e40\u0e1b\u0e47\u0e19\u0e44\u0e1b\u0e44\u0e14\u0e49\u0e40\u0e17\u0e48\u0e32\u0e44\u0e23? (%)",
+    pipe_month_label: "\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e17\u0e35\u0e48\u0e04\u0e32\u0e14\u0e01\u0e32\u0e23\u0e13\u0e4c",
+    pipe_month_current: "\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49",
+    pipe_month_next: "\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32",
+    confirm_delete_title: "\u0e22\u0e37\u0e19\u0e22\u0e31\u0e19\u0e01\u0e32\u0e23\u0e25\u0e1a",
+    confirm_delete_msg: "\u0e04\u0e38\u0e13\u0e41\u0e19\u0e48\u0e43\u0e08\u0e15\u0e49\u0e2d\u0e07\u0e01\u0e32\u0e23\u0e25\u0e1a\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e19\u0e35\u0e49\u0e2b\u0e23\u0e37\u0e2d\u0e44\u0e21\u0e48? \u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07\u0e44\u0e14\u0e49",
+    confirm_delete_btn: "\u0e43\u0e0a\u0e48 \u0e25\u0e1a\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23",
+    reset_title: "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14",
+    reset_msg: "\u0e01\u0e32\u0e23\u0e01\u0e23\u0e30\u0e17\u0e33\u0e19\u0e35\u0e49\u0e08\u0e30\u0e25\u0e1a\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e16\u0e32\u0e27\u0e23 \u0e44\u0e21\u0e48\u0e2a\u0e32\u0e21\u0e32\u0e23\u0e16\u0e01\u0e39\u0e49\u0e04\u0e37\u0e19\u0e44\u0e14\u0e49",
+    reset_btn: "\u0e43\u0e0a\u0e48 \u0e25\u0e49\u0e32\u0e07\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14",
+    crop_title: "\u0e04\u0e23\u0e2d\u0e1b\u0e23\u0e39\u0e1b\u0e42\u0e25\u0e42\u0e01\u0e49",
+    crop_apply: "\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07\u0e41\u0e25\u0e30\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01",
+    paywall_title: "\u0e2d\u0e31\u0e1e\u0e40\u0e01\u0e23\u0e14\u0e40\u0e1b\u0e47\u0e19 Broke Pro",
+    paywall_sub: "\u0e25\u0e1a\u0e25\u0e32\u0e22\u0e19\u0e49\u0e33, \u0e43\u0e0a\u0e49\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e44\u0e21\u0e48\u0e08\u0e33\u0e01\u0e31\u0e14, \u0e41\u0e25\u0e30\u0e44\u0e14\u0e49\u0e23\u0e31\u0e1a\u0e01\u0e32\u0e23\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e0a\u0e33\u0e23\u0e30\u0e2d\u0e31\u0e15\u0e42\u0e19\u0e21\u0e31\u0e15\u0e34",
+    paywall_period: "/ \u0e40\u0e14\u0e37\u0e2d\u0e19",
+    paywall_feat1: "\u0e25\u0e39\u0e01\u0e04\u0e49\u0e32\u0e41\u0e25\u0e30\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e44\u0e21\u0e48\u0e08\u0e33\u0e01\u0e31\u0e14",
+    paywall_feat2: "PDF \u0e44\u0e21\u0e48\u0e21\u0e35\u0e25\u0e32\u0e22\u0e19\u0e49\u0e33",
+    paywall_feat3: "\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e0a\u0e33\u0e23\u0e30\u0e44\u0e21\u0e48\u0e08\u0e33\u0e01\u0e31\u0e14",
+    paywall_feat4: "\u0e0b\u0e34\u0e07\u0e04\u0e2b\u0e25\u0e32\u0e22\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e2a\u0e19\u0e31\u0e1a\u0e2a\u0e19\u0e38\u0e19\u0e25\u0e33\u0e14\u0e31\u0e1a\u0e15\u0e49\u0e19",
+    paywall_cta: "\u0e2d\u0e31\u0e1e\u0e40\u0e01\u0e23\u0e14\u0e40\u0e1b\u0e47\u0e19 Broke Pro \u2014 \u0e3f59/\u0e40\u0e14\u0e37\u0e2d\u0e19",
+    paywall_trial: "\u0e17\u0e14\u0e25\u0e2d\u0e07\u0e43\u0e0a\u0e49 Pro \u0e1f\u0e23\u0e35 7 \u0e27\u0e31\u0e19",
+    paywall_later: "\u0e44\u0e27\u0e48\u0e17\u0e35\u0e2b\u0e25\u0e31\u0e07",
+    credit_title: "\u0e15\u0e49\u0e2d\u0e07\u0e01\u0e32\u0e23\u0e40\u0e04\u0e23\u0e14\u0e34\u0e15\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e2d\u0e35\u0e01\u0e44\u0e2b\u0e21?",
+    credit_sub: "\u0e14\u0e39\u0e42\u0e06\u0e29\u0e13\u0e32\u0e2a\u0e31\u0e49\u0e19 \u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e1b\u0e25\u0e14\u0e25\u0e47\u0e2d\u0e04\u0e40\u0e04\u0e23\u0e14\u0e34\u0e15\u0e1e\u0e34\u0e40\u0e28\u0e29\u0e2d\u0e35\u0e01\u0e2b\u0e19\u0e36\u0e48\u0e07\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23\u0e2a\u0e33\u0e2b\u0e23\u0e31\u0e1a\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49",
+    credit_meter: "0 / 4 \u0e04\u0e23\u0e31\u0e49\u0e07\u0e17\u0e35\u0e48\u0e43\u0e0a\u0e49\u0e42\u0e06\u0e29\u0e13\u0e32\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e19\u0e35\u0e49",
+    credit_watch_ad: "\u0e14\u0e39\u0e42\u0e06\u0e29\u0e13\u0e32\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e23\u0e31\u0e1a +1 \u0e41\u0e23\u0e07\u0e2a\u0e34\u0e19\u0e40\u0e0a\u0e37\u0e48\u0e2d",
+    credit_upgrade: "\u0e2d\u0e31\u0e1e\u0e40\u0e01\u0e23\u0e14\u0e40\u0e1b\u0e47\u0e19 Broke Pro",
+    install_banner: "\u0e15\u0e34\u0e14\u0e15\u0e31\u0e49\u0e07 Broke Dian \u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e43\u0e0a\u0e49\u0e07\u0e32\u0e19\u0e41\u0e1a\u0e1a\u0e44\u0e21\u0e48\u0e21\u0e35\u0e2d\u0e34\u0e19\u0e40\u0e17\u0e2d\u0e23\u0e4c\u0e40\u0e19\u0e47\u0e15",
+    install_btn: "\u0e15\u0e34\u0e14\u0e15\u0e31\u0e49\u0e07",
+    offline_msg: "\u0e04\u0e38\u0e13\u0e2d\u0e2d\u0e1f\u0e44\u0e25\u0e19\u0e4c \u2014 \u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e16\u0e39\u0e01\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e44\u0e27\u0e49\u0e43\u0e19\u0e40\u0e04\u0e23\u0e37\u0e48\u0e2d\u0e07",
+    live_preview: "\u0e15\u0e31\u0e27\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e25\u0e32\u0e22\u0e21\u0e37\u0e2d\u0e44\u0e0b\u0e19\u0e4c\u0e2a\u0e15\u0e23\u0e34\u0e07:",
+    pdf_from: "\u0e1c\u0e39\u0e49\u0e2a\u0e48\u0e07 / \u0e1c\u0e39\u0e49\u0e42\u0e2d\u0e19",
+    pdf_to: "\u0e1c\u0e39\u0e49\u0e23\u0e31\u0e1a / \u0e25\u0e39\u0e01\u0e04\u0e49\u0e32",
+    pdf_col_desc: "\u0e23\u0e32\u0e22\u0e01\u0e32\u0e23",
+    pdf_col_qty: "\u0e08\u0e33\u0e19\u0e27\u0e19",
+    pdf_col_rate: "\u0e23\u0e32\u0e04\u0e32\u0e15\u0e48\u0e2d\u0e2b\u0e19\u0e48\u0e27\u0e22",
+    pdf_col_amount: "\u0e08\u0e33\u0e19\u0e27\u0e19\u0e40\u0e07\u0e34\u0e19",
+    pdf_subtotal: "\u0e23\u0e27\u0e21\u0e22\u0e48\u0e2d\u0e22",
+    pdf_total_due: "\u0e23\u0e27\u0e21\u0e17\u0e31\u0e49\u0e07\u0e2a\u0e34\u0e49\u0e19",
+    pdf_payment_instructions: "\u0e04\u0e33\u0e41\u0e19\u0e30\u0e19\u0e33\u0e01\u0e32\u0e23\u0e0a\u0e33\u0e23\u0e30",
+    pdf_promptpay: "PromptPay Scan",
+    pdf_token: "\u0e42\u0e17\u0e40\u0e04\u0e19:",
+    pdf_signature: "\u0e25\u0e32\u0e22\u0e21\u0e37\u0e2d\u0e1c\u0e39\u0e49\u0e21\u0e35\u0e2d\u0e33\u0e19\u0e32\u0e08",
+    pdf_date_label: "\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48:",
+    pdf_terms_label: "\u0e40\u0e07\u0e37\u0e48\u0e2d\u0e19\u0e44\u0e02:",
+    pdf_thanks: "\u0e02\u0e2d\u0e1a\u0e04\u0e38\u0e13\u0e17\u0e35\u0e48\u0e43\u0e0a\u0e49\u0e1a\u0e23\u0e34\u0e01\u0e32\u0e23",
+    pdf_generated: "\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e42\u0e14\u0e22 Brokedian \u2014",
+    btn_close_preview: "\u0e1b\u0e34\u0e14\u0e15\u0e31\u0e27\u0e2d\u0e22\u0e48\u0e32\u0e07",
   }
 };
 
@@ -733,8 +1005,6 @@ let currentLang = localStorage.getItem('brokedian_lang') || 'en';
 function t(key) {
   return DICTIONARY[currentLang][key] || DICTIONARY['en'][key] || key;
 }
-
-updateUILanguage();
 
 function switchLanguage(lang) {
   currentLang = lang;
@@ -745,10 +1015,11 @@ function switchLanguage(lang) {
 function updateUILanguage() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
+    if (!DICTIONARY[currentLang] || !DICTIONARY[currentLang][key]) return;
     if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.placeholder = t(key);
+        el.placeholder = DICTIONARY[currentLang][key];
     } else {
-        el.textContent = t(key);
+        el.textContent = DICTIONARY[currentLang][key];
     }
   });
 }
@@ -942,6 +1213,7 @@ function upgradeToPro() {
   initPaywallBanner();
   updateProTrialVisibility();
   updateProBadge();
+  updateUILanguage();
 }
 
 function checkDemoExpiry() {
@@ -955,6 +1227,7 @@ function checkDemoExpiry() {
     initPaywallBanner();
     updateProTrialVisibility();
     updateProBadge();
+  updateUILanguage();
   }
 }
 
@@ -1055,6 +1328,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPaywallBanner();
   updateProTrialVisibility();
   updateProBadge();
+  updateUILanguage();
 });
 
 function initPaywallBanner() {
@@ -1154,6 +1428,7 @@ function saveState(key, data) {
 function renderAppContent() {
   setGreetingTime();
   updateProBadge();
+  updateUILanguage();
   const currency = document.getElementById('cfg-currency') ? document.getElementById('cfg-currency').value : "฿";
   
   // 1. CALCULATE CORE METRICS WITH LINE-ITEM RECOGNITION
@@ -1580,7 +1855,7 @@ function openClientModal(id = null) {
   if (!id && !canAdd('invoice')) { showLimitBlocked('invoices'); return; }
   document.getElementById('invoice-line-items-wrapper').innerHTML = "";
   if(!id) {
-    document.getElementById('modal-client-title').textContent = "Add Invoice";
+    document.getElementById('modal-client-title').innerHTML = '<span data-i18n="modal_add_invoice">Add Invoice</span>';
     document.getElementById('c-id').value = "";
     document.getElementById('c-name').value = "";
     document.getElementById('c-address').value = "";
@@ -1593,7 +1868,7 @@ function openClientModal(id = null) {
   } else {
     const item = clients.find(c => c.id === id);
     if(!item) return;
-    document.getElementById('modal-client-title').textContent = "Edit Invoice Details";
+    document.getElementById('modal-client-title').innerHTML = '<span>Edit Invoice Details</span>';
     document.getElementById('c-id').value = item.id;
     document.getElementById('c-name').value = item.name;
     document.getElementById('c-address').value = item.address || "";
@@ -1730,7 +2005,7 @@ function openQuoteModal(id = null) {
   const wrapper = document.getElementById('quote-line-items-wrapper');
   if(!wrapper) { alert('Error: quote items container not found'); return; }
   if(!id) {
-    document.getElementById('modal-quote-title').textContent = "Create Quote Estimate";
+    document.getElementById('modal-quote-title').innerHTML = '<span data-i18n="modal_create_quote">Create Quote Estimate</span>';
     document.getElementById('q-id').value = "";
     document.getElementById('q-name').value = "";
     document.getElementById('q-project').value = "";
@@ -1820,7 +2095,7 @@ function deleteQuoteEstimate() {
 function openPipelineModal(id = null) {
   if (!id && !canAdd('pipeline')) { showLimitBlocked('pipeline'); return; }
   if(!id) {
-    document.getElementById('modal-pipe-title').textContent = "Add Target Deal Forecast";
+    document.getElementById('modal-pipe-title').innerHTML = '<span data-i18n="modal_add_forecast">Add Target Deal Forecast</span>';
     document.getElementById('p-id').value = "";
     document.getElementById('pipe-name').value = "";
     document.getElementById('pipe-amount').value = "";
@@ -2493,6 +2768,7 @@ function resetProTrial() {
   initPaywallBanner();
   updateProTrialVisibility();
   updateProBadge();
+  updateUILanguage();
 }
 
 function updateProTrialVisibility() {
