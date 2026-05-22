@@ -242,7 +242,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   width: 100%; background: linear-gradient(to top, var(--accent), #34CADE); border-radius: 6px 6px 0 0; min-height: 4px; transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1); position: relative;
 }
 .chart-bar-fill.paid-bar { background: linear-gradient(to top, #248A3D, #34C759); }
-.chart-label { font-size: 12px; color: var(--muted); font-weight: 700; }
+.chart-label { font-size: 12px; color: var(--muted); font-weight: 700; text-align: center; min-height: 2.6em; display: flex; align-items: flex-end; justify-content: center; line-height: 1.3; }
 
 .pipeline-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);
   padding:16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s;}
@@ -647,80 +647,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
 .credit-ad-btn:disabled{opacity:.45;cursor:not-allowed;}
 .credit-upgrade-btn{width:100%;padding:13px;background:var(--accent-bg);border:1px solid var(--accent-glow);border-radius:14px;color:var(--accent);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;}
 
-/* Thai language: bump small text by 2-3px (except control sections) */
-.lang-th .hero-label{font-size:14px;}
-.lang-th .hero-subtext{font-size:15px;}
-.lang-th .status-label{font-size:14px;}
-.lang-th .status-sub{font-size:16px;}
-.lang-th .m-label{font-size:14px;}
-.lang-th .m-sub{font-size:14px;}
-.lang-th .chart-label{font-size:14px;}
-.lang-th .ft-label{font-size:14px;}
-.lang-th .fr-label{font-size:16px;}
-.lang-th .nav-item span{font-size:14px;}
-.lang-th .nav-action-btn{font-size:16px;}
-.lang-th .nav-upgrade-item{font-size:15px;}
-.lang-th .page-header p{font-size:17px;}
-.lang-th .control-block-label{font-size:14px;}
+/* ═══ THAI TYPOGRAPHY (Sarabun) ═══ */
+/* Sarabun is compact & readable at native sizes — minimal bumps */
+.lang-th{line-height:1.5;}
+.lang-th .nav-item span{line-height:1.35;}
 .lang-th .control-btn{font-size:13px;}
-.lang-th .reset-btn{font-size:15px;}
-.lang-th .csv-btn{font-size:14px;}
-.lang-th .config-label{font-size:14px;}
-.lang-th .tooltip-box{font-size:15px;}
-.lang-th .info-badge{font-size:12px;}
-.lang-th .client-avatar{font-size:16px;}
-.lang-th .client-name{font-size:17px;}
-.lang-th .client-project{font-size:15px;}
-.lang-th .client-amount{font-size:17px;}
-.lang-th .status-pill{font-size:13px;}
-.lang-th .quote-name{font-size:17px;}
-.lang-th .quote-amount{font-size:17px;}
-.lang-th .quote-meta{font-size:15px;}
-.lang-th .convert-btn{font-size:14px;}
-.lang-th .sr-month{font-size:17px;}
-.lang-th .sr-earned{font-size:19px;}
-.lang-th .empty-state h3{font-size:20px;}
-.lang-th .empty-state p{font-size:16px;}
-.lang-th .add-btn{font-size:17px;}
-.lang-th .profile-section-title{font-size:14px;}
+
+/* Small text across all screens: +2-3px for readability */
+.lang-th .hero-label,
+.lang-th .ft-label{font-size:14px;}
+.lang-th .status-label{font-size:14px;font-weight:700;}
+.lang-th .m-label,
+.lang-th .control-block-label,
+.lang-th .config-label,
+.lang-th .profile-section-title,
+.lang-th .csv-btn,
 .lang-th .profile-avatar-placeholder span{font-size:13px;}
-.lang-th .profile-avatar-label{font-size:14px;}
-.lang-th .profile-field label{font-size:15px;}
-.lang-th .form-group label{font-size:15px;}
-.lang-th .inv-preview-mini{font-size:15px;}
-.lang-th .inv-party-label{font-size:13px;}
-.lang-th .inv-party-name{font-size:17px;}
-.lang-th .inv-party-detail{font-size:14px;}
-.lang-th .inv-table th{font-size:13px;}
-.lang-th .inv-table td{font-size:15px;}
-.lang-th .inv-summary-table td{font-size:15px;}
-.lang-th .inv-summary-table tr.total-row td{font-size:16px;}
-.lang-th .inv-payment-title{font-size:13px;}
-.lang-th .inv-payment-details{font-size:14px;}
-.lang-th .promptpay-text{font-size:13px;}
-.lang-th .promptpay-text strong{font-size:14px;}
-.lang-th .inv-footer{font-size:14px;}
-.lang-th .inv-meta .doc-info{font-size:14px;}
-.lang-th .inv-status-badge{font-size:13px;}
-.lang-th .toast{font-size:17px;}
-.lang-th .install-banner span{font-size:16px;}
-.lang-th .install-banner-btn{font-size:15px;}
-.lang-th #offline-indicator{font-size:15px;}
-.lang-th .paywall-banner-title{font-size:16px;}
-.lang-th .paywall-banner-sub{font-size:14px;}
-.lang-th .paywall-banner-btn{font-size:15px;}
-.lang-th .paywall-sub{font-size:17px;}
-.lang-th .paywall-feature-text{font-size:16px;}
-.lang-th .paywall-dismiss{font-size:15px;}
-.lang-th .paywall-demo-btn{font-size:17px;}
-.lang-th .credit-sub{font-size:16px;}
-.lang-th .credit-meter{font-size:15px;}
-.lang-th .credit-ad-btn{font-size:17px;}
-.lang-th .credit-upgrade-btn{font-size:17px;}
-.lang-th .line-item-column label{font-size:13px !important;}
-.lang-th .line-item-input-row input{font-size:16px !important;}
-.lang-th .inv-brand{font-size:18px;}
-/* Thai: normalize letter-spacing for all UI text (Thai script doesn't need tracking) */
+
+.lang-th .m-sub,
+.lang-th .fr-label{font-size:14px;}
+.lang-th .info-badge,
+.lang-th .status-pill,
+.lang-th .inv-table th,
+.lang-th .inv-party-label,
+.lang-th .inv-payment-title,
+.lang-th .inv-status-badge{font-size:12px;}
+
+/* Letter-spacing: normalize for Thai script */
 .lang-th :where(
   .nav-item span, .hero-label, .status-label, .m-label, .ft-label,
   .status-pill, .control-block-label, .config-label, .form-group label,
@@ -742,7 +695,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   .inv-meta .doc-info, #offline-indicator, .nav-action-btn, .nav-upgrade-item
 ) { letter-spacing: normal !important; }
 
-/* Thai: Kanit font only for descriptive/text-heavy areas — keep DM Sans for UI chrome */
+/* Sarabun for descriptive/text-heavy areas */
 .lang-th :where(
   .page-header p, .hero-subtext, .m-label, .m-sub, .status-sub,
   .status-label, .ft-label, .control-block-label, .config-label,
@@ -751,21 +704,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-we
   .inv-party-label, .inv-payment-title, .inv-table th,
   .paywall-sub, .paywall-feature-text, .credit-sub,
   .line-item-column label
-) { font-family: 'Kanit', 'DM Sans', sans-serif; font-weight: 400; }
+) { font-family: 'Sarabun', 'DM Sans', sans-serif; font-weight: 400; }
 
-.lang-th { line-height: 1.6; }
-.lang-th .nav-item span { line-height: 1.4; }
+/* Line-height refinements */
 .lang-th .client-card,
 .lang-th .quote-card,
-.lang-th .pipeline-card { line-height: 1.6; }
-.lang-th .modal { line-height: 1.6; }
-.lang-th .inv-preview-mini { line-height: 1.6; }
-.lang-th .profile-section { line-height: 1.6; }
-.lang-th .empty-state { line-height: 1.6; }
+.lang-th .pipeline-card,
+.lang-th .modal,
+.lang-th .inv-preview-mini,
+.lang-th .profile-section,
+.lang-th .empty-state { line-height: 1.5; }
 .lang-th .form-group label,
 .lang-th .profile-field label,
 .lang-th .control-block-label,
 .lang-th .m-label,
 .lang-th .ft-label,
-.lang-th .status-label { line-height: 1.5; }
+.lang-th .status-label { line-height: 1.4; }
 .lang-th .m-value { line-height: 1.3; }
