@@ -1,164 +1,23 @@
-{
+﻿{
   "$schema": "https://opencode.ai/config.json",
-  "model": "anthropic/claude-sonnet-4-5",
-  "small_model": "anthropic/claude-haiku-4-5",
+  "model": "anthropic/claude-3-5-sonnet-latest",
+  "small_model": "anthropic/claude-3-5-haiku-latest",
   "default_agent": "build",
   "instructions": [
-    "../../GEMINI.md",
-    "AGENTS.md",
-    "RULES.md",
-    "instructions/INSTRUCTIONS.md"
+    "GEMINI.md",
+    ".opencode/AGENTS.md",
+    ".opencode/RULES.md",
+    ".opencode/instructions/INSTRUCTIONS.md"
   ],
   "agent": {
     "build": {
-      "description": "Primary coding agent for development work",
       "mode": "primary",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true,
-        "read": true,
-        "changed-files": true
-      }
+      "tools": { "write": true, "edit": true, "bash": true, "read": true, "changed-files": true }
     },
-    "planner": {
-      "description": "Expert planning specialist for complex features and refactoring. Use for implementation planning, architectural changes, or complex refactoring.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/planner.txt}",
-      "tools": {
-        "read": true,
-        "bash": true,
-        "write": false,
-        "edit": false
-      }
-    },
-    "architect": {
-      "description": "Software architecture specialist for system design, scalability, and technical decision-making.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/architect.txt}",
-      "tools": {
-        "read": true,
-        "bash": true,
-        "write": false,
-        "edit": false
-      }
-    },
-    "code-reviewer": {
-      "description": "Expert code review specialist. Reviews code for quality, security, and maintainability. Use immediately after writing or modifying code.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/code-reviewer.txt}",
-      "tools": {
-        "read": true,
-        "bash": true,
-        "write": false,
-        "edit": false
-      }
-    },
-    "security-reviewer": {
-      "description": "Security vulnerability detection and remediation specialist. Use after writing code that handles user input, authentication, API endpoints, or sensitive data.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/security-reviewer.txt}",
-      "tools": {
-        "read": true,
-        "bash": true,
-        "write": true,
-        "edit": true
-      }
-    },
-    "tdd-guide": {
-      "description": "Test-Driven Development specialist enforcing write-tests-first methodology. Use when writing new features, fixing bugs, or refactoring code. Ensures 80%+ test coverage.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/tdd-guide.txt}",
-      "tools": {
-        "read": true,
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "build-error-resolver": {
-      "description": "Build and error resolution specialist. Use when build fails or type errors occur. Fixes build/type errors only with minimal diffs.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/build-error-resolver.txt}",
-      "tools": {
-        "read": true,
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "e2e-runner": {
-      "description": "End-to-end testing specialist. Generates, maintains, and runs E2E tests for critical user flows.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/e2e-runner.txt}",
-      "tools": {
-        "read": true,
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "refactor-cleaner": {
-      "description": "Dead code cleanup and consolidation specialist. Use for removing unused code, duplicates, and refactoring.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/refactor-cleaner.txt}",
-      "tools": {
-        "read": true,
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "doc-updater": {
-      "description": "Documentation and codemap specialist. Use for updating codemaps and documentation.",
-      "mode": "subagent",
-      "model": "anthropic/claude-opus-4-5",
-      "prompt": "{file:prompts/agents/doc-updater.txt}",
-      "tools": {
-        "read": true,
-        "write": true,
-        "edit": true,
-        "bash": true
-      }
-    },
-    "explore": {
-      "description": "Fast agent specialized for exploring codebases. Use when you need to quickly find files by patterns or search code for keywords.",
-      "mode": "subagent",
-      "model": "anthropic/claude-haiku-4-5",
-      "tools": {
-        "read": true,
-        "bash": true,
-        "write": false,
-        "edit": false
-      }
-    }
-  },
-  "command": {
-    "plan": {
-      "description": "Create a detailed implementation plan for complex features",
-      "template": "{file:commands/plan.md}\n\n$ARGUMENTS",
-      "agent": "planner",
-      "subtask": true
-    },
-    "code-review": {
-      "description": "Review code for quality, security, and maintainability",
-      "template": "{file:commands/code-review.md}\n\n$ARGUMENTS",
-      "agent": "code-reviewer",
-      "subtask": true
-    },
-    "security": {
-      "description": "Run comprehensive security review",
-      "template": "{file:commands/security.md}\n\n$ARGUMENTS",
-      "agent": "security-reviewer",
-      "subtask": true
-    }
+    "planner": { "mode": "subagent", "prompt": "{file:prompts/agents/planner.txt}", "tools": { "read": true, "bash": true } },
+    "architect": { "mode": "subagent", "prompt": "{file:prompts/agents/architect.txt}", "tools": { "read": true, "bash": true } },
+    "code-reviewer": { "mode": "subagent", "prompt": "{file:prompts/agents/code-reviewer.txt}", "tools": { "read": true, "bash": true } },
+    "security-reviewer": { "mode": "subagent", "prompt": "{file:prompts/agents/security-reviewer.txt}", "tools": { "read": true, "bash": true, "write": true, "edit": true } },
+    "tdd-guide": { "mode": "subagent", "prompt": "{file:prompts/agents/tdd-guide.txt}", "tools": { "read": true, "write": true, "edit": true, "bash": true } }
   }
 }

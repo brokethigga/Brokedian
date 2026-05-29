@@ -11,12 +11,48 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&family=Sarabun:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=47">
+<link rel="stylesheet" href="styles.css?v=50">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 </head>
-<body>
+<body class="auth-unauthenticated">
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.37 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
+      <span>Brokedian</span>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" id="auth-tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+    <div id="auth-form-login" class="auth-form">
+      <input type="email" id="auth-email" placeholder="Email" class="auth-input">
+      <input type="password" id="auth-password" placeholder="Password" class="auth-input">
+      <button class="auth-btn" onclick="handleAuth()">Sign In</button>
+      <div class="auth-divider"><span data-i18n="or">or</span></div>
+      <button class="auth-btn auth-btn-google" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <span data-i18n="sign_in_google">Sign in with Google</span>
+      </button>
+      <div class="auth-error" id="auth-error"></div>
+    </div>
+    <div id="auth-form-signup" class="auth-form" style="display:none;">
+      <input type="email" id="auth-email-signup" placeholder="Email" class="auth-input">
+      <input type="password" id="auth-password-signup" placeholder="Password (min 6 chars)" class="auth-input">
+      <button class="auth-btn" onclick="handleSignUp()">Create Account</button>
+      <div class="auth-divider"><span data-i18n="or">or</span></div>
+      <button class="auth-btn auth-btn-google" onclick="signInWithGoogle()">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <span data-i18n="sign_in_google">Sign up with Google</span>
+      </button>
+      <div class="auth-error" id="auth-error-signup"></div>
+    </div>
+  </div>
+</div>
 <div class="layout">
 
 <nav class="nav">
@@ -46,6 +82,10 @@
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
       <span data-i18n="brand_name">Broke Pro</span>
     </div>
+    <button class="nav-action-btn" onclick="handleLogout()" style="color:var(--muted2);font-size:13px;">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4m7 14l5-5-5-5m5 5H9"/></svg>
+      <span data-i18n="sign_out">Sign Out</span>
+    </button>
   </div>
 </nav>
 
@@ -323,7 +363,20 @@
         <div id="prev-footer-wrap" style="display:none; font-size:12px; color:var(--muted); margin-top:4px; border-top:1px dashed var(--border2); padding-top:4px;"></div>
       </div>
     </div>
-    
+
+<div class="profile-section" id="notif-prefs-section">
+  <div class="profile-section-title" data-i18n="notif_settings">Notification Preferences</div>
+  <div style="font-size:13px;color:var(--muted2);margin-bottom:12px;" data-i18n="notif_desc">Choose how you receive alerts when events happen.</div>
+  <div style="display:grid;gap:10px;">
+    <label class="notif-row"><span><span class="notif-label" data-i18n="notif_email_invoice">Email — Invoice Created</span></span><input type="checkbox" id="notif-email-invoice" onchange="saveNotifPref('email_invoice_created',this.checked)"></label>
+    <label class="notif-row"><span><span class="notif-label" data-i18n="notif_email_payment">Email — Payment Received</span></span><input type="checkbox" id="notif-email-payment" onchange="saveNotifPref('email_payment_received',this.checked)"></label>
+    <label class="notif-row"><span><span class="notif-label" data-i18n="notif_email_overdue">Email — Invoice Overdue</span></span><input type="checkbox" id="notif-email-overdue" onchange="saveNotifPref('email_overdue_reminder',this.checked)"></label>
+    <label class="notif-row"><span><span class="notif-label" data-i18n="notif_push_invoice">Push — Invoice Created</span></span><input type="checkbox" id="notif-push-invoice" onchange="saveNotifPref('push_invoice_created',this.checked)"></label>
+    <label class="notif-row"><span><span class="notif-label" data-i18n="notif_push_payment">Push — Payment Received</span></span><input type="checkbox" id="notif-push-payment" onchange="saveNotifPref('push_payment_received',this.checked)"></label>
+    <label class="notif-row"><span><span class="notif-label" data-i18n="notif_push_overdue">Push — Invoice Overdue</span></span><input type="checkbox" id="notif-push-overdue" onchange="saveNotifPref('push_overdue_reminder',this.checked)"></label>
+  </div>
+</div>
+
     <div class="control-block" style="margin-top:0; margin-bottom:24px;">
       <div class="control-block-label" data-i18n="sys_data_mgmt">System & Data Management</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
@@ -766,6 +819,14 @@ const DICTIONARY = {
     prof_terms: "Payment Terms / Standard Disclaimer Notes",
     prof_brand_title: "Brand Styling Scheme",
     sys_data_mgmt: "System & Data Management",
+    notif_settings: "Notification Preferences",
+    notif_desc: "Choose how you receive alerts when events happen.",
+    notif_email_invoice: "Email — Invoice Created",
+    notif_email_payment: "Email — Payment Received",
+    notif_email_overdue: "Email — Invoice Overdue",
+    notif_push_invoice: "Push — Invoice Created",
+    notif_push_payment: "Push — Payment Received",
+    notif_push_overdue: "Push — Invoice Overdue",
     csv_export: "CSV Export",
     full_backup: "Full Backup",
     import_data: "Import Data",
@@ -776,6 +837,9 @@ const DICTIONARY = {
     reset_ad_credits: "Reset Ad Credits (Testing)",
     end_trial: "End Pro Trial & Downgrade to Free",
     apply_sync: "Apply and Sync Settings",
+    sign_out: "Sign Out",
+    or: "or",
+    sign_in_google: "Sign in with Google",
     inv_client_name: "Client / Corporation Name",
     inv_address: "Client Billing Address Detail",
     inv_project: "Project Name or Description",
@@ -965,6 +1029,14 @@ const DICTIONARY = {
     prof_terms: "\u0e40\u0e07\u0e37\u0e48\u0e2d\u0e19\u0e44\u0e02\u0e01\u0e32\u0e23\u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19",
     prof_brand_title: "\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e2a\u0e35\u0e41\u0e1a\u0e23\u0e19\u0e14\u0e4c",
     sys_data_mgmt: "\u0e23\u0e30\u0e1a\u0e1a\u0e41\u0e25\u0e30\u0e01\u0e32\u0e23\u0e08\u0e31\u0e14\u0e01\u0e32\u0e23\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
+    notif_settings: "\u0e01\u0e32\u0e23\u0e15\u0e31\u0e49\u0e07\u0e04\u0e48\u0e32\u0e01\u0e32\u0e23\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19",
+    notif_desc: "\u0e40\u0e25\u0e37\u0e2d\u0e01\u0e27\u0e34\u0e18\u0e35\u0e23\u0e31\u0e1a\u0e01\u0e32\u0e23\u0e41\u0e08\u0e49\u0e07\u0e40\u0e15\u0e37\u0e2d\u0e19\u0e40\u0e21\u0e37\u0e48\u0e2d\u0e21\u0e35\u0e40\u0e2b\u0e15\u0e38\u0e01\u0e32\u0e23\u0e13\u0e4c\u0e40\u0e01\u0e34\u0e14\u0e02\u0e36\u0e49\u0e19",
+    notif_email_invoice: "\u0e2d\u0e35\u0e40\u0e21\u0e25 \u2014 \u0e2a\u0e23\u0e49\u0e32\u0e07\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49",
+    notif_email_payment: "\u0e2d\u0e35\u0e40\u0e21\u0e25 \u2014 \u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19\u0e41\u0e25\u0e49\u0e27",
+    notif_email_overdue: "\u0e2d\u0e35\u0e40\u0e21\u0e25 \u2014 \u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49\u0e04\u0e49\u0e32\u0e07\u0e0a\u0e33\u0e23\u0e30",
+    notif_push_invoice: "Push \u2014 \u0e2a\u0e23\u0e49\u0e32\u0e07\u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49",
+    notif_push_payment: "Push \u2014 \u0e0a\u0e33\u0e23\u0e30\u0e40\u0e07\u0e34\u0e19\u0e41\u0e25\u0e49\u0e27",
+    notif_push_overdue: "Push \u2014 \u0e43\u0e1a\u0e41\u0e08\u0e49\u0e07\u0e2b\u0e19\u0e35\u0e49\u0e04\u0e49\u0e32\u0e07\u0e0a\u0e33\u0e23\u0e30",
     csv_export: "\u0e2a\u0e48\u0e07\u0e2d\u0e2d\u0e01 CSV",
     full_backup: "\u0e2a\u0e33\u0e23\u0e2d\u0e07\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
     import_data: "\u0e19\u0e33\u0e40\u0e02\u0e49\u0e32\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25",
@@ -975,6 +1047,9 @@ const DICTIONARY = {
     reset_ad_credits: "\u0e23\u0e35\u0e40\u0e0b\u0e47\u0e15\u0e04\u0e30\u0e41\u0e19\u0e19\u0e42\u0e06\u0e29\u0e13\u0e32 (\u0e17\u0e14\u0e2a\u0e2d\u0e1a)",
     end_trial: "\u0e22\u0e38\u0e15\u0e34\u0e17\u0e14\u0e25\u0e2d\u0e07\u0e43\u0e0a\u0e49 Pro",
     apply_sync: "\u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e30\u0e0b\u0e34\u0e07\u0e04\u0e4c",
+    sign_out: "\u0e2d\u0e2d\u0e01\u0e08\u0e32\u0e01\u0e23\u0e30\u0e1a\u0e1a",
+    or: "\u0e2b\u0e23\u0e37\u0e2d",
+    sign_in_google: "\u0e25\u0e07\u0e0a\u0e37\u0e48\u0e2d\u0e40\u0e02\u0e49\u0e32\u0e14\u0e49\u0e27\u0e22 Google",
     inv_client_name: "\u0e0a\u0e37\u0e48\u0e2d\u0e25\u0e39\u0e01\u0e04\u0e49\u0e32",
     inv_address: "\u0e17\u0e35\u0e48\u0e2d\u0e22\u0e39\u0e48\u0e2d\u0e2d\u0e01\u0e43\u0e1a\u0e40\u0e2a\u0e23\u0e47\u0e08",
     inv_project: "\u0e0a\u0e37\u0e48\u0e2d\u0e42\u0e04\u0e23\u0e07\u0e01\u0e32\u0e23",
@@ -1259,30 +1334,116 @@ function checkTierLimits() {
   return { allowed: exceeded.length === 0, limits, exceeded: exceeded.map(([k]) => k) };
 }
 
+/* ═══ SUPABASE AUTH ═══ */
+let authTab = 'login';
+function switchAuthTab(tab) {
+  authTab = tab;
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('auth-tab-' + tab).classList.add('active');
+  document.getElementById('auth-form-login').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('auth-form-signup').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('auth-error').textContent = '';
+  document.getElementById('auth-error-signup').textContent = '';
+}
+async function handleAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const errEl = document.getElementById('auth-error');
+  errEl.textContent = '';
+  errEl.style.color = '';
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields'; return; }
+  try {
+    await supabaseClient.signIn(email, password);
+  } catch (e) {
+    errEl.textContent = e.message || 'Sign in failed';
+  }
+}
+async function handleSignUp() {
+  const email = document.getElementById('auth-email-signup').value.trim();
+  const password = document.getElementById('auth-password-signup').value;
+  const errEl = document.getElementById('auth-error-signup');
+  errEl.textContent = '';
+  errEl.style.color = '';
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields'; return; }
+  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters'; return; }
+  try {
+    const data = await supabaseClient.signUp(email, password);
+    if (data?.user?.identities?.length === 0) {
+      errEl.textContent = 'This email is already registered. Try signing in.';
+      return;
+    }
+    errEl.textContent = 'Account created! Check your email for confirmation link.';
+    errEl.style.color = 'var(--green)';
+  } catch (e) {
+    errEl.textContent = e.message || 'Sign up failed';
+  }
+}
+async function afterAuth(user) {
+  document.getElementById('auth-overlay').classList.remove('visible');
+  try {
+    await supabaseClient.subscribePush();
+  } catch {}
+  // Load user profile data
+  try {
+    const profile = await supabaseClient.getProfile();
+    if (profile) {
+      if (profile.tier === 'pro') {
+        localStorage.setItem('brokedian_tier', 'pro');
+        userTier = 'pro';
+      }
+    }
+  } catch {}
+  renderAppContent();
+}
+async function handleLogout() {
+  await supabaseClient.signOut();
+  location.reload();
+}
+async function signInWithGoogle() {
+  const { error } = await supabaseClient.client.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/' }
+  });
+  if (error) console.error('Google sign-in error:', error);
+}
+
+/* ═══ NOTIFICATION PREFS ═══ */
+async function loadNotifPrefs() {
+  try {
+    const prefs = await supabaseClient.getNotifPrefs();
+    if (prefs && prefs.id) {
+      document.getElementById('notif-email-invoice').checked = prefs.email_invoice_created;
+      document.getElementById('notif-email-payment').checked = prefs.email_payment_received;
+      document.getElementById('notif-email-overdue').checked = prefs.email_overdue_reminder;
+      document.getElementById('notif-push-invoice').checked = prefs.push_invoice_created;
+      document.getElementById('notif-push-payment').checked = prefs.push_payment_received;
+      document.getElementById('notif-push-overdue').checked = prefs.push_overdue_reminder;
+    }
+  } catch {}
+}
+async function saveNotifPref(key, value) {
+  try {
+    await supabaseClient.updateNotifPrefs({ [key]: value });
+  } catch {}
+}
+
 function resetNotifCounts() {
   resetMonthlyUsageState();
 }
 resetNotifCounts();
 
 function canSendNotification(type) {
-  if (userTier === 'pro') return { allowed: true, remaining: Infinity };
-  resetNotifCounts();
-  const limit = FREE_LIMITS.notifications;
-  const current = notifCounts[type] || 0;
-  return { allowed: current < limit, remaining: Math.max(0, limit - current) };
+  return { allowed: true, remaining: Infinity };
 }
-
 function useNotification(type) {
-  if (userTier === 'pro') return;
-  resetNotifCounts();
-  notifCounts[type] = (notifCounts[type] || 0) + 1;
-  localStorage.setItem('brokedian_notif_counts', JSON.stringify(notifCounts));
-  localStorage.setItem('brokedian_notif_month', currentUsagePeriod);
+  if (type === 'invoiceSent') {
+    supabaseClient.sendNotification('invoice_created', 'Invoice Created', 'A new invoice has been created');
+  } else if (type === 'paymentReceived') {
+    supabaseClient.sendNotification('payment_received', 'Payment Received', 'An invoice payment has been recorded');
+  }
 }
-
 function getNotifStatus(type) {
-  canSendNotification(type);
-  return `${notifCounts[type] || 0}/${FREE_LIMITS.notifications} sent`;
+  return 'Unlimited';
 }
 
 function openPaywallModal() {
