@@ -5,6 +5,30 @@
 
   let sb = null;
   let currentUser = null;
+  let authReady = false;
+  let afterAuthUserId = null;
+  const authReadyCallbacks = [];
+
+  function setAuthClass(state) {
+    document.body.classList.toggle('auth-authenticated', state === 'authenticated');
+    document.body.classList.toggle('auth-guest', state !== 'authenticated');
+    document.body.classList.remove('auth-unauthenticated');
+    if (typeof updateAuthUI === 'function') updateAuthUI(state);
+  }
+
+  async function handleSession(session, runAfterAuth = false) {
+    currentUser = session?.user || null;
+    if (currentUser) {
+      setAuthClass('authenticated');
+      if (runAfterAuth && typeof afterAuth === 'function' && afterAuthUserId !== currentUser.id) {
+        afterAuthUserId = currentUser.id;
+        await afterAuth(currentUser);
+      }
+    } else {
+      afterAuthUserId = null;
+      setAuthClass('guest');
+    }
+  }
 
   async function init() {
     if (typeof supabase === 'undefined') {
@@ -16,25 +40,15 @@
     });
 
     // Listen for auth state changes (handles OAuth redirect & session refresh)
-    sb.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        currentUser = session.user;
-        document.body.classList.add('auth-authenticated');
-        document.body.classList.remove('auth-unauthenticated');
-        if (typeof afterAuth === 'function') afterAuth(currentUser);
-      } else {
-        currentUser = null;
-        document.body.classList.add('auth-unauthenticated');
-        document.body.classList.remove('auth-authenticated');
-      }
+    sb.auth.onAuthStateChange(async (event, session) => {
+      await handleSession(session, !!session);
     });
 
     // Check existing session
     const { data: { session } } = await sb.auth.getSession();
-    if (!session) {
-      document.body.classList.add('auth-unauthenticated');
-      document.body.classList.remove('auth-authenticated');
-    }
+    await handleSession(session, !!session);
+    authReady = true;
+    authReadyCallbacks.splice(0).forEach(cb => cb(currentUser));
   }
 
   async function signUp(email, password) {
@@ -52,8 +66,7 @@
   async function signOut() {
     await sb.auth.signOut();
     currentUser = null;
-    document.body.classList.remove('auth-authenticated');
-    document.body.classList.add('auth-unauthenticated');
+    setAuthClass('guest');
   }
 
   async function sendNotification(type, title, body) {
@@ -134,14 +147,113 @@
     pipeline: { table: 'forecast_deals', idField: 'id' }
   };
 
+  function isUuid(value) {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(value || ''));
+  }
+
+  function getLocalId(item, prefix) {
+    return String(item.local_id || item.id || `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2)}`);
+  }
+
+  function sumItems(items) {
+    if (!Array.isArray(items)) return 0;
+    return items.reduce((sum, item) => sum + ((Number(item.qty) || 0) * (Number(item.cost) || 0)), 0);
+  }
+
+  function mapToDbRow(key, item) {
+    const localId = getLocalId(item, key);
+    const base = {
+      user_id: currentUser.id,
+      local_id: localId
+    };
+    if (isUuid(item.id)) base.id = item.id;
+
+    if (key === 'clients') {
+      return {
+        ...base,
+        name: item.name || 'Untitled Client',
+        project: item.project || '',
+        amount: Number(item.amount ?? sumItems(item.items)) || 0,
+        status: item.status || 'pending',
+        date: item.date || null,
+        notes: item.address || item.notes || '',
+        items: Array.isArray(item.items) ? item.items : []
+      };
+    }
+
+    if (key === 'quotes') {
+      return {
+        ...base,
+        name: item.name || 'Untitled Quote',
+        amount: Number(item.amount ?? sumItems(item.items)) || 0,
+        client_email: item.client_email || '',
+        status: item.status || 'sent',
+        expiry_date: item.expiry || item.expiry_date || null,
+        items: Array.isArray(item.items) ? item.items : []
+      };
+    }
+
+    if (key === 'pipeline') {
+      return {
+        ...base,
+        name: item.name || 'Untitled Deal',
+        amount: Number(item.amount) || 0,
+        stage: item.month || item.stage || 'lead',
+        probability: Number(item.prob ?? item.probability) || 0,
+        client_name: item.client_name || item.name || ''
+      };
+    }
+
+    return null;
+  }
+
+  function mapFromDbRow(key, row) {
+    const id = row.local_id || row.id;
+    if (key === 'clients') {
+      return {
+        id,
+        local_id: row.local_id || id,
+        name: row.name || '',
+        address: row.notes || '',
+        project: row.project || '',
+        status: row.status || 'pending',
+        date: row.date || '',
+        items: Array.isArray(row.items) ? row.items : []
+      };
+    }
+    if (key === 'quotes') {
+      return {
+        id,
+        local_id: row.local_id || id,
+        name: row.name || '',
+        project: row.project || '',
+        status: row.status || 'sent',
+        expiry: row.expiry_date || '',
+        createdAt: row.created_at ? String(row.created_at).slice(0, 10) : '',
+        items: Array.isArray(row.items) ? row.items : []
+      };
+    }
+    if (key === 'pipeline') {
+      return {
+        id,
+        local_id: row.local_id || id,
+        name: row.name || row.client_name || '',
+        amount: Number(row.amount) || 0,
+        prob: Number(row.probability) || 0,
+        month: row.stage || 'current'
+      };
+    }
+    return row;
+  }
+
   async function syncData(key, data) {
     if (!currentUser) return;
     const cfg = SYNC_TABLES[key];
     if (!cfg || !Array.isArray(data)) return;
     try {
-      const rows = data.map(item => ({ ...item, user_id: currentUser.id }));
+      const rows = data.map(item => mapToDbRow(key, item)).filter(Boolean);
       for (const row of rows) {
-        await sb.from(cfg.table).upsert(row, { onConflict: 'id', ignoreDuplicates: false });
+        await sb.from(cfg.table).upsert(row, { onConflict: 'user_id,local_id', ignoreDuplicates: false });
       }
     } catch (e) {
       console.warn(`Supabase sync failed for ${key}:`, e);
@@ -154,7 +266,7 @@
     if (!cfg) return null;
     try {
       const { data } = await sb.from(cfg.table).select('*').eq('user_id', currentUser.id);
-      return data || null;
+      return data ? data.map(row => mapFromDbRow(key, row)) : null;
     } catch (e) {
       console.warn(`Supabase load failed for ${key}:`, e);
       return null;
@@ -163,8 +275,6 @@
 
   async function migrateLocalData() {
     if (!currentUser) return;
-    const migrated = localStorage.getItem('brokedian_migrated_' + currentUser.id);
-    if (migrated) return;
     for (const key of Object.keys(SYNC_TABLES)) {
       const raw = localStorage.getItem('brokedian_' + key);
       if (raw) {
@@ -201,6 +311,12 @@
     init, signUp, signIn, signOut, getProfile, updateProfile,
     sendNotification, getNotifPrefs, updateNotifPrefs, subscribePush,
     syncData, loadData, migrateLocalData,
+    isSignedIn() { return !!currentUser; },
+    getCurrentUser() { return currentUser; },
+    onAuthReady(cb) {
+      if (authReady) cb(currentUser);
+      else authReadyCallbacks.push(cb);
+    },
     get currentUser() { return currentUser; },
     get client() { return sb; }
   };

@@ -24,6 +24,7 @@ CREATE TABLE profiles (
 CREATE TABLE clients (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  local_id TEXT,
   name TEXT NOT NULL,
   project TEXT,
   amount DECIMAL(12,2) DEFAULT 0,
@@ -39,6 +40,7 @@ CREATE TABLE clients (
 CREATE TABLE quotes (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  local_id TEXT,
   name TEXT NOT NULL,
   amount DECIMAL(12,2) DEFAULT 0,
   client_email TEXT,
@@ -53,6 +55,7 @@ CREATE TABLE quotes (
 CREATE TABLE forecast_deals (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+  local_id TEXT,
   name TEXT NOT NULL,
   amount DECIMAL(12,2) DEFAULT 0,
   stage TEXT DEFAULT 'lead',
@@ -96,6 +99,13 @@ CREATE TABLE IF NOT EXISTS push_subscriptions (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE clients ADD COLUMN IF NOT EXISTS local_id TEXT;
+ALTER TABLE quotes ADD COLUMN IF NOT EXISTS local_id TEXT;
+ALTER TABLE forecast_deals ADD COLUMN IF NOT EXISTS local_id TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS clients_user_local_id_idx ON clients(user_id, local_id);
+CREATE UNIQUE INDEX IF NOT EXISTS quotes_user_local_id_idx ON quotes(user_id, local_id);
+CREATE UNIQUE INDEX IF NOT EXISTS forecast_deals_user_local_id_idx ON forecast_deals(user_id, local_id);
 
 -- ═══ ROW LEVEL SECURITY ═══
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;

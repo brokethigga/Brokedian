@@ -18,13 +18,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 </head>
-<body class="auth-unauthenticated">
+<body class="auth-guest">
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-card">
+    <button class="auth-close-btn" onclick="closeAuthPrompt()" aria-label="Close sign in">×</button>
     <div class="auth-logo">
       <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" width="32" height="32"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.31-8.86c-1.77-.45-2.34-.94-2.34-1.67 0-.84.79-1.43 2.1-1.43 1.38 0 1.9.66 1.94 1.64h1.71c-.05-1.34-.87-2.57-2.49-2.97V5H10.9v1.69c-1.51.32-2.72 1.3-2.72 2.81 0 1.79 1.49 2.69 3.66 3.21 1.95.46 2.34 1.15 2.34 1.87 0 .53-.39 1.39-2.1 1.39-1.6 0-2.23-.72-2.32-1.64H8.04c.1 1.7 1.37 2.66 2.86 2.97V19h2.34v-1.67c1.52-.29 2.72-1.16 2.73-2.77-.01-2.2-1.9-2.96-3.66-3.42z"/></svg>
       <span>Brokedian</span>
     </div>
+    <h2 id="auth-prompt-title" class="auth-prompt-title">Sync to Cloud</h2>
+    <p id="auth-prompt-sub" class="auth-prompt-sub">Create a free account to back up your Brokedian data.</p>
     <div class="auth-tabs">
       <button class="auth-tab active" id="auth-tab-login" onclick="switchAuthTab('login')">Sign In</button>
       <button class="auth-tab" id="auth-tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
@@ -82,7 +85,15 @@
       <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
       <span data-i18n="brand_name">Broke Pro</span>
     </div>
-    <button class="nav-action-btn" onclick="handleLogout()" style="color:var(--muted2);font-size:13px;">
+    <button class="nav-action-btn" data-auth-guest onclick="openAuthPrompt('sync','signup')" style="color:var(--muted2);font-size:13px;">
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v8m0-8l-3 3m3-3l3 3M16 8a4 4 0 10-7.9 1.1A5 5 0 104 18h12a4 4 0 000-8h-.3A4 4 0 0016 8z"/></svg>
+      <span>Sync to Cloud</span>
+    </button>
+    <div class="nav-action-btn cloud-sync-display" data-auth-signed-in>
+      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+      <span id="cloud-sync-status">Cloud Synced</span>
+    </div>
+    <button class="nav-action-btn" data-auth-signed-in onclick="handleLogout()" style="color:var(--muted2);font-size:13px;">
       <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4m7 14l5-5-5-5m5 5H9"/></svg>
       <span data-i18n="sign_out">Sign Out</span>
     </button>
@@ -97,7 +108,7 @@
         <h1 id="dash-greeting" data-i18n="greeting">Good morning 👋</h1>
         <p id="dash-date" style="display:flex;align-items:center;gap:4px;"><span data-i18n="dash_date_loading">Loading...</span><span id="date-pro-badge" style="display:none;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span></p>
       </div>
-      <div class="page-header-right"><button class="theme-toggle-btn mobile-logout-btn" onclick="handleLogout()" style="margin-right:8px; color:var(--red);"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button><button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+      <div class="page-header-right"><button class="theme-toggle-btn mobile-sync-btn" data-auth-guest onclick="openAuthPrompt('sync','signup')" aria-label="Sync to cloud" style="margin-right:8px;"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v8m0-8l-3 3m3-3l3 3M16 8a4 4 0 10-7.9 1.1A5 5 0 104 18h12a4 4 0 000-8h-.3A4 4 0 0016 8z"/></svg></button><button class="theme-toggle-btn mobile-logout-btn" data-auth-signed-in onclick="handleLogout()" style="margin-right:8px; color:var(--red);"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button><button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
           <svg id="theme-icon-moon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.398A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
           <svg id="theme-icon-sun" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         </button>
@@ -404,6 +415,8 @@
       </div>
       <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
         <div class="control-block-label" data-i18n="dev_tools">Developer & Pro Tools</div>
+        <button class="control-btn" data-auth-guest style="width:100%;margin-bottom:8px;" onclick="openAuthPrompt('sync','signup')">Sync to Cloud / Sign In</button>
+        <div class="cloud-synced-chip" data-auth-signed-in>Cloud Synced</div>
         <button id="reset-ad-credits-btn" class="control-btn" style="width:100%;margin-bottom:8px;" onclick="resetAdCreditsForTesting()"><span data-i18n="reset_ad_credits">Reset Ad Credits (Testing)</span></button>
         <button id="reset-pro-trial-btn" class="reset-btn" style="display:none;" onclick="resetProTrial()"><span data-i18n="end_trial">End Pro Trial & Downgrade to Free</span></button>
       </div>
@@ -1344,6 +1357,38 @@ function checkTierLimits() {
     document.getElementById('auth-error-signup').textContent = '';
   }
 
+  function openAuthPrompt(reason = 'sync', preferredTab = 'signup') {
+    switchAuthTab(preferredTab);
+    const title = document.getElementById('auth-prompt-title');
+    const sub = document.getElementById('auth-prompt-sub');
+    const copy = {
+      sync: ['Sync to Cloud', 'Create a free account to back up your Brokedian data.'],
+      limit: ['Keep Growing', 'Create an account and upgrade to Pro for unlimited access.'],
+      notifications: ['Enable Email & Push Alerts', 'Secure cloud sync is required for notification tracking.']
+    }[reason] || ['Sync to Cloud', 'Create a free account to save your data.'];
+    if (title) title.textContent = copy[0];
+    if (sub) sub.textContent = copy[1];
+    document.getElementById('auth-overlay').classList.add('visible');
+  }
+
+  function closeAuthPrompt() {
+    document.getElementById('auth-overlay').classList.remove('visible');
+  }
+
+  function updateAuthUI(state) {
+    const signedIn = state === 'authenticated';
+    document.querySelectorAll('[data-auth-guest]').forEach(el => { el.style.display = signedIn ? 'none' : ''; });
+    document.querySelectorAll('[data-auth-signed-in]').forEach(el => { el.style.display = signedIn ? '' : 'none'; });
+    const cloud = document.getElementById('cloud-sync-status');
+    if (cloud) cloud.textContent = signedIn ? 'Cloud Synced' : 'Local Only';
+  }
+
+  function requireAuthFor(reason) {
+    if (window.supabaseClient?.isSignedIn?.()) return true;
+    openAuthPrompt(reason, 'signup');
+    return false;
+  }
+
   async function handleAuth() {
     const email = document.getElementById('auth-email').value.trim();
     const password = document.getElementById('auth-password').value;
@@ -1396,11 +1441,13 @@ function checkTierLimits() {
 
   async function handleLogout() {
     await supabaseClient.signOut();
-    location.reload();
+    updateAuthUI('guest');
+    showToast('Signed out. Local mode is still available.');
   }
   /* ═══ END AUTH FUNCTIONS ═══ */
   async function afterAuth(user) {
-    document.getElementById('auth-overlay').classList.remove('visible');
+    const hadPromptOpen = document.getElementById('auth-overlay').classList.contains('visible');
+    closeAuthPrompt();
     try { await supabaseClient.subscribePush(); } catch {}
     try {
       const profile = await supabaseClient.getProfile();
@@ -1413,32 +1460,50 @@ function checkTierLimits() {
     } catch {}
     // Migrate existing localStorage data to Supabase
     try { await supabaseClient.migrateLocalData(); } catch {}
-    // Load data from Supabase, fallback to localStorage
-    try {
-      const remoteClients = await supabaseClient.loadData('clients');
-      if (remoteClients && remoteClients.length > 0) {
-        clients = remoteClients;
-        localStorage.setItem('brokedian_clients', JSON.stringify(clients));
-      }
-    } catch {}
-    try {
-      const remoteQuotes = await supabaseClient.loadData('quotes');
-      if (remoteQuotes && remoteQuotes.length > 0) {
-        quotes = remoteQuotes;
-        localStorage.setItem('brokedian_quotes', JSON.stringify(quotes));
-      }
-    } catch {}
-    try {
-      const remotePipeline = await supabaseClient.loadData('pipeline');
-      if (remotePipeline && remotePipeline.length > 0) {
-        pipelineDeals = remotePipeline;
-        localStorage.setItem('brokedian_pipeline', JSON.stringify(pipelineDeals));
-      }
-    } catch {}
+    try { await hydrateMergedCloudData(); } catch {}
+    try { await loadNotifPrefs(); } catch {}
     renderAppContent();
+    updateAuthUI('authenticated');
+    if (hadPromptOpen) showToast('Cloud sync enabled.');
   }
+
+  async function hydrateMergedCloudData() {
+    const [remoteClients, remoteQuotes, remotePipeline] = await Promise.all([
+      supabaseClient.loadData('clients'),
+      supabaseClient.loadData('quotes'),
+      supabaseClient.loadData('pipeline')
+    ]);
+    if (remoteClients) {
+      clients = mergeById(clients, remoteClients);
+      localStorage.setItem('brokedian_clients', JSON.stringify(clients));
+    }
+    if (remoteQuotes) {
+      quotes = mergeById(quotes, remoteQuotes);
+      localStorage.setItem('brokedian_quotes', JSON.stringify(quotes));
+    }
+    if (remotePipeline) {
+      pipelineDeals = mergeById(pipelineDeals, remotePipeline);
+      localStorage.setItem('brokedian_pipeline', JSON.stringify(pipelineDeals));
+    }
+  }
+
+  function mergeById(localRows, remoteRows) {
+    const map = new Map();
+    [...(remoteRows || []), ...(localRows || [])].forEach(row => {
+      const id = String(row.local_id || row.id || '');
+      if (!id) return;
+      map.set(id, { ...row, id });
+    });
+    return [...map.values()];
+  }
+
   async function loadNotifPrefs() {
   try {
+    const ids = ['notif-email-invoice', 'notif-email-payment', 'notif-email-overdue', 'notif-push-invoice', 'notif-push-payment', 'notif-push-overdue'];
+    if (userTier !== 'pro') {
+      ids.forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
+      return;
+    }
     const prefs = await supabaseClient.getNotifPrefs();
     if (prefs && prefs.id) {
       document.getElementById('notif-email-invoice').checked = prefs.email_invoice_created;
@@ -1451,9 +1516,53 @@ function checkTierLimits() {
   } catch {}
 }
 async function saveNotifPref(key, value) {
+  const checkboxId = keyToNotifCheckboxId(key);
+  const checkbox = checkboxId ? document.getElementById(checkboxId) : null;
+  if (!window.supabaseClient?.isSignedIn?.()) {
+    if (checkbox) checkbox.checked = !value;
+    showNotifAuthBanner('guest');
+    return;
+  }
+  if (userTier !== 'pro') {
+    if (checkbox) checkbox.checked = !value;
+    showNotifAuthBanner('pro');
+    return;
+  }
   try {
     await supabaseClient.updateNotifPrefs({ [key]: value });
-  } catch {}
+    showToast('Notification preference saved.');
+  } catch {
+    if (checkbox) checkbox.checked = !value;
+    showToast('Could not save notification preference.');
+  }
+}
+
+function keyToNotifCheckboxId(key) {
+  const map = {
+    email_invoice_created: 'notif-email-invoice',
+    email_payment_received: 'notif-email-payment',
+    email_overdue_reminder: 'notif-email-overdue',
+    push_invoice_created: 'notif-push-invoice',
+    push_payment_received: 'notif-push-payment',
+    push_overdue_reminder: 'notif-push-overdue'
+  };
+  return map[key];
+}
+
+function showNotifAuthBanner(mode = 'guest') {
+  const section = document.getElementById('notif-prefs-section');
+  if (!section) return;
+  section.classList.add('requires-cloud');
+  let banner = document.getElementById('notif-auth-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'notif-auth-banner';
+    banner.className = 'soft-auth-banner';
+    section.prepend(banner);
+  }
+  banner.innerHTML = mode === 'pro'
+    ? `<strong>Email and push alerts are a Pro feature.</strong><span>Upgrade to Broke Pro to enable client email tracking and push reminders.</span><button type="button" onclick="openPaywallModal()">Upgrade to Pro</button>`
+    : `<strong>Email and push alerts need cloud sync.</strong><span>Create an account to connect notifications to your invoices.</span><button type="button" onclick="openAuthPrompt('notifications','signup')">Create account</button>`;
 }
 
 function resetNotifCounts() {
@@ -1465,6 +1574,8 @@ function canSendNotification(type) {
   return { allowed: true, remaining: Infinity };
 }
 function useNotification(type) {
+  if (!window.supabaseClient?.isSignedIn?.()) return;
+  if (userTier !== 'pro') return;
   if (type === 'invoiceSent') {
     supabaseClient.sendNotification('invoice_created', 'Invoice Created', 'A new invoice has been created');
   } else if (type === 'paymentReceived') {
@@ -1482,6 +1593,11 @@ function closePaywallModal() {
   document.getElementById('modal-paywall-overlay').classList.remove('open');
 }
 function openStripeCheckout() {
+  if (!window.supabaseClient?.isSignedIn?.()) {
+    closePaywallModal();
+    openAuthPrompt('limit', 'signup');
+    return;
+  }
   showToast('Stripe integration coming soon! For now, contact billing@brokedian.co.th');
   closePaywallModal();
 }
@@ -1538,19 +1654,26 @@ function getBonusCreditStatus(type) {
 
 let pendingCreditType = 'invoices';
 
-function openCreditModal(type) {
+function openCreditModal(type, opts = {}) {
   if (!['invoices', 'quotes'].includes(type)) return;
   pendingCreditType = type;
   const singular = type === 'invoices' ? 'invoice' : 'quote';
   const used = type === 'invoices' ? getMonthlyInvoiceCount() : getMonthlyQuoteCount();
   const limit = getCreditLimit(type);
   const bonus = getBonusCreditStatus(type);
+  const exhausted = opts.mode === 'ads-exhausted' || !bonus.allowed;
   document.getElementById('credit-modal-title').textContent = `No ${singular} credits left`;
-  document.getElementById('credit-modal-sub').textContent = `You used ${used}/${limit} ${singular} credits this month. Watch a short ad for +1 more this month, or upgrade for unlimited.`;
+  document.getElementById('credit-modal-sub').textContent = exhausted
+    ? `You used ${used}/${limit} ${singular} credits this month and your ad credits are used up. Create an account and upgrade to Pro for unlimited access.`
+    : `You used ${used}/${limit} ${singular} credits this month. Watch ads to unlock up to ${bonus.remaining} more this month, or upgrade for unlimited.`;
   document.getElementById('credit-modal-meter').textContent = `${bonus.current}/${bonus.max} ad credits used this month`;
   const btn = document.getElementById('credit-ad-btn');
-  btn.textContent = bonus.allowed ? `Watch Ad for +1 ${singular} Credit` : 'Monthly ad bonus limit reached';
-  btn.disabled = !bonus.allowed;
+  btn.textContent = exhausted ? 'Ad credits used this month' : `Watch Ads for +${bonus.remaining} ${type} credits`;
+  btn.disabled = exhausted;
+  document.getElementById('credit-upgrade-btn').onclick = () => {
+    closeCreditModal();
+    openAuthPrompt('limit', 'signup');
+  };
   document.getElementById('modal-credit-overlay').classList.add('open');
 }
 
@@ -1571,9 +1694,9 @@ function watchRewardedAdForCredit(type = pendingCreditType) {
     return;
   }
   // Placeholder for AdMob/Ad Manager rewarded-ad success callbacks.
-  monthlyBonusCredits[type] = status.current + 1;
+  monthlyBonusCredits[type] = status.max;
   persistBonusCredits();
-  showToast(`Unlocked +1 ${type.slice(0, -1)} credit for this month.`);
+  showToast(`Unlocked +${status.remaining} ${type} credits for this month.`);
   closeCreditModal();
   initPaywallBanner();
 }
@@ -1589,16 +1712,17 @@ function canAddClientName(name, existingId = '') {
 }
 
 function showLimitBlocked(type) {
+  if (type === 'invoices' || type === 'quotes') {
+    const bonus = getBonusCreditStatus(type);
+    openCreditModal(type, { mode: bonus.allowed ? 'first-limit' : 'ads-exhausted' });
+    return;
+  }
   const msgs = {
-    clients: 'Free tier limited to 5 clients. Upgrade to Pro for unlimited.',
-    invoices: `Free tier includes ${FREE_LIMITS.invoicesPerMonth} invoices/month. Watch an ad for +1 this month, or upgrade to Pro.`,
-    quotes: `Free tier includes ${FREE_LIMITS.quotesPerMonth} quotes/month. Watch an ad for +1 this month, or upgrade to Pro.`,
-    pipeline: 'Free tier limited to 3 pipeline deals. Upgrade to Pro for unlimited.'
+    clients: 'Free tier limited to 5 clients. Create an account and upgrade to Pro for unlimited.',
+    pipeline: 'Free tier limited to 3 pipeline deals. Create an account and upgrade to Pro for unlimited.'
   };
   showToast(msgs[type] || 'Free tier limit reached. Upgrade to Broke&nbsp;Pro.');
-  if (type === 'invoices' || type === 'quotes') {
-    openCreditModal(type);
-  }
+  openAuthPrompt('limit', 'signup');
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1613,6 +1737,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateProTrialVisibility();
   updateProBadge();
   updateUILanguage();
+  updateAuthUI(window.supabaseClient?.isSignedIn?.() ? 'authenticated' : 'guest');
 });
 
 function initPaywallBanner() {
@@ -1706,7 +1831,7 @@ function saveState(key, data) {
       showToast("Storage error: data may not be saved");
     }
   }
-  if (window.supabaseClient && window.supabaseClient.syncData) {
+  if (window.supabaseClient?.isSignedIn?.() && window.supabaseClient.syncData) {
     supabaseClient.syncData(key, data);
   }
 }
@@ -2778,7 +2903,7 @@ function saveProfileInfo() {
   biz.footer = document.getElementById('p-footer').value.trim();
   
   localStorage.setItem('brokedian_biz', JSON.stringify(biz));
-  if (window.supabaseClient) {
+  if (window.supabaseClient?.isSignedIn?.()) {
     supabaseClient.updateProfile({
       biz_name: biz.name, address: biz.address, tax_id: biz.taxid,
       email: biz.email, phone: biz.phone, bank_details: biz.bank,
@@ -3139,7 +3264,7 @@ if ('serviceWorker' in navigator) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  const overlays = ['modal-client', 'modal-quote', 'modal-pipeline', 'modal-preview', 'modal-crop', 'modal-reset-confirm', 'modal-delete-confirm', 'modal-credit-overlay', 'modal-paywall-overlay'];
+  const overlays = ['modal-client', 'modal-quote', 'modal-pipeline', 'modal-preview', 'modal-crop', 'modal-reset-confirm', 'modal-delete-confirm', 'modal-credit-overlay', 'modal-paywall-overlay', 'auth-overlay'];
   overlays.forEach(id => {
     const el = document.getElementById(id);
     if (el && el.classList.contains('open')) {
