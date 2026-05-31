@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&family=Sarabun:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=50">
+<link rel="stylesheet" href="styles.css?v=51">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -1332,100 +1332,112 @@ function checkTierLimits() {
   return { allowed: exceeded.length === 0, limits, exceeded: exceeded.map(([k]) => k) };
 }
 
-/* ═══ SUPABASE AUTH ═══ */
-let authTab = 'login';
-function switchAuthTab(tab) {
-  authTab = tab;
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('auth-tab-' + tab).classList.add('active');
-  document.getElementById('auth-form-login').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('auth-form-signup').style.display = tab === 'signup' ? 'block' : 'none';
-  document.getElementById('auth-error').textContent = '';
-  document.getElementById('auth-error-signup').textContent = '';
-}
-async function handleAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
-  const errEl = document.getElementById('auth-error');
-  errEl.textContent = '';
-  errEl.style.color = '';
-  if (!email || !password) { errEl.textContent = 'Please fill in all fields'; return; }
-  try {
-    await supabaseClient.signIn(email, password);
-  } catch (e) {
-    errEl.textContent = e.message || 'Sign in failed';
+  /* ═══ AUTH FUNCTIONS ═══ */
+  let authTab = 'login';
+  function switchAuthTab(tab) {
+    authTab = tab;
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('auth-tab-' + tab).classList.add('active');
+    document.getElementById('auth-form-login').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('auth-form-signup').style.display = tab === 'signup' ? 'block' : 'none';
+    document.getElementById('auth-error').textContent = '';
+    document.getElementById('auth-error-signup').textContent = '';
   }
-}
-async function handleSignUp() {
-  const email = document.getElementById('auth-email-signup').value.trim();
-  const password = document.getElementById('auth-password-signup').value;
-  const errEl = document.getElementById('auth-error-signup');
-  errEl.textContent = '';
-  errEl.style.color = '';
-  if (!email || !password) { errEl.textContent = 'Please fill in all fields'; return; }
-  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters'; return; }
-  try {
-    const data = await supabaseClient.signUp(email, password);
-    if (data?.user?.identities?.length === 0) {
-      errEl.textContent = 'This email is already registered. Try signing in.';
-      return;
+
+  async function handleAuth() {
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const errEl = document.getElementById('auth-error');
+    errEl.textContent = '';
+    errEl.style.color = '';
+    if (!email || !password) { errEl.textContent = 'Please fill in all fields'; return; }
+    try {
+      await supabaseClient.signIn(email, password);
+    } catch (e) {
+      errEl.textContent = e.message || 'Sign in failed';
     }
-    errEl.textContent = 'Account created! Check your email for confirmation link.';
-    errEl.style.color = 'var(--green)';
-  } catch (e) {
-    errEl.textContent = e.message || 'Sign up failed';
   }
-}
-async function afterAuth(user) {
-    console.log("Authenticated user:", user.email);
-    // Force hide auth overlay
-    const overlay = document.getElementById("auth-overlay");
-    if (overlay) {
-      overlay.style.display = "none";
-      overlay.classList.remove("visible");
-    }
-    document.body.classList.remove("auth-unauthenticated");
-    document.body.classList.add("auth-authenticated");
 
+  async function handleSignUp() {
+    const email = document.getElementById('auth-email-signup').value.trim();
+    const password = document.getElementById('auth-password-signup').value;
+    const errEl = document.getElementById('auth-error-signup');
+    errEl.textContent = '';
+    errEl.style.color = '';
+    if (!email || !password) { errEl.textContent = 'Please fill in all fields'; return; }
+    if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters'; return; }
     try {
-      await supabaseClient.subscribePush();
-    } catch (e) { console.warn("Push init failed:", e); }
-
-    // Load user profile data
-    try {
-      const profile = await supabaseClient.getProfile();
-      if (profile) {
-        if (profile.tier === "pro") {
-          localStorage.setItem("brokedian_tier", "pro");
-          userTier = "pro";
-        }
+      const data = await supabaseClient.signUp(email, password);
+      if (data?.user?.identities?.length === 0) {
+        errEl.textContent = 'This email is already registered. Try signing in.';
+        return;
       }
-    } catch (e) { console.error("Profile load failed:", e); }
-    renderAppContent();
-}
-async function handleLogout() {
-    await supabaseClient.signOut();
-    location.reload();
+      errEl.textContent = 'Account created! Check your email for confirmation link.';
+      errEl.style.color = 'var(--green)';
+    } catch (e) {
+      errEl.textContent = e.message || 'Sign up failed';
+    }
   }
 
   async function signInWithGoogle() {
     if (!supabaseClient || !supabaseClient.client) {
-      alert("Auth engine is still initializing. Please wait 1-2 seconds and try again.");
+      alert("Auth engine is still initializing. Please wait.");
       return;
     }
-    console.log("Initiating Google OAuth...");
     const { error } = await supabaseClient.client.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: window.location.origin + "/" }
+      provider: 'google',
+      options: { redirectTo: window.location.href }
     });
     if (error) {
-      console.error("Google sign-in error:", error);
-      alert("Google Sign-In failed: " + error.message);
+      console.error('Google sign-in error:', error);
+      alert('Google Sign-In failed: ' + error.message);
     }
   }
 
-  /* ═══ NOTIFICATION PREFS ═══ */
-async function loadNotifPrefs() {
+  async function handleLogout() {
+    await supabaseClient.signOut();
+    location.reload();
+  }
+  /* ═══ END AUTH FUNCTIONS ═══ */
+  async function afterAuth(user) {
+    document.getElementById('auth-overlay').classList.remove('visible');
+    try { await supabaseClient.subscribePush(); } catch {}
+    try {
+      const profile = await supabaseClient.getProfile();
+      if (profile) {
+        if (profile.tier === 'pro') {
+          localStorage.setItem('brokedian_tier', 'pro');
+          userTier = 'pro';
+        }
+      }
+    } catch {}
+    // Migrate existing localStorage data to Supabase
+    try { await supabaseClient.migrateLocalData(); } catch {}
+    // Load data from Supabase, fallback to localStorage
+    try {
+      const remoteClients = await supabaseClient.loadData('clients');
+      if (remoteClients && remoteClients.length > 0) {
+        clients = remoteClients;
+        localStorage.setItem('brokedian_clients', JSON.stringify(clients));
+      }
+    } catch {}
+    try {
+      const remoteQuotes = await supabaseClient.loadData('quotes');
+      if (remoteQuotes && remoteQuotes.length > 0) {
+        quotes = remoteQuotes;
+        localStorage.setItem('brokedian_quotes', JSON.stringify(quotes));
+      }
+    } catch {}
+    try {
+      const remotePipeline = await supabaseClient.loadData('pipeline');
+      if (remotePipeline && remotePipeline.length > 0) {
+        pipelineDeals = remotePipeline;
+        localStorage.setItem('brokedian_pipeline', JSON.stringify(pipelineDeals));
+      }
+    } catch {}
+    renderAppContent();
+  }
+  async function loadNotifPrefs() {
   try {
     const prefs = await supabaseClient.getNotifPrefs();
     if (prefs && prefs.id) {
@@ -1693,6 +1705,9 @@ function saveState(key, data) {
     } else {
       showToast("Storage error: data may not be saved");
     }
+  }
+  if (window.supabaseClient && window.supabaseClient.syncData) {
+    supabaseClient.syncData(key, data);
   }
 }
 
@@ -2763,6 +2778,14 @@ function saveProfileInfo() {
   biz.footer = document.getElementById('p-footer').value.trim();
   
   localStorage.setItem('brokedian_biz', JSON.stringify(biz));
+  if (window.supabaseClient) {
+    supabaseClient.updateProfile({
+      biz_name: biz.name, address: biz.address, tax_id: biz.taxid,
+      email: biz.email, phone: biz.phone, bank_details: biz.bank,
+      promptpay_id: biz.promptpay, signature: biz.signature,
+      payment_terms: biz.footer
+    }).catch(() => {});
+  }
   updateMiniPreviewStyleProperties();
 }
 
@@ -3133,8 +3156,15 @@ window.addEventListener('offline', () => {
   document.getElementById('offline-indicator').style.display = 'block';
 });
 </script>
+
 </body>
 </html>
+
+
+
+
+
+
 
 
 

@@ -127,9 +127,80 @@
     }
   }
 
+  /* ═══ DATA SYNC ═══ */
+  const SYNC_TABLES = {
+    clients: { table: 'clients', idField: 'id' },
+    quotes: { table: 'quotes', idField: 'id' },
+    pipeline: { table: 'forecast_deals', idField: 'id' }
+  };
+
+  async function syncData(key, data) {
+    if (!currentUser) return;
+    const cfg = SYNC_TABLES[key];
+    if (!cfg || !Array.isArray(data)) return;
+    try {
+      const rows = data.map(item => ({ ...item, user_id: currentUser.id }));
+      for (const row of rows) {
+        await sb.from(cfg.table).upsert(row, { onConflict: 'id', ignoreDuplicates: false });
+      }
+    } catch (e) {
+      console.warn(`Supabase sync failed for ${key}:`, e);
+    }
+  }
+
+  async function loadData(key) {
+    if (!currentUser) return null;
+    const cfg = SYNC_TABLES[key];
+    if (!cfg) return null;
+    try {
+      const { data } = await sb.from(cfg.table).select('*').eq('user_id', currentUser.id);
+      return data || null;
+    } catch (e) {
+      console.warn(`Supabase load failed for ${key}:`, e);
+      return null;
+    }
+  }
+
+  async function migrateLocalData() {
+    if (!currentUser) return;
+    const migrated = localStorage.getItem('brokedian_migrated_' + currentUser.id);
+    if (migrated) return;
+    for (const key of Object.keys(SYNC_TABLES)) {
+      const raw = localStorage.getItem('brokedian_' + key);
+      if (raw) {
+        try {
+          const data = JSON.parse(raw);
+          if (Array.isArray(data) && data.length > 0) {
+            await syncData(key, data);
+          }
+        } catch {}
+      }
+    }
+    // Also migrate profile
+    const bizRaw = localStorage.getItem('brokedian_biz');
+    if (bizRaw) {
+      try {
+        const biz = JSON.parse(bizRaw);
+        await updateProfile({
+          biz_name: biz.name,
+          address: biz.address,
+          tax_id: biz.taxid,
+          email: biz.email,
+          phone: biz.phone,
+          bank_details: biz.bank,
+          promptpay_id: biz.promptpay,
+          signature: biz.signature,
+          payment_terms: biz.footer
+        });
+      } catch {}
+    }
+    localStorage.setItem('brokedian_migrated_' + currentUser.id, '1');
+  }
+
   window.supabaseClient = {
     init, signUp, signIn, signOut, getProfile, updateProfile,
     sendNotification, getNotifPrefs, updateNotifPrefs, subscribePush,
+    syncData, loadData, migrateLocalData,
     get currentUser() { return currentUser; },
     get client() { return sb; }
   };
