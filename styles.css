@@ -758,7 +758,3 @@ body.auth-authenticated [data-auth-guest]{display:none!important;}
 .lang-th .ft-label,
 .lang-th .status-label { line-height: 1.4; }
 .lang-th .m-value { line-height: 1.3; }
-  .mobile-logout-btn { display: none; }
-  @media(max-width:1023px) {
-    .mobile-logout-btn { display: flex; }
-  }

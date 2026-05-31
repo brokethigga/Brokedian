@@ -11,7 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&family=Sarabun:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=51">
+<link rel="stylesheet" href="styles.css?v=52">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -79,6 +79,10 @@
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline stroke-linecap="round" stroke-linejoin="round" points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     <span data-i18n="nav_forecast">Forecast</span>
   </div>
+  <div class="nav-item" data-auth-signed-in role="button" tabindex="0" onclick="handleLogout()" onkeydown="if(event.key==='Enter'||event.key===' ')handleLogout()">
+    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4m7 14l5-5-5-5m5 5H9"/></svg>
+    <span data-i18n="sign_out">Sign Out</span>
+  </div>
   <div class="nav-spacer"></div>
   <div class="nav-bottom-actions">
     <div id="nav-upgrade-btn" class="nav-upgrade-item" onclick="openPaywallModal()">
@@ -93,10 +97,6 @@
       <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
       <span id="cloud-sync-status">Cloud Synced</span>
     </div>
-    <button class="nav-action-btn" data-auth-signed-in onclick="handleLogout()" style="color:var(--muted2);font-size:13px;">
-      <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4m7 14l5-5-5-5m5 5H9"/></svg>
-      <span data-i18n="sign_out">Sign Out</span>
-    </button>
   </div>
 </nav>
 
@@ -108,7 +108,7 @@
         <h1 id="dash-greeting" data-i18n="greeting">Good morning 👋</h1>
         <p id="dash-date" style="display:flex;align-items:center;gap:4px;"><span data-i18n="dash_date_loading">Loading...</span><span id="date-pro-badge" style="display:none;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span></p>
       </div>
-      <div class="page-header-right"><button class="theme-toggle-btn mobile-sync-btn" data-auth-guest onclick="openAuthPrompt('sync','signup')" aria-label="Sync to cloud" style="margin-right:8px;"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v8m0-8l-3 3m3-3l3 3M16 8a4 4 0 10-7.9 1.1A5 5 0 104 18h12a4 4 0 000-8h-.3A4 4 0 0016 8z"/></svg></button><button class="theme-toggle-btn mobile-logout-btn" data-auth-signed-in onclick="handleLogout()" style="margin-right:8px; color:var(--red);"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button><button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+      <div class="page-header-right"><button class="theme-toggle-btn mobile-sync-btn" data-auth-guest onclick="openAuthPrompt('sync','signup')" aria-label="Sync to cloud" style="margin-right:8px;"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v8m0-8l-3 3m3-3l3 3M16 8a4 4 0 10-7.9 1.1A5 5 0 104 18h12a4 4 0 000-8h-.3A4 4 0 0016 8z"/></svg></button><button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
           <svg id="theme-icon-moon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.398A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
           <svg id="theme-icon-sun" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
         </button>
@@ -180,7 +180,7 @@
         <h1 data-i18n="invoices_title">Invoices</h1>
         <p data-i18n="invoices_desc">Create invoices and keep track of your clients</p>
       </div>
-      <div class="page-header-right"><button class="theme-toggle-btn mobile-logout-btn" onclick="handleLogout()" style="margin-right:8px; color:var(--red);"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button><button class="theme-toggle-btn" onclick="switchScreen('profile', null)">
+      <div class="page-header-right"><button class="theme-toggle-btn" onclick="switchScreen('profile', null)">
           <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         </button>
       </div>
@@ -293,7 +293,7 @@
       <div class="page-header-left">
         <h1 data-i18n="profile_title">Business Configuration Settings</h1>
         <p data-i18n="profile_desc">Set up your business details, payment info, and digital signature</p>
-      </div><div class="page-header-right"><button class="theme-toggle-btn mobile-logout-btn" onclick="handleLogout()" style="color:var(--red);"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg></button></div>
+      </div><div class="page-header-right"></div>
     </div>
 
     <div class="profile-avatar-wrap">
@@ -1440,7 +1440,9 @@ function checkTierLimits() {
   }
 
   async function handleLogout() {
-    await supabaseClient.signOut();
+    try {
+      if (window.supabaseClient?.signOut) await supabaseClient.signOut();
+    } catch (e) { console.error('signOut error:', e); }
     updateAuthUI('guest');
     showToast('Signed out. Local mode is still available.');
   }
