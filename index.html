@@ -79,10 +79,6 @@
     <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><polyline stroke-linecap="round" stroke-linejoin="round" points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
     <span data-i18n="nav_forecast">Forecast</span>
   </div>
-  <div class="nav-item" data-auth-signed-in role="button" tabindex="0" onclick="handleLogout()" onkeydown="if(event.key==='Enter'||event.key===' ')handleLogout()">
-    <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4m7 14l5-5-5-5m5 5H9"/></svg>
-    <span data-i18n="sign_out">Sign Out</span>
-  </div>
   <div class="nav-spacer"></div>
   <div class="nav-bottom-actions">
     <div id="nav-upgrade-btn" class="nav-upgrade-item" onclick="openPaywallModal()">
@@ -100,6 +96,10 @@
   </div>
 </nav>
 
+<button class="user-hub-trigger user-hub-floating" onclick="openUserHub()" aria-label="Open account and rewards hub">
+  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21a8 8 0 10-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+</button>
+
 <div class="main-content">
 
   <div id="screen-dashboard" class="screen active">
@@ -108,11 +108,7 @@
         <h1 id="dash-greeting" data-i18n="greeting">Good morning 👋</h1>
         <p id="dash-date" style="display:flex;align-items:center;gap:4px;"><span data-i18n="dash_date_loading">Loading...</span><span id="date-pro-badge" style="display:none;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;font-weight:700;">PRO</span></p>
       </div>
-      <div class="page-header-right"><button class="theme-toggle-btn mobile-sync-btn" data-auth-guest onclick="openAuthPrompt('sync','signup')" aria-label="Sync to cloud" style="margin-right:8px;"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1M12 12v8m0-8l-3 3m3-3l3 3M16 8a4 4 0 10-7.9 1.1A5 5 0 104 18h12a4 4 0 000-8h-.3A4 4 0 0016 8z"/></svg></button><button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
-          <svg id="theme-icon-moon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.398A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-          <svg id="theme-icon-sun" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-        </button>
-      </div>
+      <div class="page-header-right"></div>
     </div>
 
     <div id="paywall-banner" class="paywall-banner" style="display:none;" onclick="openPaywallModal()">
@@ -415,9 +411,6 @@
       </div>
       <div style="border-top:1px solid var(--border2); margin-top:12px; padding-top:12px;">
         <div class="control-block-label" data-i18n="dev_tools">Developer & Pro Tools</div>
-        <button class="control-btn" data-auth-guest style="width:100%;margin-bottom:8px;" onclick="openAuthPrompt('sync','signup')">Sync to Cloud / Sign In</button>
-        <div class="cloud-synced-chip" data-auth-signed-in>Cloud Synced</div>
-        <button id="reset-ad-credits-btn" class="control-btn" style="width:100%;margin-bottom:8px;" onclick="resetAdCreditsForTesting()"><span data-i18n="reset_ad_credits">Reset Ad Credits (Testing)</span></button>
         <button id="reset-pro-trial-btn" class="reset-btn" style="display:none;" onclick="resetProTrial()"><span data-i18n="end_trial">End Pro Trial & Downgrade to Free</span></button>
       </div>
     </div>
@@ -704,6 +697,87 @@
 <div id="offline-indicator" data-i18n="offline_msg">You are offline — data saved locally</div>
 
 <div id="toast" class="toast">Action updated successfully</div>
+
+<div id="modal-user-hub" class="modal-overlay user-hub-overlay" onclick="if(event.target.id==='modal-user-hub') closeUserHub()">
+  <div class="user-hub-sheet">
+    <div class="modal-handle"></div>
+    <div class="user-hub-header">
+      <div>
+        <div class="user-hub-kicker">Account & Rewards</div>
+        <h2>Account Hub</h2>
+      </div>
+      <button class="hub-close-btn" onclick="closeUserHub()" aria-label="Close account hub">×</button>
+    </div>
+
+    <div class="hub-card hub-identity-card">
+      <div class="hub-avatar">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21a8 8 0 10-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div>
+        <div class="hub-status-title" id="hub-account-title">Local guest mode</div>
+        <div class="hub-status-sub" id="hub-account-sub">Your data is saved on this device.</div>
+      </div>
+    </div>
+
+    <div class="hub-row hub-toggle-row">
+      <div>
+        <strong>Dark Mode</strong>
+        <span>Personal display preference</span>
+      </div>
+      <button class="hub-icon-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <svg id="hub-theme-icon-moon" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.398A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        <svg id="hub-theme-icon-sun" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      </button>
+    </div>
+
+    <div class="hub-card">
+      <div class="hub-section-title">Cloud Sync</div>
+      <div class="hub-copy" id="hub-sync-copy">Back up this device and unlock account-based features.</div>
+      <button class="hub-primary-btn" data-auth-guest onclick="closeUserHub(); openAuthPrompt('sync','signup')">Sync to Cloud / Sign In</button>
+      <div class="hub-synced-pill" data-auth-signed-in>Cloud Synced</div>
+    </div>
+
+    <div class="hub-card">
+      <div class="hub-section-title">Ad Credits</div>
+      <div class="hub-credit-grid">
+        <div>
+          <span>Invoices</span>
+          <strong id="hub-invoice-credit">0 / 4 used</strong>
+        </div>
+        <div>
+          <span>Quotes</span>
+          <strong id="hub-quote-credit">0 / 4 used</strong>
+        </div>
+      </div>
+      <div class="hub-copy" id="hub-credit-copy">Watch ads to unlock monthly guest credits.</div>
+      <div class="hub-action-grid">
+        <button class="hub-secondary-btn" id="hub-watch-invoice-btn" onclick="watchRewardedAdForCredit('invoices')">Watch Ads for Invoice Credits</button>
+        <button class="hub-secondary-btn" id="hub-watch-quote-btn" onclick="watchRewardedAdForCredit('quotes')">Watch Ads for Quote Credits</button>
+      </div>
+      <button class="hub-text-btn" onclick="resetAdCreditsForTesting()">Reset Ad Credits (Testing)</button>
+    </div>
+
+    <div class="hub-pro-card">
+      <div>
+        <div class="hub-section-title">Broke Pro</div>
+        <div class="hub-copy">Unlimited access, clean PDFs, cloud sync, and notification tracking.</div>
+      </div>
+      <button class="hub-pro-btn" onclick="closeUserHub(); openPaywallModal()">฿59/mo</button>
+    </div>
+
+    <button class="hub-signout-btn" data-auth-signed-in onclick="openSignOutConfirm()">Sign Out</button>
+  </div>
+</div>
+
+<div id="modal-signout-confirm" class="modal-overlay" onclick="if(event.target.id==='modal-signout-confirm') closeSignOutConfirm()">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-handle"></div>
+    <h2 style="color:var(--red);">Sign out?</h2>
+    <p style="color:var(--muted2); margin-bottom:20px; font-size:15px; line-height:1.5;">Cloud sync will stop on this device until you sign in again. Local mode will remain available.</p>
+    <button class="delete-btn" onclick="performSignOut()" style="margin-top:0;">Yes, Sign Out</button>
+    <button class="cancel-btn" onclick="closeSignOutConfirm()">Cancel</button>
+  </div>
+</div>
 
 <div id="modal-credit-overlay" class="modal-overlay" onclick="if(event.target.id==='modal-credit-overlay') closeCreditModal()">
   <div class="modal-credit">
@@ -1381,12 +1455,58 @@ function checkTierLimits() {
     document.querySelectorAll('[data-auth-signed-in]').forEach(el => { el.style.display = signedIn ? '' : 'none'; });
     const cloud = document.getElementById('cloud-sync-status');
     if (cloud) cloud.textContent = signedIn ? 'Cloud Synced' : 'Local Only';
+    refreshUserHub();
   }
 
   function requireAuthFor(reason) {
     if (window.supabaseClient?.isSignedIn?.()) return true;
     openAuthPrompt(reason, 'signup');
     return false;
+  }
+
+  function openUserHub() {
+    refreshUserHub();
+    document.getElementById('modal-user-hub').classList.add('open');
+  }
+
+  function closeUserHub() {
+    document.getElementById('modal-user-hub').classList.remove('open');
+  }
+
+  function refreshUserHub() {
+    const signedIn = !!window.supabaseClient?.isSignedIn?.();
+    const title = document.getElementById('hub-account-title');
+    const sub = document.getElementById('hub-account-sub');
+    const syncCopy = document.getElementById('hub-sync-copy');
+    const invoiceCredit = getBonusCreditStatus('invoices');
+    const quoteCredit = getBonusCreditStatus('quotes');
+    const invoiceLabel = document.getElementById('hub-invoice-credit');
+    const quoteLabel = document.getElementById('hub-quote-credit');
+    const invoiceBtn = document.getElementById('hub-watch-invoice-btn');
+    const quoteBtn = document.getElementById('hub-watch-quote-btn');
+
+    if (title) title.textContent = signedIn ? 'Cloud Synced' : 'Local guest mode';
+    if (sub) sub.textContent = signedIn ? 'Your workspace is connected to your account.' : 'Your data is saved on this device.';
+    if (syncCopy) syncCopy.textContent = signedIn ? 'Changes sync automatically while you are signed in.' : 'Back up this device and unlock account-based features.';
+    if (invoiceLabel) invoiceLabel.textContent = `${invoiceCredit.current} / ${invoiceCredit.max} used`;
+    if (quoteLabel) quoteLabel.textContent = `${quoteCredit.current} / ${quoteCredit.max} used`;
+    if (invoiceBtn) {
+      invoiceBtn.disabled = !invoiceCredit.allowed;
+      invoiceBtn.textContent = invoiceCredit.allowed ? `Watch Ads for +${invoiceCredit.remaining} Invoice Credits` : 'Invoice Ad Credits Used';
+    }
+    if (quoteBtn) {
+      quoteBtn.disabled = !quoteCredit.allowed;
+      quoteBtn.textContent = quoteCredit.allowed ? `Watch Ads for +${quoteCredit.remaining} Quote Credits` : 'Quote Ad Credits Used';
+    }
+    updateHubThemeIcons();
+  }
+
+  function updateHubThemeIcons() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const moon = document.getElementById('hub-theme-icon-moon');
+    const sun = document.getElementById('hub-theme-icon-sun');
+    if (moon) moon.style.display = isDark ? 'none' : '';
+    if (sun) sun.style.display = isDark ? '' : 'none';
   }
 
   async function handleAuth() {
@@ -1440,9 +1560,23 @@ function checkTierLimits() {
   }
 
   async function handleLogout() {
+    openSignOutConfirm();
+  }
+
+  function openSignOutConfirm() {
+    document.getElementById('modal-signout-confirm').classList.add('open');
+  }
+
+  function closeSignOutConfirm() {
+    document.getElementById('modal-signout-confirm').classList.remove('open');
+  }
+
+  async function performSignOut() {
     try {
       if (window.supabaseClient?.signOut) await supabaseClient.signOut();
     } catch (e) { console.error('signOut error:', e); }
+    closeSignOutConfirm();
+    closeUserHub();
     updateAuthUI('guest');
     showToast('Signed out. Local mode is still available.');
   }
@@ -1613,6 +1747,7 @@ function upgradeToPro() {
   closePaywallModal();
   renderAppContent();
   initPaywallBanner();
+  refreshUserHub();
   updateProTrialVisibility();
   updateProBadge();
   updateUILanguage();
@@ -1701,6 +1836,7 @@ function watchRewardedAdForCredit(type = pendingCreditType) {
   showToast(`Unlocked +${status.remaining} ${type} credits for this month.`);
   closeCreditModal();
   initPaywallBanner();
+  refreshUserHub();
 }
 
 function canAddClientName(name, existingId = '') {
@@ -1809,6 +1945,7 @@ function toggleTheme() {
   
   moonIcons.forEach(icon => { if(icon) icon.style.display = isDark ? 'none' : ''; });
   sunIcons.forEach(icon => { if(icon) icon.style.display = isDark ? '' : 'none'; });
+  updateHubThemeIcons();
 }
 
 function initTheme() {
@@ -1820,6 +1957,7 @@ function initTheme() {
     moonIcons.forEach(icon => { if(icon) icon.style.display = 'none'; });
     sunIcons.forEach(icon => { if(icon) icon.style.display = ''; });
   }
+  updateHubThemeIcons();
 }
 
 function saveState(key, data) {
@@ -3177,6 +3315,7 @@ function resetAdCreditsForTesting() {
   persistBonusCredits();
   closeCreditModal();
   initPaywallBanner();
+  refreshUserHub();
   showToast('Ad bonus credits reset for this month.');
 }
 
