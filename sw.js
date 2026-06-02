@@ -1,7 +1,7 @@
-const CACHE_VERSION = 'v13';
+const CACHE_VERSION = 'v15';
 const CACHE_NAME = `brokedian-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_NAME}-runtime`;
-const ASSETS = ['./', './index.html', './manifest.json', './styles.css?v=52', './supabase.js'];
+const ASSETS = ['./', './index.html', './manifest.json', './styles.css?v=54', './supabase.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));

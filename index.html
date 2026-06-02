@@ -18,7 +18,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 </head>
-<body class="auth-guest">
+<body class="auth-guest" data-screen="dashboard">
 <div class="auth-overlay" id="auth-overlay">
   <div class="auth-card">
     <button class="auth-close-btn" onclick="closeAuthPrompt()" aria-label="Close sign in">×</button>
@@ -96,8 +96,9 @@
   </div>
 </nav>
 
-<button class="user-hub-trigger user-hub-floating" onclick="openUserHub()" aria-label="Open account and rewards hub">
-  <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21a8 8 0 10-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+<button class="user-hub-trigger user-hub-floating" onclick="handleHeaderHubAction()" aria-label="Open account and settings">
+  <svg class="user-hub-icon user-hub-icon-profile" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21a8 8 0 10-16 0"/><circle cx="12" cy="7" r="4"/></svg>
+  <svg class="user-hub-icon user-hub-icon-settings" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
 </button>
 
 <div class="main-content">
@@ -176,10 +177,7 @@
         <h1 data-i18n="invoices_title">Invoices</h1>
         <p data-i18n="invoices_desc">Create invoices and keep track of your clients</p>
       </div>
-      <div class="page-header-right"><button class="theme-toggle-btn" onclick="switchScreen('profile', null)">
-          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </button>
-      </div>
+      <div class="page-header-right"></div>
     </div>
     <div id="client-list" class="client-list"></div>
     <div class="add-btn" onclick="openClientModal()">
@@ -704,7 +702,7 @@
     <div class="user-hub-header">
       <div>
         <div class="user-hub-kicker">Account & Rewards</div>
-        <h2>Account Hub</h2>
+        <h2>Account & Rewards Hub</h2>
       </div>
       <button class="hub-close-btn" onclick="closeUserHub()" aria-label="Close account hub">×</button>
     </div>
@@ -759,13 +757,13 @@
 
     <div class="hub-pro-card">
       <div>
-        <div class="hub-section-title">Broke Pro</div>
+        <div class="hub-section-title">Brokedian Pro</div>
         <div class="hub-copy">Unlimited access, clean PDFs, cloud sync, and notification tracking.</div>
       </div>
       <button class="hub-pro-btn" onclick="closeUserHub(); openPaywallModal()">฿59/mo</button>
     </div>
 
-    <button class="hub-signout-btn" data-auth-signed-in onclick="openSignOutConfirm()">Sign Out</button>
+    <button type="button" class="hub-signout-btn" data-auth-signed-in onclick="openSignOutConfirm()">Sign Out</button>
   </div>
 </div>
 
@@ -1464,9 +1462,23 @@ function checkTierLimits() {
     return false;
   }
 
+  function handleHeaderHubAction() {
+    if (document.body.dataset.screen === 'clients') {
+      switchScreen('profile', null);
+      return;
+    }
+    openUserHub();
+  }
+
   function openUserHub() {
     refreshUserHub();
-    document.getElementById('modal-user-hub').classList.add('open');
+    const hub = document.getElementById('modal-user-hub');
+    const sheet = hub?.querySelector('.user-hub-sheet');
+    hub.classList.add('open');
+    requestAnimationFrame(() => {
+      if (sheet) sheet.scrollTop = 0;
+      if (hub) hub.scrollTop = 0;
+    });
   }
 
   function closeUserHub() {
@@ -1475,6 +1487,8 @@ function checkTierLimits() {
 
   function refreshUserHub() {
     const signedIn = !!window.supabaseClient?.isSignedIn?.();
+    document.body.classList.toggle('auth-authenticated', signedIn);
+    document.body.classList.toggle('auth-guest', !signedIn);
     const title = document.getElementById('hub-account-title');
     const sub = document.getElementById('hub-account-sub');
     const syncCopy = document.getElementById('hub-sync-copy');
@@ -1564,6 +1578,7 @@ function checkTierLimits() {
   }
 
   function openSignOutConfirm() {
+    closeUserHub();
     document.getElementById('modal-signout-confirm').classList.add('open');
   }
 
@@ -1573,11 +1588,20 @@ function checkTierLimits() {
 
   async function performSignOut() {
     try {
-      if (window.supabaseClient?.signOut) await supabaseClient.signOut();
+      if (window.supabaseClient?.signOut) {
+        await supabaseClient.signOut();
+      } else if (window.supabaseClient?.client?.auth?.signOut) {
+        await supabaseClient.client.auth.signOut({ scope: 'local' });
+      }
     } catch (e) { console.error('signOut error:', e); }
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('sb-') || key.includes('supabase.auth')) localStorage.removeItem(key);
+    });
     closeSignOutConfirm();
     closeUserHub();
     updateAuthUI('guest');
+    document.body.classList.remove('auth-authenticated');
+    document.body.classList.add('auth-guest');
     showToast('Signed out. Local mode is still available.');
   }
   /* ═══ END AUTH FUNCTIONS ═══ */
@@ -1916,6 +1940,7 @@ function escHtml(str) {
 function switchScreen(screenId, element) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.body.dataset.screen = screenId;
   
   document.getElementById('screen-' + screenId).classList.add('active');
   if(element) element.classList.add('active');
@@ -3405,12 +3430,11 @@ if ('serviceWorker' in navigator) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  const overlays = ['modal-client', 'modal-quote', 'modal-pipeline', 'modal-preview', 'modal-crop', 'modal-reset-confirm', 'modal-delete-confirm', 'modal-credit-overlay', 'modal-paywall-overlay', 'auth-overlay'];
+  const overlays = ['modal-client', 'modal-quote', 'modal-pipeline', 'modal-preview', 'modal-crop', 'modal-reset-confirm', 'modal-delete-confirm', 'modal-credit-overlay', 'modal-paywall-overlay', 'modal-user-hub', 'modal-signout-confirm', 'auth-overlay'];
   overlays.forEach(id => {
     const el = document.getElementById(id);
-    if (el && el.classList.contains('open')) {
-      el.classList.remove('open');
-    }
+    if (!el) return;
+    el.classList.remove('open', 'visible');
   });
 });
 
