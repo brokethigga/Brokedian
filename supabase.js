@@ -79,7 +79,7 @@
       const prefs = await getNotifPrefs();
       if (prefs[`email_${type}`]) {
         await sb.functions.invoke('send-notification', {
-          body: { type, title, body, email: currentUser.email, userId: currentUser.id }
+          body: { type, title, body }
         }).catch(() => {});
       }
     } catch (e) {

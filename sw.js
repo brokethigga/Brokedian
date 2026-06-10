@@ -1,7 +1,8 @@
-const CACHE_VERSION = 'v15';
+const CACHE_VERSION = 'v16';
 const CACHE_NAME = `brokedian-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_NAME}-runtime`;
-const ASSETS = ['./', './index.html', './manifest.json', './styles.css?v=54', './supabase.js'];
+const ASSETS = ['./', './index.html', './manifest.json', './styles.css?v=54', './supabase.js', './icon-192.png'];
+const ASSET_PATHS = ASSETS.map(asset => new URL(asset, self.location.href).pathname);
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
@@ -19,10 +20,7 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   const isSameOrigin = url.origin === self.location.origin;
-  const isAppAsset = isSameOrigin && ASSETS.some(asset => {
-    if (asset === './') return url.pathname === '/' || url.pathname.endsWith('/index.html');
-    return url.pathname.endsWith(asset.replace('./', ''));
-  });
+  const isAppAsset = isSameOrigin && (url.pathname === '/' || ASSET_PATHS.includes(url.pathname));
   if (isAppAsset) {
     e.respondWith(
       caches.match(e.request).then(r => r || fetch(e.request).then(res => {
