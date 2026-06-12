@@ -1,6 +1,6 @@
 # Project Guidelines
 
-> *Operational Protocol: Follow global ECC Instincts (defined in ../../AGENTS.md) in addition to these project-specific requirements.*
+> *Operational Protocol: Follow global ECC Instincts (defined in .opencode/AGENTS.md) in addition to these project-specific requirements.*
 
 
 ## 1. Required Coding Workflow
