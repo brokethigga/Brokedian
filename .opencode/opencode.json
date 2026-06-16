@@ -1,23 +1,75 @@
 ﻿{
-  "$schema": "https://opencode.ai/config.json",
-  "model": "anthropic/claude-3-5-sonnet-latest",
-  "small_model": "anthropic/claude-3-5-haiku-latest",
-  "default_agent": "build",
-  "instructions": [
-    "GEMINI.md",
-    ".opencode/AGENTS.md",
-    ".opencode/RULES.md",
-    ".opencode/instructions/INSTRUCTIONS.md"
-  ],
-  "agent": {
-    "build": {
-      "mode": "primary",
-      "tools": { "write": true, "edit": true, "bash": true, "read": true, "changed-files": true }
-    },
-    "planner": { "mode": "subagent", "prompt": "{file:prompts/agents/planner.txt}", "tools": { "read": true, "bash": true } },
-    "architect": { "mode": "subagent", "prompt": "{file:prompts/agents/architect.txt}", "tools": { "read": true, "bash": true } },
-    "code-reviewer": { "mode": "subagent", "prompt": "{file:prompts/agents/code-reviewer.txt}", "tools": { "read": true, "bash": true } },
-    "security-reviewer": { "mode": "subagent", "prompt": "{file:prompts/agents/security-reviewer.txt}", "tools": { "read": true, "bash": true, "write": true, "edit": true } },
-    "tdd-guide": { "mode": "subagent", "prompt": "{file:prompts/agents/tdd-guide.txt}", "tools": { "read": true, "write": true, "edit": true, "bash": true } }
-  }
+    "$schema":  "https://opencode.ai/config.json",
+    "model":  "anthropic/claude-3-5-sonnet-latest",
+    "small_model":  "anthropic/claude-3-5-haiku-latest",
+    "default_agent":  "build",
+    "instructions":  [
+                         "GEMINI.md",
+                         ".opencode/AGENTS.md",
+                         ".opencode/RULES.md",
+                         ".opencode/instructions/INSTRUCTIONS.md",
+                         "PONYTAIL_STANDARDS.md"
+                     ],
+    "agent":  {
+                  "build":  {
+                                "mode":  "primary",
+                                "tools":  {
+                                              "write":  true,
+                                              "edit":  true,
+                                              "bash":  true,
+                                              "read":  true,
+                                              "changed-files":  true
+                                          }
+                            },
+                  "planner":  {
+                                  "mode":  "subagent",
+                                  "prompt":  "{file:prompts/agents/planner.txt}",
+                                  "tools":  {
+                                                "read":  true,
+                                                "bash":  true
+                                            }
+                              },
+                  "architect":  {
+                                    "mode":  "subagent",
+                                    "prompt":  "{file:prompts/agents/architect.txt}",
+                                    "tools":  {
+                                                  "read":  true,
+                                                  "bash":  true
+                                              }
+                                },
+                  "code-reviewer":  {
+                                        "mode":  "subagent",
+                                        "prompt":  "{file:prompts/agents/code-reviewer.txt}",
+                                        "tools":  {
+                                                      "read":  true,
+                                                      "bash":  true
+                                                  }
+                                    },
+                  "security-reviewer":  {
+                                            "mode":  "subagent",
+                                            "prompt":  "{file:prompts/agents/security-reviewer.txt}",
+                                            "tools":  {
+                                                          "read":  true,
+                                                          "bash":  true,
+                                                          "write":  true,
+                                                          "edit":  true
+                                                      }
+                                        },
+                  "tdd-guide":  {
+                                    "mode":  "subagent",
+                                    "prompt":  "{file:prompts/agents/tdd-guide.txt}",
+                                    "tools":  {
+                                                  "read":  true,
+                                                  "write":  true,
+                                                  "edit":  true,
+                                                  "bash":  true
+                                              }
+                                }
+              },
+    "plugin":  [
+                   "ruflo"
+               ],
+    "mcpServers":  {
+
+                   }
 }

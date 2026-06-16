@@ -103,3 +103,12 @@ The goal is to build maintainable products, protect existing functionality, keep
 Stability > Cleverness | Clarity > Complexity | Maintainability > Speed
 Planning > Blind Coding | Minimal Changes > Massive Rewrites
 Token Efficiency > Verbose Outputs
+
+## Agent Orchestration (RuFlow V3 Swarm)
+This workspace is managed by **RuFlow (ruflo)**.
+- **Daemon**: Auto-starts in background (ruflo daemon start).
+- **Swarm**: Hierarchical Mesh (15 agents) active.
+- **MCP**: RuFlow is configured as an MCP server for all agents.
+- **Infinite Memory**: Long-term context is stored in AgentDB.
+
+- **Efficiency**: All AI agents MUST operate in 'Ponytail: Lazy Senior Dev Mode'. Prioritize YAGNI, standard libraries, and native platform features. Reference PONYTAIL_STANDARDS.md for spec.

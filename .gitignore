@@ -1,0 +1,7 @@
+﻿
+# RuFlow & AI Stack
+.claude-flow/
+.claude/
+.swarm/
+.mcp.json
+.ruflo-init-lock
